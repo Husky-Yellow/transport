@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/history/index",
+    "pages/warehouse/index",
+    "pages/my/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#666668",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "selectedColor": "#4890e6",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/logo.png",
+        "selectedIconPath": "/static/logo.png"
+      },
+      {
+        "pagePath": "pages/history/index",
+        "text": "预约历史",
+        "iconPath": "/static/logo.png",
+        "selectedIconPath": "/static/logo.png"
+      },
+      {
+        "pagePath": "pages/warehouse/index",
+        "text": "仓库接收",
+        "iconPath": "/static/logo.png",
+        "selectedIconPath": "/static/logo.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的",
+        "iconPath": "/static/logo.png",
+        "selectedIconPath": "/static/logo.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "uni-app",
+  "usingComponents": {
+    "notice-bar": "/components/NoticeBar/index",
+    "tab": "/components/Tab/index"
+  }
+}
