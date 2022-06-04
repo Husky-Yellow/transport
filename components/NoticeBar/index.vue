@@ -1,29 +1,46 @@
 <template>
-    <view class="transport-notice-bar">{{text}}</view>
+  <view class="transport-notice-bar">
+    <view class="van-notice-bar__wrap">
+      <view
+        class="van-notice-bar__content transport-ellipsis"
+      >
+        <slot></slot>
+      </view>
+    </view>
+  </view>
 </template>
 
-<script>
-export default {
-props: {
-    text: {
-      type: String,
-      default: '',
-    },
-  },
-}
-</script>
 
 <style scoped lang="scss">
 .transport-notice-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 80rpx;
+  padding: 0 32rpx;
+  color: #fff;
+  font-size: 28rpx;
+  line-height: 48rpx;
+  background: #9dc4eb;
+}
+
+.van-notice-bar__wrap {
     position: relative;
     display: flex;
+    flex: 1;
     align-items: center;
-    height: var(--van-notice-bar-height);
-    padding: var(--van-notice-bar-padding);
-    color: var(--van-notice-bar-text-color);
-    font-size: var(--van-notice-bar-font-size);
-    line-height: var(--van-notice-bar-line-height);
-    background: var(--van-notice-bar-background-color)
+    height: 100%;
+    overflow: hidden
+}
+
+.van-notice-bar__content {
+    position: absolute;
+    white-space: nowrap;
+    transition-timing-function: linear
+}
+
+.van-notice-bar__content.van-ellipsis {
+    max-width: 100%
 }
 
 </style>

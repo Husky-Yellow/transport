@@ -1,10 +1,12 @@
 <template>
   <view>
-	  <NoticeBar :text="1111"/>
-    <Tab :list="list" :active="active" @changeActive="changeActive" />
+	  <NoticeBar>
+      <text>11111111</text>
+    </NoticeBar>
+    <!-- <Tab :list="list" :active="active" @changeActive="changeActive" />
     <view class="list p-t-20">
       <Card />
-    </view>
+    </view> -->
   </view>
 </template>
 

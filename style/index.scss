@@ -113,6 +113,12 @@ $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
   }
 }
 
+.transport-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
+}
+
 
 .two-white-space{
   overflow: hidden;
@@ -120,16 +126,6 @@ $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
-.one-white-space{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 1;
-  -moz-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  white-space: nowrap;
-  display: block;
 }
 
 .box-shadow {
