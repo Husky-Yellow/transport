@@ -21,7 +21,6 @@ import { Tab } from "@/components/Tab";
 		},
 		methods: {
 			changeActive(index){
-				console.log(index);
 				this.active = index
 			}
 		}

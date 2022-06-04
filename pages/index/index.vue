@@ -15,10 +15,11 @@
 <script>
 import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
-// import { datatime, getForMonth } from "@/utils";
+import { DataSelect } from "@/components/DataSelect";
 export default {
   components: {
     Tab,
+    DataSelect,
     Card,
   },
   data() {
@@ -28,14 +29,9 @@ export default {
     };
   },
   onLoad() {
-    // const dateArray = datatime(5);
-    // const monthArrat = getForMonth();
-    // console.log(dateArray);
-    // console.log(monthArrat);
   },
   methods: {
     changeActive(index) {
-      console.log(index);
       this.active = index;
     },
   },
@@ -64,7 +60,7 @@ button {
   bottom: 100rpx;
   border-radius: 50%;
   right: 0;
-  // text-align: center;
+  text-align: center;
   height: 140rpx;
   width: 140rpx;
   display: flex;

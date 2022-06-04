@@ -1,6 +1,11 @@
 <template>
   <view>
     <Tab :list="list" :active="active" @changeActive="changeActive" />
+    <view class="list p-t-20">
+      <Card>
+        <template #button> <button>撤回</button> </template>
+      </Card>
+    </view>
   </view>
 </template>
 
@@ -21,12 +26,17 @@ export default {
   onLoad() {},
   methods: {
     changeActive(index) {
-      console.log(index);
       this.active = index;
     },
   },
 };
 </script>
 
-<style>
+<style scoped lang="scss">
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 96%;
+  margin: 0 auto;
+}
 </style>

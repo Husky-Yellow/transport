@@ -25,6 +25,28 @@ export const datatime = (time) => {
     return dateArray
 }
 
+export const isToday = (date) => {
+  //今天
+    const d = new Date(date.toString().replace(/-/g,"/"));
+    const todaysDate = new Date();
+    if(d.setHours(0,0,0,0) == todaysDate.setHours(0,0,0,0)){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export const isTomorrow = (time) => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const today = `${year}/${month}/${day}`;
+  const todayTime = new Date(today).getTime();
+  const yesterdayTime = new Date(todayTime + 24*60*60*1000).getTime();
+  return time < todayTime && yesterdayTime <= time;
+}
+
 // 获取本月时间并获取本月日历数据
 export const getForMonth = () => {
     let myDate = new Date(); //获取系统当前时间
@@ -67,8 +89,6 @@ export const getDateInfo = (ts) => {
     let dateString = formatTime(date);
     let shortDateString = dateString.replace(/\//g, "-").substring(0, 10);
     return {
-        val: [],
-        val_length: 0,
         shortDateString,
         ts: ts,
         today_ts: Date.parse(new Date()),

@@ -24,6 +24,7 @@
         <text class="item-text">车牌号</text>
         <text>1000</text>
       </view>
+    </view>
     <view v-if="type === 'maintenance'" class="list-item-body p-t-10 p-b-10">
       <view class="list-item-body_item p-t-10 p-b-10">
         <text class="item-text">数量</text>
@@ -39,7 +40,6 @@
         <view>李天明：1595230668</view>
       </view>
     </view>
-    </view>
     <view class="list-item-funtion p-t-20 p-b-20">
       <text>操作</text>
       <slot name='button'> <button>撤回</button></slot>
@@ -51,11 +51,12 @@
 <script>
 export default {
   props: {
+    // 卡片类型 maintenance ：维修； 其他为空
     type: {
       type: String,
       default: '',
     },
-  },};
+  }};
 </script>
 
 <style lang="scss" scoped>
