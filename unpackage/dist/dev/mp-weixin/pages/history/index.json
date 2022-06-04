@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "uni-app",
-  "usingComponents": {}
+  "navigationBarTitleText": "预约历史",
+  "usingComponents": {
+    "tab": "/components/Tab/index"
+  }
 }

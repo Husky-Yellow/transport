@@ -45,4 +45,43 @@ page {
   background-color: $uni-bg-color;
 }
 
+
+@for $i from 0 through 190 {
+  .m-#{$i} {
+    margin: ($i) + rpx;
+  }
+  .m-t-#{$i} {
+    margin-top: ($i) + rpx;
+  }
+  .m-b-#{$i} {
+    margin-bottom: ($i) + rpx;
+  }
+  .m-l-#{$i} {
+    margin-left: ($i) + rpx;
+  }
+  .m-r-#{$i} {
+    margin-right: ($i) + rpx;
+  }
+
+  .p-#{$i} {
+    padding: ($i) + rpx;
+  }
+  .p-t-#{$i} {
+    padding-top: ($i) + rpx;
+  }
+  .p-b-#{$i} {
+    padding-bottom: ($i) + rpx;
+  }
+  .p-l-#{$i} {
+    padding-left: ($i) + rpx;
+  }
+  .p-r-#{$i} {
+    padding-right: ($i) + rpx;
+  }
+
+  .fz-#{$i} {
+    font-size: ($i) + rpx;
+  }
+}
+
 </style>

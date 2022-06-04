@@ -1,1 +1,1 @@
-<view></view>
+<view><tab vue-id="74ad0258-1" list="{{list}}" active="{{active}}" data-event-opts="{{[['^changeActive',[['changeActive']]]]}}" bind:changeActive="__e" bind:__l="__l"></tab></view>

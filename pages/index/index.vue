@@ -1,10 +1,13 @@
 <template>
-  <view>
+  <view class="page">
     <Tab :list="list" :active="active" @changeActive="changeActive" />
     <view class="list p-t-20">
       <Card>
         <template #button> <button>撤回</button> </template>
       </Card>
+    </view>
+    <view class="subscribe fz-28">
+      预约
     </view>
   </view>
 </template>
@@ -40,6 +43,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.page{
+  border-top: 1rpx solid $uni-bg-color-border;
+}
 .list {
   display: flex;
   flex-direction: column;
@@ -49,5 +55,18 @@ export default {
 button {
   padding: 20rpx 60rpx;
   border-radius: 8rpx;
+}
+.subscribe{
+  background-color: $uni-bg-color-primary;
+  color: $uni-text-color-inverse;
+  position: fixed;
+  z-index: 2;
+  bottom: 100rpx;
+  border-radius: 50%;
+  right: 0;
+  // text-align: center;
+  height: 140rpx;
+  width: 140rpx;
+  display: flex;
 }
 </style>

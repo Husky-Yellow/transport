@@ -1,7 +1,7 @@
 {
-  "navigationBarTitleText": "uni-app",
+  "navigationBarTitleText": "首页",
   "usingComponents": {
-    "notice-bar": "/components/NoticeBar/index",
-    "tab": "/components/Tab/index"
+    "tab": "/components/Tab/index",
+    "card": "/components/Card/index"
   }
 }

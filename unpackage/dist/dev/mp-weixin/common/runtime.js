@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/NoticeBar/index":1,"components/Tab/index":1};
+/******/ 		var cssChunks = {"components/Card/index":1,"components/Tab/index":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/NoticeBar/index":"components/NoticeBar/index","components/Tab/index":"components/Tab/index"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/Card/index":"components/Card/index","components/Tab/index":"components/Tab/index"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

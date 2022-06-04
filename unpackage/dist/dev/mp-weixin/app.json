@@ -5,7 +5,17 @@
     "pages/warehouse/index",
     "pages/my/index"
   ],
-  "subPackages": [],
+  "subPackages": [
+    {
+      "root": "functionPage",
+      "pages": [
+        "SettingDriver/index",
+        "AddDriver/index",
+        "AddRepair/index",
+        "SettingRepair/index"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",

@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "uni-app",
-  "usingComponents": {}
+  "navigationBarTitleText": "仓库接收",
+  "usingComponents": {
+    "tab": "/components/Tab/index",
+    "card": "/components/Card/index"
+  }
 }

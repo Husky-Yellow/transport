@@ -1,5 +1,5 @@
 <template>
-  <view class="repair p-24">
+  <view class="p-24">
     <view class="repair-list">
       <scroll-view
         scroll-y="true"
@@ -57,7 +57,7 @@ export default {
     }
 	.repair-list-item:last-child  {
       border-bottom: none;
-    }
+  }
 }
 .add-button {
   background-color: $uni-bg-color-primary;
