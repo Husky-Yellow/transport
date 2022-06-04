@@ -25,6 +25,37 @@
 			}
 		  }
 	],
+	"subpackages": [
+		{
+		  "root": "functionPage",
+		  "pages": [
+			{
+			  "path": "SettingDriver/index",
+			  "style": {
+				"navigationBarTitleText": "设置货车驾驶员"
+			  }
+			},
+			{
+			  "path": "AddDriver/index",
+			  "style": {
+				"navigationBarTitleText": "添加货车驾驶员"
+			  }
+			},
+			{
+			  "path": "AddRepair/index",
+			  "style": {
+				"navigationBarTitleText": "添加返修人员"
+			  }
+			},
+			{
+			  "path": "SettingRepair/index",
+			  "style": {
+				"navigationBarTitleText": "添加返修人员"
+			  }
+			}
+		  ]
+		}
+	  ],
 	"tabBar": {
 		"color": "#666668",
 		"borderStyle": "black",

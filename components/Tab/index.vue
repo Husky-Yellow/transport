@@ -43,14 +43,14 @@ export default {
     padding: 0 32rpx;
     position: relative;
     font-size: 28rpx;
-    color: $uni-text-color-disable;
+    color: $uni-text-color;
     background-color: $uni-bg-color-white;
     text-align: center;
     flex: 1;
     &::after {
       content: "";
       width: 0;
-      height: 2px;
+      height: 3rpx;
       background-color: $uni-color-active;
       position: absolute;
       left: 0;

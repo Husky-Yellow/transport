@@ -1,9 +1,10 @@
+@import './mixin.scss';
 /* 行为相关颜色 */
 $uni-color-primary: #007aff;
 $uni-color-success: #4cd964;
 $uni-color-ending: #d2e7cf; // 进行中
 $uni-color-warning: #f0ad4e;
-$uni-color-active: #4c91e2;//按钮选中颜色
+$uni-color-active: #358FEE;//按钮选中颜色
 $uni-color-error: #dd524d;
 
 /* 文字基本颜色 */
@@ -17,11 +18,11 @@ $uni-text-color-black:#333;
 
 /* 背景颜色 */
 $uni-bg-color:#f7f7f7;
+$uni-bg-color-primary:#358FEE;
 $uni-bg-color-border:#eeedf0;
 $uni-bg-color-white:#ffffff;
 $uni-bg-color-info:#f7f8fa;
 $uni-bg-color-ending: #bcdea6; // 进行中
-$uni-bg-color-primary:#ccaa69;
 $uni-bg-color-grey:#f8f8f8;
 $uni-bg-color-hover:#f1f1f1;//点击状态颜色
 $uni-bg-color-tag:#f7f7f7;//文字标签的背景色
@@ -171,4 +172,7 @@ $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
 
 .item-text{
   color: $uni-text-color-disable;
+}
+.grey-text{
+  color: $uni-text-color-grey;
 }

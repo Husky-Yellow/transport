@@ -1,25 +1,22 @@
 <template>
   <view>
-	  <NoticeBar>
-      <text>11111111</text>
-    </NoticeBar>
-    <!-- <Tab :list="list" :active="active" @changeActive="changeActive" />
+    <Tab :list="list" :active="active" @changeActive="changeActive" />
     <view class="list p-t-20">
-      <Card />
-    </view> -->
+      <Card>
+        <template #button> <button>撤回</button> </template>
+      </Card>
+    </view>
   </view>
 </template>
 
 <script>
 import { Tab } from "@/components/Tab";
-import { NoticeBar } from "@/components/NoticeBar";
 import { Card } from "@/components/Card";
 // import { datatime, getForMonth } from "@/utils";
 export default {
   components: {
     Tab,
-	NoticeBar,
-	Card
+    Card,
   },
   data() {
     return {
@@ -43,10 +40,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.list{
+.list {
   display: flex;
   flex-direction: column;
   width: 96%;
   margin: 0 auto;
+}
+button {
+  padding: 20rpx 60rpx;
+  border-radius: 8rpx;
 }
 </style>
