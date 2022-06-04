@@ -25,18 +25,17 @@ export default {};
   display: flex;
   flex-direction: column;
   .page-body_header {
-      display: flex;
-      flex-direction: column;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     background-color: #fff;
     justify-content: space-between;
     image {
-      width: 220rpx;
-      height: 220rpx;
+      width: 200rpx;
+      height: 200rpx;
     }
   }
-  .page-body_function{
-
+  .page-body_function {
   }
 }
 </style>

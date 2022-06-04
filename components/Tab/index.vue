@@ -3,7 +3,7 @@
     <view
       v-for="(item, index) in list"
       :key="index"
-      :class="index === active ? 'active' : ''"
+      :class="active === index ? 'active' : ''"
       @click="changeActive(index)"
       >{{ item }}</view
     >
@@ -25,8 +25,7 @@ export default {
   onLoad() {},
   methods: {
     changeActive(index) {
-      this.active = index;
-      this.$emit("change", index);
+      this.$emit("changeActive", index);
     },
   },
 };
@@ -39,21 +38,20 @@ export default {
   justify-content: center;
   align-items: center;
   view {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 15px;
-    cursor: pointer;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 0 32rpx;
     position: relative;
-    font-size: 18px;
-    color: #909399;
-    background-color: #fff;
+    font-size: 28rpx;
+    color: $uni-text-color-disable;
+    background-color: $uni-bg-color-white;
     text-align: center;
     flex: 1;
     &::after {
       content: "";
       width: 0;
       height: 2px;
-      background-color: #00adb5;
+      background-color: $uni-color-active;
       position: absolute;
       left: 0;
       right: 0;
@@ -63,6 +61,7 @@ export default {
     }
   }
   view.active {
+      color: $uni-color-active;
     &::after {
       width: 50%;
       transform: translateX(100% -30rpx);

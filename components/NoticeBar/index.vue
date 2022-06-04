@@ -1,15 +1,20 @@
 <template>
-    <view class="van-notice-bar">1sss</view>
+    <view class="transport-notice-bar">{{text}}</view>
 </template>
 
 <script>
 export default {
-
+props: {
+    text: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
-.van-notice-bar {
+.transport-notice-bar {
     position: relative;
     display: flex;
     align-items: center;

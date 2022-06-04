@@ -3,6 +3,7 @@ $uni-color-primary: #007aff;
 $uni-color-success: #4cd964;
 $uni-color-ending: #d2e7cf; // 进行中
 $uni-color-warning: #f0ad4e;
+$uni-color-active: #4c91e2;//按钮选中颜色
 $uni-color-error: #dd524d;
 
 /* 文字基本颜色 */
@@ -15,7 +16,7 @@ $uni-text-color-disable:#939596;
 $uni-text-color-black:#333;
 
 /* 背景颜色 */
-$uni-bg-color:#f7f6f9;
+$uni-bg-color:#f7f7f7;
 $uni-bg-color-border:#eeedf0;
 $uni-bg-color-white:#ffffff;
 $uni-bg-color-info:#f7f8fa;
@@ -159,4 +160,19 @@ $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
 }
 .transport-image--round .transport-image__img {
   border-radius: inherit;
+}
+
+.arrow {
+  width:20rpx;
+  height:20rpx;
+  border-top:2rpx solid #000;
+  border-right:2rpx solid #000;
+}
+.right {transform:rotate(45deg)}
+.left {transform:rotate(-135deg)}
+.on {transform:rotate(-45deg)}
+.under {transform:rotate(135deg)}
+
+.item-text{
+  color: $uni-text-color-disable;
 }
