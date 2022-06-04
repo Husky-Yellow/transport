@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "首页",
-  "usingComponents": {
-    "tab": "/components/Tab/index",
-    "card": "/components/Card/index"
-  }
-}
