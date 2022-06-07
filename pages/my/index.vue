@@ -26,7 +26,6 @@ export default {
     };
   },
   onLoad() {
-    console.log(`111`);
   },
   methods: {
     goSettingDriver(){

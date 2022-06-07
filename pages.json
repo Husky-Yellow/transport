@@ -36,6 +36,9 @@
 			  }
 			},
 			{
+			  "path": "AppointmentDelivery/index"
+			},
+			{
 			  "path": "AddDriver/index",
 			  "style": {
 				"navigationBarTitleText": "添加货车驾驶员"
@@ -45,6 +48,12 @@
 			  "path": "AddRepair/index",
 			  "style": {
 				"navigationBarTitleText": "添加返修人员"
+			  }
+			},
+			{
+			  "path": "Subscribe/index",
+			  "style": {
+				"navigationBarTitleText": "预约日程表"
 			  }
 			},
 			{
@@ -65,26 +74,26 @@
 		  {
 			"pagePath": "pages/index/index",
 			"text": "首页",
-			"iconPath": "/static/logo.png",
-			"selectedIconPath": "/static/logo.png"
+			"iconPath": "/static/index.png",
+			"selectedIconPath": "/static/index_active.png"
 		  },
 		  {
 			"pagePath": "pages/history/index",
 			"text": "预约历史",
-			"iconPath": "/static/logo.png",
-			"selectedIconPath": "/static/logo.png"
+			"iconPath": "/static/history.png",
+			"selectedIconPath": "/static/history_active.png"
 		  },
 		  {
 			"pagePath": "pages/warehouse/index",
 			"text": "仓库接收",
-			"iconPath": "/static/logo.png",
-			"selectedIconPath": "/static/logo.png"
+			"iconPath": "/static/warehouse.png",
+			"selectedIconPath": "/static/warehouse_active.png"
 		  },
 		  {
 			"pagePath": "pages/my/index",
 			"text": "我的",
-			"iconPath": "/static/logo.png",
-			"selectedIconPath": "/static/logo.png"
+			"iconPath": "/static/my.png",
+			"selectedIconPath": "/static/my_active.png"
 		  }
 		]
 	  },
