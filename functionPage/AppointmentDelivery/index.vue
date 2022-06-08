@@ -77,7 +77,7 @@
             <view class="add-button-icon" @click="goRepairList" />
           </view>
         </view>
-        <view class="list-item-body_intro p-t-10 p-b-10 fz-24">
+        <view v-if="type === 'repair'" class="list-item-body_intro p-t-10 p-b-10 fz-24">
           <view>李天明：1595230668</view>
           <view>李天明：1595230668</view>
           <view>李天明：1595230668</view>

@@ -3,14 +3,14 @@
         <view class="form-view p-20 fz-28">
             <view class="form-view-item p-22">
                 <view>
-                    <image mode="scaleToFill" class="m-r-10" src="https://fp-stage.yangcong345.com/人员-f8f4a14525f88fef9ea2f74f155e8f2b.png" />
+                    <image mode="scaleToFill" class="m-r-10" src="@/static/plateNumber.png" />
                     返修员
                 </view>
                 <input type="text" placeholder="请输入姓名"/>
             </view>
             <view class="form-view-item p-22">
                 <view>
-                    <image mode="scaleToFill" class="m-r-10" src="https://fp-stage.yangcong345.com/人员-f8f4a14525f88fef9ea2f74f155e8f2b.png" />
+                    <image mode="scaleToFill" class="m-r-10" src="@/static/iphone.png" />
                     手机号
                 </view>
                 <input type="number" placeholder="请输入手机号"/>
@@ -43,7 +43,7 @@ export default {
             text-align: right;
         }
     }
-    .form-view-itemm:last-child  {
+    .form-view-item:last-child {
       border-bottom: none;
     }
 }

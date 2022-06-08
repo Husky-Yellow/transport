@@ -11,7 +11,7 @@
                 <view class="fz-28 grey-text p-t-22">手机号：123 4567 8901</view>
             </view>
             <view>
-                <image mode="scaleToFill" src="https://fp-stage.yangcong345.com/编辑-982240365631d8f7e565395c7094aa56.png"/>
+                <image mode="scaleToFill" src="@/static/edit.png"/>
             </view>
         </view>
       </scroll-view>
@@ -51,8 +51,8 @@ export default {
         @include space-between;
         border-bottom: 1rpx solid $uni-bg-color-border;
         image{
-            width: 70rpx;
-            height: 70rpx;
+            width: 40rpx;
+            height: 40rpx;
         }
     }
 	.repair-list-item:last-child  {

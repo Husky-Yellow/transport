@@ -1,8 +1,8 @@
 <template>
   <view class="page">
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
-    <view class="list p-20 p-t-80">
-      <Card v-for="(item, index) in 4" :key="index">
+    <view class="list p-24 p-t-76">
+      <Card v-for="(item, index) in arr" :key="index" :obj="item">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
@@ -50,6 +50,46 @@ export default {
   data() {
     return {
       list: ["待审核", "待接收"],
+      arr: [
+        {
+          time:'11:00-12:00',
+          type:'pending',
+          cardType:'repair',
+          number: 1000,
+          people: '4',
+          peopleArr:[{
+            name:'李天明',
+            phone:'12345678901'
+          },{
+            name:'李天明',
+            phone:'12345678901'
+          },{
+            name:'李天明',
+            phone:'12345678901'
+          },{
+            name:'李天明',
+            phone:'12345678901'
+          }]
+        },
+        {
+          time:'11:00-12:00',
+          type:'pending',
+          cardType: 'delivery',
+          number: 1000,
+          name: '李天明',
+          phone: '123 4567 8901',
+          card: '浙A123456'
+        },
+        {
+          time:'11:00-12:00',
+          type:'pending',
+          cardType: 'claimGoods',
+          number: 1000,
+          name: '李天明',
+          phone: '123 4567 8901',
+          card: '浙A123456'
+        },
+      ],
       active: 0,
       showView:false,
       showTextmsg:false,
