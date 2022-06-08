@@ -2,29 +2,32 @@
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
     <view class="list p-20 p-t-80">
-      <Card v-for="(item, index) in arr" :key="index" :obj="item">
+      <ManageCard v-for="(item, index) in arr" :key="index" :obj="item">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
-            <text class="item-lable">备注</text>
-            <text class="text-active">收到998件</text>
+            <text>操作</text>
+            <view>
+              <button class="p-l-54 p-r-54 fz-28 m-r-20 primary-button">通过</button>
+              <button class="p-l-54 p-r-54 fz-28 close-button">拒绝</button>
+            </view>
           </view>
         </template>
-      </Card>
+      </ManageCard>
     </view>
   </view>
 </template>
 
 <script>
 import { Tab } from "@/components/Tab";
-import { Card } from "@/components/Card";
+import { ManageCard } from "@/components/ManageCard";
 export default {
   components: {
     Tab,
-    Card,
+    ManageCard,
   },
   data() {
     return {
-      list: ["已接收", "已拒收"],
+      list: ["待审核", "已通过", "已拒绝"],
       active: 0,
       arr: [
         {
@@ -103,6 +106,19 @@ export default {
   }
   .text-active{
     color: $uni-text-color-active;
+  }
+  .primary-button,.close-button{
+    border-radius: 10rpx;
+    height: 84rpx;
+    line-height: 84rpx;
+  }
+  .primary-button{
+    background-color: $uni-bg-color-primary;
+    color: $uni-text-color-inverse;
+
+  }
+  .close-button{
+    border: 1rpx solid $uni-bg-color-border;
   }
 }
 </style>

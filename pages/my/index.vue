@@ -15,6 +15,10 @@
       <view class="p-b-30 p-t-30" @click="goSettingRepair()">设置返修人员
         <view class="arrow right"></view>
       </view>
+      <view @click="goOrderList">预约汇总</view>
+      <view @click="goManageSchedule">预约日程表</view>
+      <view @click="goManageWarehouse">仓库接收</view>
+      <view>预约时间管理</view>
     </view>
   </view>
 </template>
@@ -31,6 +35,21 @@ export default {
     goSettingDriver(){
       uni.navigateTo({
         url: "/functionPage/SettingDriver/index",
+      });
+    },
+    goOrderList(){
+      uni.navigateTo({
+        url: "/functionPage/OrderList/index",
+      });
+    },
+    goManageSchedule(){
+      uni.navigateTo({
+        url: "/functionPage/ManageSchedule/index",
+      });
+    },
+    goManageWarehouse(){
+      uni.navigateTo({
+        url: "/functionPage/ManageWarehouse/index",
       });
     },
     goSettingRepair(){

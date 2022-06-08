@@ -42,6 +42,24 @@
 			  }
 			},
 			{
+			  "path": "ManageWarehouse/index",
+			  "style": {
+				"navigationBarTitleText": "仓库接收"
+			  }
+			},
+			{
+			  "path": "ManageSchedule/index",
+			  "style": {
+				"navigationBarTitleText": "预约日程表"
+			  }
+			},
+			{
+			  "path": "OrderList/index",
+			  "style": {
+				"navigationBarTitleText": "预约汇总"
+			  }
+			},
+			{
 			  "path": "RepairList/index",
 			  "style": {
 				"navigationBarTitleText": "返修员列表"
