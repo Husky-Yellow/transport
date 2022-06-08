@@ -54,6 +54,18 @@
 			  }
 			},
 			{
+			  "path": "TimeManagement/index",
+			  "style": {
+				"navigationBarTitleText": "预约时间管理"
+			  }
+			},
+			{
+			  "path": "TimeManagementSelect/index",
+			  "style": {
+				"navigationBarTitleText": "预约时间管理选择"
+			  }
+			},
+			{
 			  "path": "OrderList/index",
 			  "style": {
 				"navigationBarTitleText": "预约汇总"

@@ -18,7 +18,7 @@
       <view @click="goOrderList">预约汇总</view>
       <view @click="goManageSchedule">预约日程表</view>
       <view @click="goManageWarehouse">仓库接收</view>
-      <view>预约时间管理</view>
+      <view @click="goTimeManagement">预约时间管理</view>
     </view>
   </view>
 </template>
@@ -50,6 +50,11 @@ export default {
     goManageWarehouse(){
       uni.navigateTo({
         url: "/functionPage/ManageWarehouse/index",
+      });
+    },
+    goTimeManagement(){
+      uni.navigateTo({
+        url: "/functionPage/TimeManagement/index",
       });
     },
     goSettingRepair(){
