@@ -36,6 +36,18 @@
 			  }
 			},
 			{
+			  "path": "DriverList/index",
+			  "style": {
+				"navigationBarTitleText": "人员列表"
+			  }
+			},
+			{
+			  "path": "RepairList/index",
+			  "style": {
+				"navigationBarTitleText": "返修员列表"
+			  }
+			},
+			{
 			  "path": "AppointmentDelivery/index"
 			},
 			{

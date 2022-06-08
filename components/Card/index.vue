@@ -9,7 +9,7 @@
           >预约类型：<view class="type-text fz-24">修</view>
         </view>
       </view>
-      <view class="fz-32">待审核</view>
+      <view class="fz-32 type-flag-text">待审核</view>
     </view>
     <view
       v-if="type !== 'maintenance'"
@@ -98,16 +98,19 @@ export default {
       display: flex;
       align-items: center;
       .type-text {
-        display: inline-block;
+        display: inline-flex;
         width: 48rpx;
         height: 48rpx;
         color: #f1b350;
-        border: 1rpx solid;
+        border: 2rpx solid;
         border-radius: 50%;
-        text-align: center;
-        line-height: 1.6;
+        align-items: center;
+        justify-content: center;
       }
     }
+    .type-flag-text{
+        color: $uni-text-color-pending;
+      }
   }
   .list-item-body_intro {
     display: flex;
@@ -129,7 +132,7 @@ export default {
     background-color: #f1b350;
     height: 30rpx;
     position: absolute;
-    top: -14rpx;
+    top: -10rpx;
     border-radius: 20rpx;
     left: 0;
     width: 100%;

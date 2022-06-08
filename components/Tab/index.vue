@@ -46,11 +46,12 @@ export default {
     color: $uni-text-color;
     background-color: $uni-bg-color-white;
     text-align: center;
+    font-weight: Regular;
     flex: 1;
     &::after {
       content: "";
       width: 0;
-      height: 3rpx;
+      height: 4rpx;
       background-color: $uni-color-active;
       position: absolute;
       left: 0;
