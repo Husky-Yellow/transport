@@ -36,7 +36,7 @@ import { getForMonth } from "@/utils";
 export default {
   data() {
     return {
-      monthArray: getForMonth().dateList,
+      monthArray: getForMonth().dateList.slice(0,14),
       selectDay: getForMonth().todayIndex,
     };
   },
