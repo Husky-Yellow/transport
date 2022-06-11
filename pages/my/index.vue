@@ -15,10 +15,10 @@
       <view class="p-b-30 p-t-30" @click="goSettingRepair()">设置返修人员
         <view class="arrow right"></view>
       </view>
-      <view @click="goOrderList">预约汇总</view>
+      <!-- <view @click="goOrderList">预约汇总</view>
       <view @click="goManageSchedule">预约日程表</view>
       <view @click="goManageWarehouse">仓库接收</view>
-      <view @click="goTimeManagement">预约时间管理</view>
+      <view @click="goTimeManagement">预约时间管理</view> -->
     </view>
   </view>
 </template>

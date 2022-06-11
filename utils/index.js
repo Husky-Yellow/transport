@@ -24,27 +24,6 @@ export const datatime = (time) => {
   return dateArray;
 };
 
-export const isToday = (date) => {
-  //今天
-  const d = new Date(date.toString().replace(/-/g, "/"));
-  const todaysDate = new Date();
-  if (d.setHours(0, 0, 0, 0) == todaysDate.setHours(0, 0, 0, 0)) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-export const isTomorrow = (time) => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const today = `${year}/${month}/${day}`;
-  const todayTime = new Date(today).getTime();
-  const yesterdayTime = new Date(todayTime + 24 * 60 * 60 * 1000).getTime();
-  return time < todayTime && yesterdayTime <= time;
-};
 
 // 获取本月时间并获取本月日历数据
 export const getForMonth = () => {
@@ -151,21 +130,32 @@ export function formatNumber(n) {
   return str[1] ? str : `0${str}`;
 }
 
-/** get请求处理参数
- * get请求处理参数
- * @param {Object} param
- * @returns
- */
-export const urlParam = (param = {}) => {
-  let result = "";
-  let item;
-  for (item in param) {
-    if (param[item] && String(param[item])) {
-      result += `&${item}=${param[item]}`;
+/*
+* 获取年月日时分秒
+* */
+export const getDate = (dateStr) => {
+    const timeArr = dateStr.replace(" ", ":").replace(/\:/g, "-").split("-");
+    if (timeArr.length < 6) return '格式错误'
+    return {
+      year: timeArr[0],
+      month: timeArr[1],
+      day: timeArr[2],
+      hour: timeArr[3],
+      minute: timeArr[4],
+      seconds: timeArr[5]
+  };
+}
+
+/*
+* 判断昨今明
+* */
+export const caleDate = (dayStr) => {
+    dayStr = new Date(dayStr).setHours(0, 0, 0, 0);
+    const today = new Date().setHours(0, 0, 0, 0);
+    const dateObj = {
+        '-86400000': 'yesterday',
+        0: 'today',
+        86400000: 'tomorrow'
     }
-  }
-  if (result) {
-    result = `?${result.slice(1)}`;
-  }
-  return result;
-};
+    return dateObj[dayStr - today] || '超出昨今明范围';
+}

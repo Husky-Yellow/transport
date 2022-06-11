@@ -82,6 +82,7 @@ export default {
     list: ["待审核", "待接收"],
     orderArr: [
       {
+        timestamp:'2022-06-11 16:39:01',
         time: "11:00-12:00",
         type: "pending",
         cardType: "repair",
@@ -107,6 +108,7 @@ export default {
         ],
       },
       {
+        timestamp:'2022-06-12 16:39:01',
         time: "11:00-12:00",
         type: "pending",
         cardType: "delivery",
@@ -116,6 +118,7 @@ export default {
         card: "浙A123456",
       },
       {
+        timestamp:'2022-06-01 16:39:01',
         time: "11:00-12:00",
         type: "pending",
         cardType: "claimGoods",

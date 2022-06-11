@@ -4,7 +4,7 @@
     <view class="list p-20 p-t-80">
       <Card v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
-          <view class="list-item-funtion p-t-20 p-b-20 fz-28">
+          <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text class="item-lable">备注</text>
             <text class="text-active">收到998件</text>
           </view>
@@ -17,12 +17,14 @@
 <script>
 import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
+import { orderOrderList } from "@/api";
 export default {
   components: {
     Tab,
     Card,
   },
-  data: () => ({
+  data() {
+    return{
       list: ["已接收", "已拒收"],
       active: 0,
       orderArr: [
@@ -67,7 +69,8 @@ export default {
       ],
       page: 1,
       onReachBottomTimer: null,
-  }),
+    }
+  },
   onReachBottom() {
     if (this.onReachBottomTimer !== null) {
       clearTimeout(this.onReachBottomTimer);
@@ -76,6 +79,7 @@ export default {
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
   onLoad() {
+    this.orderArr = []
     this.getData();
   },
   methods: {
@@ -84,18 +88,18 @@ export default {
         type: 1,
         page: this.page,
         num: 10,
-        status: this.active === 0 ? 1 : 2,
+        status: this.active === 0 ? 4 : 5,
       }).then((res) => {
-        // console.log(res);
-        this.orderArr = [...this.orderArr,...res.ret.data] ;
+        this.orderArr = [...this.orderArr,...res.ret.data].map(item => {
+          item.type = this.active === 0 ? 'receive' : 'reject';
+          return item;
+        });
       });
     },
     changeActive(index) {
       this.active = index;
-      this.arr = this.arr.map(item => {
-        item.type = index === 0 ? 'receive' : 'reject';
-        return item;
-      });
+      this.orderArr = []
+      this.getData()
     },
   },
 };

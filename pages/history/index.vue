@@ -10,6 +10,7 @@
 <script>
 import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
+import { orderOrderList } from "@/api";
 export default {
   components: {
     Tab,
@@ -69,6 +70,7 @@ export default {
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
   onLoad() {
+    this.orderArr = []
     this.getData();
   },
   methods: {
@@ -79,16 +81,16 @@ export default {
         num: 10,
         status: this.active === 0 ? 1 : 2,
       }).then((res) => {
-        // console.log(res);
-        this.orderArr = [...this.orderArr,...res.ret.data] ;
+        this.orderArr = [...this.orderArr,...res.ret.data].map(item => {
+          item.type = this.active === 0 ? 'receive' : 'reject';
+          return item;
+        });
       });
     },
     changeActive(index) {
       this.active = index;
-      this.arr = this.arr.map(item => {
-        item.type = index === 0 ? 'receive' : 'reject';
-        return item;
-      });
+      this.orderArr = []
+      this.getData()
     },
   },
 };

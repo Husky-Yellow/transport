@@ -8,12 +8,12 @@
       >
         <view>
           <view class="fz-32"
-            >李天明 <text class="p-l-10">123 4567 8901</text></view
+            >{{item.name}} <text class="p-l-10">{{item.tel}}</text></view
           >
-          <view class="fz-28 grey-text p-t-22">车牌号：浙A123456</view>
+          <view class="fz-28 grey-text p-t-22">车牌号：{{item.license_plate}}</view>
         </view>
         <view>
-          <image mode="scaleToFill" src="@/static/edit.png" />
+          <image mode="scaleToFill" src="@/static/edit.png" @click="goAddDriver(item)"/>
         </view>
       </view>
     </view>
@@ -39,7 +39,8 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onLoad(e) {
+  onShow() {
+    this.peopleList = []
     this.getData()
   },
   methods: {
@@ -53,9 +54,10 @@ export default {
         this.peopleList = [...this.peopleList,...res.ret.data]
       })
     },
-    goAddDriver() {
+    goAddDriver(item) {
+      const { id = '', tel = '', name = '', license_plate = ''} = item
       uni.navigateTo({
-        url: "/functionPage/AddDriver/index",
+        url: `/functionPage/AddDriver/index?id=${id}&tel=${tel}&name=${name}&license_plate=${license_plate}`,
       });
     },
   },
@@ -65,8 +67,8 @@ export default {
 <style scoped lang="scss">
 .repair-list {
   background-color: $uni-bg-color-white;
-  min-height: 84vh;
-  height: auto;
+  // min-height: 84vh;
+  // height: auto;
   border-radius: 8rpx;
   .repair-list-item {
     @include space-between;

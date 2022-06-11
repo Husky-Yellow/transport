@@ -34,9 +34,13 @@ const service = async (config = {}) => {
 						},
 						method: method.toUpperCase(),
 						complete(res) {
-                            // console.log('%c请求成功: ', 'color:green', res);
+                            console.log('%c请求成功: ', 'color:green', res);
                             if (res.statusCode === 200) {
-								return resolve(res.data)
+								if (res.data.code !== 200) {
+									return reject(res.data.message)
+								}else{
+									return resolve(res.data)
+								}
                             } else if (res.statusCode === 405) {
 								uni.showToast({
 									title: ERROR_MAP[res.statusCode].title || '身份认证失效,请重新登录',

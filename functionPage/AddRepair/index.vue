@@ -6,17 +6,17 @@
                     <image mode="scaleToFill" class="m-r-10" src="@/static/plateNumber.png" />
                     返修员
                 </view>
-                <input type="nickname" placeholder="请输入姓名"/>
+                <input type="nickname" v-model="name"  placeholder="请输入姓名"/>
             </view>
             <view class="form-view-item p-22">
                 <view>
                     <image mode="scaleToFill" class="m-r-10" src="@/static/iphone.png" />
                     手机号
                 </view>
-                <input type="number" :maxlength="11" placeholder="请输入手机号"/>
+                <input type="number" v-model="tel"  :maxlength="11" placeholder="请输入手机号"/>
             </view>
         </view>
-        <button class="p-28 m-t-80">{{id ? '修改' : '添加'}}</button>
+        <button class="p-28 m-t-80" @click="submitUserStaff">{{id ? '修改' : '添加'}}</button>
     </view>
 </template>
 
@@ -31,9 +31,9 @@ export default {
     name: '',
   }),
   onLoad(e) {
-    this.id = e?.id
-    this.tel = e?.tel
-    this.name = e?.name
+    this.id = e.id
+    this.tel = e.tel
+    this.name = e.name
   },
   methods: {
     submitUserStaff() {
@@ -61,9 +61,11 @@ export default {
             title: `${this.id ? '修改成功' : '添加成功'}`,
             icon: 'success'
         })
-        uni.navigateBack({
-          delta:1,
-        })
+        setTimeout(() => {
+          uni.navigateBack({
+            delta:1,
+          })
+        }, 1000);
       })
     },
   },

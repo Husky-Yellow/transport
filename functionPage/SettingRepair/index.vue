@@ -1,21 +1,19 @@
 <template>
   <view class="repair p-24">
     <view class="repair-list">
-      <scroll-view scroll-y="true" class="p-l-24 p-r-24">
-        <view
-          v-for="(item, index) in peopleList"
-          :key="index"
-          class="repair-list-item p-20"
-        >
-          <view>
-            <view class="fz-32">李天明</view>
-            <view class="fz-28 grey-text p-t-22">手机号：123 4567 8901</view>
-          </view>
-          <view>
-            <image mode="scaleToFill" src="@/static/edit.png" />
-          </view>
+      <view
+        v-for="(item, index) in peopleList"
+        :key="index"
+        class="repair-list-item p-20"
+      >
+        <view>
+          <view class="fz-32">{{item.name}}</view>
+          <view class="fz-28 grey-text p-t-22">手机号：{{item.tel}}</view>
         </view>
-      </scroll-view>
+        <view>
+          <image mode="scaleToFill" src="@/static/edit.png" @click="goAddRepair(item)" />
+        </view>
+      </view>
     </view>
     <button class="add-button p-t-39 p-b-39" @click="goAddRepair">
       + 添加返修员
@@ -40,6 +38,7 @@ export default {
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
   onShow() {
+    this.peopleList = []
     this.getData()
   },
   methods: {
@@ -53,9 +52,10 @@ export default {
         this.peopleList = [...this.peopleList,...res.ret.data]
       })
     },
-    goAddRepair() {
+    goAddRepair(item) {
+      const { id = '', tel = '', name = ''} = item
       uni.navigateTo({
-        url: "/functionPage/AddRepair/index",
+        url: `/functionPage/AddRepair/index?id=${id}&tel=${tel}&name=${name}`,
       });
     },
   },
@@ -65,10 +65,6 @@ export default {
 <style scoped lang="scss">
 .repair-list {
   background-color: $uni-bg-color-white;
-  height: 84vh;
-  scroll-view {
-    height: 100%;
-  }
   border-radius: 8rpx;
   .repair-list-item {
     @include space-between;

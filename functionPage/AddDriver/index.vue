@@ -77,9 +77,11 @@ export default {
             title: `${this.id ? '修改成功' : '添加成功'}`,
             icon: 'success'
         })
-        uni.navigateBack({
-          delta:1,
-        })
+        setTimeout(() => {
+          uni.navigateBack({
+            delta:1,
+          })
+        }, 1500);
       })
     },
   },
