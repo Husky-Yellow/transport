@@ -4,7 +4,7 @@
       <view>
         <view class="fz-36"
           >01-01
-          <text class="fz-40 p-l-20 font-weight-medium">{{obj.time}}</text>
+          <text class="fz-40 p-l-20 list-item-header_time">{{obj.time}}</text>
         </view>
         <view class="fz-28 m-t-16 list-item-header_type"
           >预约类型：<view :class="['fz-24 type-text', obj.cardType]">{{
@@ -148,6 +148,9 @@ export default {
       .delivery {
         color: #358fee;
       }
+    }
+    .list-item-header_time {
+      font-weight: bold;
     }
     .pending_text {
       color: $uni-text-color-pending;

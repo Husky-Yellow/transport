@@ -43,6 +43,7 @@ page {
   min-height: 100vh;
   height: auto;
   background-color: $uni-bg-color;
+  font-family: PingFangSC-Regular, PingFang SC;
 }
 
 
