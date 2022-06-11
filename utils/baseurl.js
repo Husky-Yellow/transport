@@ -1,3 +1,3 @@
 export function getBaseUrl() {
-    return 'https://jobapi.lnzsbm.com'
+    return 'http://180.76.185.112'
 }
