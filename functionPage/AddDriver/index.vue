@@ -6,24 +6,84 @@
                     <image mode="scaleToFill" class="m-r-10" src="@/static/plateNumber.png" />
                     返修员
                 </view>
-                <input type="text" placeholder="请输入姓名"/>
+                <input type="nickname" v-model="name" placeholder="请输入姓名"/>
             </view>
             <view class="form-view-item p-22">
                 <view>
                     <image mode="scaleToFill" class="m-r-10" src="@/static/iphone.png" />
                     手机号
                 </view>
-                <input type="number" placeholder="请输入手机号"/>
+                <input type="number" :maxlength="11" v-model="tel" placeholder="请输入手机号"/>
+            </view>
+            <view class="form-view-item p-22">
+                <view>
+                    <image mode="scaleToFill" class="m-r-10" src="@/static/plateNumber.png" />
+                    车牌号
+                </view>
+                <input type="text" :maxlength="7" v-model="license_plate" placeholder="请输入车牌号"/>
             </view>
         </view>
-        <button class="p-28 m-t-80">确定</button>
+        <button class="p-28 m-t-80" @click="submitUserStaff">{{id ? '修改' : '添加'}}</button>
     </view>
 </template>
 
 <script>
-export default {
+import { userStaffEditPost } from "@/api";
 
-}
+export default {
+  data: () => ({
+    id: '',
+    tel: '',
+    name: '',
+    license_plate: '',
+  }),
+  onLoad(e) {
+    this.id = e?.id
+    this.tel = e?.tel
+    this.name = e?.name
+    this.license_plate = e?.license_plate
+  },
+  methods: {
+    submitUserStaff() {
+      if (!this.name) {
+          uni.showToast({
+            title: '请填写姓名',
+            icon: 'error'
+          })
+          return
+      }
+      if (!this.tel) {
+          uni.showToast({
+            title: '请填写手机号',
+            icon: 'error'
+          })
+          return
+      }
+      if (!this.license_plate) {
+          uni.showToast({
+            title: '请填写车牌号',
+            icon: 'error'
+          })
+          return
+      }
+      userStaffEditPost({
+        type: 1,
+        id: this.id,
+        tel: this.tel,
+        name: this.name,
+        license_plate: this.license_plate,
+      }).then(() => {
+        uni.showToast({
+            title: `${this.id ? '修改成功' : '添加成功'}`,
+            icon: 'success'
+        })
+        uni.navigateBack({
+          delta:1,
+        })
+      })
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -43,7 +103,7 @@ export default {
             text-align: right;
         }
     }
-    .form-view-item:last-child {
+    .form-view-item:last-child  {
       border-bottom: none;
     }
 }

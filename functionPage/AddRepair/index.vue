@@ -6,31 +6,68 @@
                     <image mode="scaleToFill" class="m-r-10" src="@/static/plateNumber.png" />
                     返修员
                 </view>
-                <input type="text" placeholder="请输入姓名"/>
+                <input type="nickname" placeholder="请输入姓名"/>
             </view>
             <view class="form-view-item p-22">
                 <view>
                     <image mode="scaleToFill" class="m-r-10" src="@/static/iphone.png" />
                     手机号
                 </view>
-                <input type="number" placeholder="请输入手机号"/>
-            </view>
-            <view class="form-view-item p-22">
-                <view>
-                    <image mode="scaleToFill" class="m-r-10" src="@/static/plateNumber.png" />
-                    车牌号
-                </view>
-                <input type="idcard" placeholder="请输入车牌号"/>
+                <input type="number" :maxlength="11" placeholder="请输入手机号"/>
             </view>
         </view>
-        <button class="p-28 m-t-80">确定</button>
+        <button class="p-28 m-t-80">{{id ? '修改' : '添加'}}</button>
     </view>
 </template>
 
-<script>
-export default {
 
-}
+<script>
+import { userStaffEditPost } from "@/api";
+
+export default {
+  data: () => ({
+    id: '',
+    tel: '',
+    name: '',
+  }),
+  onLoad(e) {
+    this.id = e?.id
+    this.tel = e?.tel
+    this.name = e?.name
+  },
+  methods: {
+    submitUserStaff() {
+      if (!this.name) {
+          uni.showToast({
+            title: '请填写姓名',
+            icon: 'error'
+          })
+          return
+      }
+      if (!this.tel) {
+          uni.showToast({
+            title: '请填写手机号',
+            icon: 'error'
+          })
+          return
+      }
+      userStaffEditPost({
+        type: 2,
+        id: this.id,
+        tel: this.tel,
+        name: this.name,
+      }).then(() => {
+        uni.showToast({
+            title: `${this.id ? '修改成功' : '添加成功'}`,
+            icon: 'success'
+        })
+        uni.navigateBack({
+          delta:1,
+        })
+      })
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -50,7 +87,7 @@ export default {
             text-align: right;
         }
     }
-    .form-view-item:last-child  {
+    .form-view-item:last-child {
       border-bottom: none;
     }
 }

@@ -24,12 +24,35 @@
 </template>
 
 <script>
+import { gysUserStaffShow } from "@/api";
+
 export default {
-  data() {
-    return {};
+  data: () => ({
+    page:1,
+    peopleList:[],
+    onReachBottomTimer: null,
+  }),
+  onReachBottom() {
+    if (this.onReachBottomTimer !== null) {
+      clearTimeout(this.onReachBottomTimer);
+    }
+    this.page++;
+    this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onLoad() {},
+  onLoad(e) {
+    this.getData()
+  },
   methods: {
+    getData() {
+      gysUserStaffShow({
+        type: 1,
+        page: this.page,
+        num: 10
+      }).then(res => {
+        console.log(res)
+        this.peopleList = [...this.peopleList,...res.ret.data]
+      })
+    },
     goAddDriver() {
       uni.navigateTo({
         url: "/functionPage/AddDriver/index",

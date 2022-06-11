@@ -7,7 +7,7 @@
       @changeActive="changeActive"
     />
     <view class="list p-24 p-t-76">
-      <Card v-for="(item, index) in arr" :key="index" :obj="item">
+      <Card v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
@@ -78,95 +78,106 @@ export default {
     Card,
     Model,
   },
-  data() {
-    return {
-      list: ["待审核", "待接收"],
-      arr: [
-        {
-          time: "11:00-12:00",
-          type: "pending",
-          cardType: "repair",
-          number: 1000,
-          people: "4",
-          peopleArr: [
-            {
-              name: "李天明",
-              phone: "12345678901",
-            },
-            {
-              name: "李天明",
-              phone: "12345678901",
-            },
-            {
-              name: "李天明",
-              phone: "12345678901",
-            },
-            {
-              name: "李天明",
-              phone: "12345678901",
-            },
-          ],
-        },
-        {
-          time: "11:00-12:00",
-          type: "pending",
-          cardType: "delivery",
-          number: 1000,
-          name: "李天明",
-          phone: "123 4567 8901",
-          card: "浙A123456",
-        },
-        {
-          time: "11:00-12:00",
-          type: "pending",
-          cardType: "claimGoods",
-          number: 1000,
-          name: "李天明",
-          phone: "123 4567 8901",
-          card: "浙A123456",
-        },
-      ],
-      active: 0,
-      showView: false,
-      showTextmsg: false,
-      textmsg: {
-        title: "提示",
-        content: "即将撤回2022-01-01 10:00",
-        cancel: "取消",
-        confirm: "确定",
+  data: () => ({
+    list: ["待审核", "待接收"],
+    orderArr: [
+      {
+        time: "11:00-12:00",
+        type: "pending",
+        cardType: "repair",
+        number: 1000,
+        people: "4",
+        peopleArr: [
+          {
+            name: "李天明",
+            phone: "12345678901",
+          },
+          {
+            name: "李天明",
+            phone: "12345678901",
+          },
+          {
+            name: "李天明",
+            phone: "12345678901",
+          },
+          {
+            name: "李天明",
+            phone: "12345678901",
+          },
+        ],
       },
-    };
+      {
+        time: "11:00-12:00",
+        type: "pending",
+        cardType: "delivery",
+        number: 1000,
+        name: "李天明",
+        phone: "123 4567 8901",
+        card: "浙A123456",
+      },
+      {
+        time: "11:00-12:00",
+        type: "pending",
+        cardType: "claimGoods",
+        number: 1000,
+        name: "李天明",
+        phone: "123 4567 8901",
+        card: "浙A123456",
+      },
+    ],
+    active: 0,
+    page: 1,
+    showView: false,
+    showTextmsg: false,
+    textmsg: {
+      title: "提示",
+      content: "即将撤回2022-01-01 10:00",
+      cancel: "取消",
+      confirm: "确定",
+    },
+    onReachBottomTimer: null,
+  }),
+  onReachBottom() {
+    if (this.onReachBottomTimer !== null) {
+      clearTimeout(this.onReachBottomTimer);
+    }
+    this.page++;
+    this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
   onLoad() {
     // this.login()
-    this.getData();
+    // this.getData();
   },
   methods: {
     login() {
       this.$store
-      .dispatch("user/login", {
-        phonenum: "ck",
-        password: "123456",
-      })
-      .then(() => {
-        console.log(`登陆成功`);
-        this.loading = false;
-      })
-      .catch(() => {
-        this.loading = false;
-      });
+        .dispatch("user/login", {
+          phonenum: "ck",
+          password: "123456",
+        })
+        .then(() => {
+          console.log(`登陆成功`);
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     getData() {
       orderOrderList({
         type: 1,
-        page: 1,
+        page: this.page,
         num: 10,
+        status: this.active === 0 ? 1 : 2,
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
+        this.orderArr = [...this.orderArr,...res.ret.data] ;
       });
     },
     changeActive(index) {
       this.active = index;
+      this.orderArr = [];
+      this.getData();
     },
     goToAppointmentDelivery(type) {
       uni.navigateTo({

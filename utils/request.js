@@ -27,7 +27,7 @@ const service = async (config = {}) => {
 					return reject({errMsg: '网络较差，请检查网络'})
 				} else {
                     await uni.request({
-						url: config.method === 'get' ? `${getBaseUrl()}${url}${urlParam(config.params)}` : `${getBaseUrl()}${url}`,
+						url: `${getBaseUrl()}${url}`,
 						data:{
 							...data,
 							token:store.getters.token || uni.getStorageSync('token') || ''
