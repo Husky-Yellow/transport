@@ -2,8 +2,10 @@
   <view class="list-item m-t-46 p-l-30 p-r-30">
     <view class="list-item-header p-t-20 p-b-20">
       <view>
-        <view class="fz-36"
-          >01-01
+        <view class="fz-36 list-item-header_day">
+          <text v-if="caleDate(obj.timestamp) === 'today'" class="fz-22 today p-t-8 p-b-8 p-l-20 p-r-20">今天</text>
+          <text v-else-if="caleDate(obj.timestamp) === 'tomorrow'" class="fz-22 tomorrow p-t-8 p-b-8 p-l-20 p-r-20">明天</text>
+          <text v-else class="fz-36">{{obj.timestamp.substring(5,11)}}</text>
           <text class="fz-40 p-l-20 list-item-header_time">{{obj.time}}</text>
         </view>
         <view class="fz-28 m-t-16 list-item-header_type"
@@ -68,12 +70,14 @@
 </template>
 
 <script>
+import { caleDate } from "@/utils";
 export default {
   props: {
     obj: {
       type: Object,
       default: () => {
         return {
+          timestamp: '',
           cardType: "",
           type: "",
           time: "",
@@ -87,6 +91,7 @@ export default {
     },
   },
   methods: {
+    caleDate,
     cardTypeText(value) {
       const MAP = {
         repair: "修",
@@ -148,6 +153,20 @@ export default {
       .delivery {
         color: #358fee;
       }
+    }
+    .today,.tomorrow{
+      color: $uni-text-color-inverse;
+      border-radius: 24rpx;
+    }
+    .today{
+      background-color: #71D5A1;
+    }
+    .tomorrow{
+      background-color: $uni-bg-color-primary;
+    }
+    .list-item-header_day{
+      display: flex;
+      align-items: center;
     }
     .list-item-header_time {
       font-weight: bold;
