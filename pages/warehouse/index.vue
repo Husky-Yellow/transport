@@ -2,7 +2,7 @@
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
     <view class="list p-20 p-t-80">
-      <Card v-for="(item, index) in arr" :key="index" :obj="item">
+      <Card v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text class="item-lable">备注</text>
@@ -22,11 +22,10 @@ export default {
     Tab,
     Card,
   },
-  data() {
-    return {
+  data: () => ({
       list: ["已接收", "已拒收"],
       active: 0,
-      arr: [
+      orderArr: [
         {
           time:'11:00-12:00',
           type:'receive',
@@ -66,10 +65,31 @@ export default {
           card: '浙A123456'
         },
       ],
-    };
+      page: 1,
+      onReachBottomTimer: null,
+  }),
+  onReachBottom() {
+    if (this.onReachBottomTimer !== null) {
+      clearTimeout(this.onReachBottomTimer);
+    }
+    this.page++;
+    this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onLoad() {},
+  onLoad() {
+    this.getData();
+  },
   methods: {
+    getData() {
+      orderOrderList({
+        type: 1,
+        page: this.page,
+        num: 10,
+        status: this.active === 0 ? 1 : 2,
+      }).then((res) => {
+        // console.log(res);
+        this.orderArr = [...this.orderArr,...res.ret.data] ;
+      });
+    },
     changeActive(index) {
       this.active = index;
       this.arr = this.arr.map(item => {

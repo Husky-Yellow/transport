@@ -2,7 +2,7 @@
   <view class="p-24 p-b-140">
     <view class="repair-list p-l-24 p-r-24">
       <view
-        v-for="(item, index) in 10"
+        v-for="(item, index) in peopleList"
         :key="index"
         class="repair-list-item p-20"
       >

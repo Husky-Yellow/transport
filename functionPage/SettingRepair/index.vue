@@ -3,7 +3,7 @@
     <view class="repair-list">
       <scroll-view scroll-y="true" class="p-l-24 p-r-24">
         <view
-          v-for="(item, index) in 10"
+          v-for="(item, index) in peopleList"
           :key="index"
           class="repair-list-item p-20"
         >
