@@ -12,7 +12,7 @@
       >
         <view
           :class="[
-            'scroll-view-item',
+            'scroll-view-item p-9',
             index === selectDay ? 'calendar-weekday-active' : '',
           ]"
           v-for="(item, index) in monthArray"
@@ -33,20 +33,20 @@
 
 <script>
 import { getDayObj } from "@/utils";
-const monthArray = Array(14).fill(0).map((item,index)=> getDayObj(index-7))
+const monthArray = Array(14)
+  .fill(0)
+  .map((item, index) => getDayObj(index - 7));
 const selectDay = (monthArray || []).findIndex(
-    (list) => list.day === new Date().getDate()
-  );
+  (list) => list.day === new Date().getDate()
+);
 export default {
-  data() {
-    return {
-      monthArray,
-      selectDay,
-    };
-  },
+  data: () => ({
+    monthArray,
+    selectDay,
+  }),
   methods: {
     selectDate(item, index) {
-      this.selectDay = index
+      this.selectDay = index;
     },
   },
 };
@@ -60,18 +60,15 @@ export default {
   padding: 0 30rpx;
   @include space-between;
   .data-select-scroll {
-    display: inline-block;
-    display: flex;
-    width: 96%;
+    width: 95%;
     height: 100rpx;
     padding: 0 20rpx;
     .scroll-view-item {
       display: inline-flex;
-      width: 103rpx;
-      padding: 9rpx;
+      width: 104rpx;
       border: 1rpx solid $uni-bg-color-border;
       border-radius: 10rpx;
-      margin: 0 13rpx;
+      margin: 0 14rpx;
       flex-direction: column;
       align-items: center;
     }

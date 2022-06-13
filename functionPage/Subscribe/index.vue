@@ -41,7 +41,6 @@ export default {
 }
 .list-item{
     border-radius: 10rpx;
-
     background-color: #fff;
     .list-item-header{
         display: flex;
