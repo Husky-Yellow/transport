@@ -10,16 +10,20 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
-    },
-    "mp-alipay" : {
-        "usingComponents" : true
-    },
-    "mp-baidu" : {
-        "usingComponents" : true
-    },
-    "mp-toutiao" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "预约汇总",
+                    "pathName": "functionPage/OrderList/index",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                }
+            ]
+        },
+        "lazyCodeLoading": "requiredComponents",
+        "optimization":{"subPackages":true}
     },
     "uniStatistics" : {
         "enable" : false

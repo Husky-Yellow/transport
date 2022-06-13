@@ -109,13 +109,12 @@ export default {
   }
   .primary-button,.close-button{
     border-radius: 10rpx;
-    height: 84rpx;
-    line-height: 84rpx;
+    height: 64rpx;
+    line-height: 64rpx;
   }
   .primary-button{
     background-color: $uni-bg-color-primary;
     color: $uni-text-color-inverse;
-
   }
   .close-button{
     border: 1rpx solid $uni-bg-color-border;

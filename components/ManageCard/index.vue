@@ -11,12 +11,15 @@
           >杭州鸾宇科技有限公司
         </view>
       </view>
-      <view :class="['fz-32', obj.type+'_text']">{{ typeText(obj.type) }}</view>
     </view>
     <view
       v-if="obj.cardType !== 'repair'"
       class="list-item-body p-t-10 p-b-10 fz-28"
     >
+      <view class="list-item-body_item p-t-10 p-b-10">
+        <text class="item-text">预约类型</text>
+        <text :class="['fz-32', obj.type+'_text']">{{ typeText(obj.type) }}</text>
+      </view>
       <view class="list-item-body_item p-t-10 p-b-10">
         <text class="item-text">数量</text>
         <text>{{ obj.number }}</text>
