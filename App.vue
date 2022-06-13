@@ -1,8 +1,3 @@
-<script>
-	export default {
-	}
-</script>
-
 <style lang="scss">
 view,
 scroll-view,

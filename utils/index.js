@@ -1,3 +1,5 @@
+export const getBaseUrl = () => 'http://180.76.185.112'
+
 /** 获取日期详情
  * @param {number} ts 时间戳
  */
@@ -71,4 +73,4 @@ export const caleDate = (dayStr) => {
     86400000: "tomorrow",
   };
   return dateObj[dayStr - today] || "超出昨今明范围";
-};
+}

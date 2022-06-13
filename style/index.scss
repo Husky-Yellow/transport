@@ -38,23 +38,10 @@ $uni-border-color-grey:#F8F8F8;
 $uni-border-color-time:#E0E0E0;
 $uni-border-primary-color:#ccaa69;
 
-/* 尺寸变量 */
-
-/* 文字尺寸 */
-$uni-font-size-sm:12px;
-$uni-font-size-base:14px;
-$uni-font-size-lg:16px;
-
 /* 图片尺寸 */
 $uni-img-size-sm:20px;
 $uni-img-size-base:26px;
 $uni-img-size-lg:40px;
-
-/* 按钮尺寸 */
-$uni-btn-size-sm:20px;
-$uni-btn-size-base:26px;
-$uni-btn-size-m:30px;
-$uni-btn-size-lg:40px;
 
 /* Border Radius */
 $uni-border-radius-sm: 2px;
@@ -67,20 +54,8 @@ $uni-spacing-row-sm: 5px;
 $uni-spacing-row-base: 10px;
 $uni-spacing-row-lg: 15px;
 
-/* 垂直间距 */
-$uni-spacing-col-sm: 4px;
-$uni-spacing-col-base: 10px;
-$uni-spacing-col-lg: 12px;
-
 /* 透明度 */
 $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
-
-:export {
-  bgColor: $uni-text-color-primary;
-  borderColor: $uni-border-color-white;
-  uniBgColor : $uni-bg-color
-}
-
 
 .transport-ellipsis {
   overflow: hidden;
@@ -88,17 +63,12 @@ $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
   text-overflow: ellipsis
 }
 
-
 .two-white-space{
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
-
-.none{
-  display: none;
 }
 
 .transport-image {

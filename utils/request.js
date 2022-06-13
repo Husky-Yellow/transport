@@ -1,5 +1,4 @@
-import { getBaseUrl } from './baseurl'; //默认路径
-import { urlParam } from "./index";
+import { getBaseUrl } from './index'; //默认路径
 import store from '@/store'
 const ERROR_MAP = {
     405:{
