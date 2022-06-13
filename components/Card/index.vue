@@ -5,7 +5,7 @@
         <view class="fz-36 list-item-header_day">
           <text v-if="caleDate(obj.timestamp) === 'today'" class="fz-22 today p-t-8 p-b-8 p-l-20 p-r-20">今天</text>
           <text v-else-if="caleDate(obj.timestamp) === 'tomorrow'" class="fz-22 tomorrow p-t-8 p-b-8 p-l-20 p-r-20">明天</text>
-          <text v-else class="fz-36">{{obj.timestamp.substring(5,11)}}</text>
+          <text v-else class="fz-36">{{obj.timestamp && obj.timestamp.length >= 11 ? obj.timestamp.substring(5,11) : obj.timestamp}}</text>
           <text class="fz-40 p-l-20 list-item-header_time">{{obj.time}}</text>
         </view>
         <view class="fz-28 m-t-16 list-item-header_type"

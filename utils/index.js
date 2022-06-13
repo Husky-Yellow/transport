@@ -24,13 +24,11 @@ export const datatime = (time) => {
   return dateArray;
 };
 
-
 // 获取本月时间并获取本月日历数据
 export const getForMonth = () => {
   let myDate = new Date(); //获取系统当前时间
   let sysmonth = myDate.getMonth() + 1;
   let nowYear = myDate.getFullYear(); //当前是本年
-  nowYear += nowYear < 2000 ? 1900 : 0;
   // 算时间戳
   myDate.setDate(1);
   myDate.setHours(0);
@@ -76,6 +74,13 @@ export const getDateInfo = (ts) => {
   };
 };
 
+export const getDayObj = (day) => {
+  let today = new Date();
+  let targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+  today.setTime(targetday_milliseconds); //注意，这行是关键代码
+  return getDateInfo(targetday_milliseconds/1000)
+}
+
 /** 根据年月获取当前日期
  * @param {number} month
  * @param {number} year
@@ -108,12 +113,12 @@ export function formatTime(date) {
       }
     },
   });
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  let day = date.getDate();
-  let hour = date.getHours();
-  let minute = date.getMinutes();
-  let second = date.getSeconds();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
   return (
     [year, month, day].map(formatNumber).join(`${separated}`) +
     " " +
@@ -131,31 +136,31 @@ export function formatNumber(n) {
 }
 
 /*
-* 获取年月日时分秒
-* */
+ * 获取年月日时分秒
+ * */
 export const getDate = (dateStr) => {
-    const timeArr = dateStr.replace(" ", ":").replace(/\:/g, "-").split("-");
-    if (timeArr.length < 6) return '格式错误'
-    return {
-      year: timeArr[0],
-      month: timeArr[1],
-      day: timeArr[2],
-      hour: timeArr[3],
-      minute: timeArr[4],
-      seconds: timeArr[5]
+  const timeArr = dateStr.replace(" ", ":").replace(/\:/g, "-").split("-");
+  if (timeArr.length < 6) return "格式错误";
+  return {
+    year: timeArr[0],
+    month: timeArr[1],
+    day: timeArr[2],
+    hour: timeArr[3],
+    minute: timeArr[4],
+    seconds: timeArr[5],
   };
-}
+};
 
 /*
-* 判断昨今明
-* */
+ * 判断昨今明
+ * */
 export const caleDate = (dayStr) => {
-    dayStr = new Date(dayStr).setHours(0, 0, 0, 0);
-    const today = new Date().setHours(0, 0, 0, 0);
-    const dateObj = {
-        '-86400000': 'yesterday',
-        0: 'today',
-        86400000: 'tomorrow'
-    }
-    return dateObj[dayStr - today] || '超出昨今明范围';
-}
+  dayStr = new Date(dayStr).setHours(0, 0, 0, 0);
+  const today = new Date().setHours(0, 0, 0, 0);
+  const dateObj = {
+    "-86400000": "yesterday",
+    0: "today",
+    86400000: "tomorrow",
+  };
+  return dateObj[dayStr - today] || "超出昨今明范围";
+};

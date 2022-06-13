@@ -32,12 +32,16 @@
 </template>
 
 <script>
-import { getForMonth } from "@/utils";
+import { getDayObj } from "@/utils";
+const monthArray = Array(14).fill(0).map((item,index)=> getDayObj(index-7))
+const selectDay = (monthArray || []).findIndex(
+    (list) => list.day === new Date().getDate()
+  );
 export default {
   data() {
     return {
-      monthArray: getForMonth().dateList.slice(0,7),
-      selectDay: getForMonth().todayIndex,
+      monthArray,
+      selectDay,
     };
   },
   methods: {
@@ -63,11 +67,11 @@ export default {
     padding: 0 20rpx;
     .scroll-view-item {
       display: inline-flex;
-      width: 100rpx;
-      padding: 8rpx;
+      width: 103rpx;
+      padding: 9rpx;
       border: 1rpx solid $uni-bg-color-border;
       border-radius: 10rpx;
-      margin: 0 6rpx;
+      margin: 0 13rpx;
       flex-direction: column;
       align-items: center;
     }

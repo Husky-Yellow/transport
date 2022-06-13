@@ -7,8 +7,8 @@
           <view
             v-for="(item, index) in TIMEARR"
             :key="index"
-            class="p-t-24 p-b-24 m-20"
-            >{{ item }}</view
+             :class="['p-t-24 p-b-24 m-20', index === TIMEARR.length -1 ? 'full' : '']"
+            >{{ item }} </view
           >
         </view>
         <view class="form-view-item p-22">
@@ -141,14 +141,16 @@ export default {
   height: auto;
   background-color: $uni-bg-color-white;
   .add-form-time {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     text-align: center;
     view {
-      width: 44%;
       border: 1rpx solid $uni-border-color-time;
       border-radius: 8rpx;
+    }
+    .full{
+      background-color:#D4D4D4;
+      color: #fff
     }
   }
   .form-view-item {
@@ -196,8 +198,8 @@ button {
 
 .add-button-icon {
   display: inline-block;
-  width: 60rpx;
-  height: 60rpx;
+  width: 40rpx;
+  height: 40rpx;
   color: #ccc;
   border: 1rpx solid $uni-bg-color-primary;
   border-radius: 50%;
@@ -213,13 +215,13 @@ button {
   left: 50%;
 }
 .add-button-icon::before {
-  width: 40rpx;
+  width: 32rpx;
   border-top: 2rpx solid $uni-bg-color-primary;
-  margin: -4rpx 0 0 -22rpx;
+  margin: -4rpx 0 0 -17rpx;
 }
 .add-button-icon::after {
-  height: 40rpx;
+  height: 32rpx;
   border-left: 2rpx solid $uni-bg-color-primary;
-  margin: -20rpx 0 0 -4rpx;
+  margin: -17rpx 0 0 -4rpx;
 }
 </style>

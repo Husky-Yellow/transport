@@ -149,7 +149,7 @@ export default {
   },
   onLoad() {
     // this.login()
-    // this.getData();
+    this.getData();
   },
   methods: {
     login() {
@@ -183,6 +183,7 @@ export default {
       this.getData();
     },
     goToAppointmentDelivery(type) {
+      this.showView = false
       uni.navigateTo({
         url: `/functionPage/AppointmentDelivery/index?type=${type}`,
       });
