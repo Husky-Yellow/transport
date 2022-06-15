@@ -6,7 +6,7 @@
         <template #funtion>
           <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text class="item-lable">备注</text>
-            <text class="text-active">收到998件</text>
+            <text class="text-active">{{item.remark}}</text>
           </view>
         </template>
       </Card>
@@ -27,46 +27,7 @@ export default {
     return{
       list: ["已接收", "已拒收"],
       active: 0,
-      orderArr: [
-        {
-          time:'11:00-12:00',
-          type:'receive',
-          cardType:'repair',
-          number: 1000,
-          people: '4',
-          peopleArr:[{
-            name:'李天明',
-            phone:'12345678901'
-          },{
-            name:'李天明',
-            phone:'12345678901'
-          },{
-            name:'李天明',
-            phone:'12345678901'
-          },{
-            name:'李天明',
-            phone:'12345678901'
-          }]
-        },
-        {
-          time:'11:00-12:00',
-          type:'receive',
-          cardType: 'delivery',
-          number: 1000,
-          name: '李天明',
-          phone: '123 4567 8901',
-          card: '浙A123456'
-        },
-        {
-          time:'11:00-12:00',
-          type:'receive',
-          cardType: 'claimGoods',
-          number: 1000,
-          name: '李天明',
-          phone: '123 4567 8901',
-          card: '浙A123456'
-        },
-      ],
+      orderArr: [],
       page: 1,
       onReachBottomTimer: null,
     }
@@ -90,10 +51,7 @@ export default {
         num: 10,
         status: this.active === 0 ? 4 : 5,
       }).then((res) => {
-        this.orderArr = [...this.orderArr,...res.ret.data].map(item => {
-          item.type = this.active === 0 ? 'receive' : 'reject';
-          return item;
-        });
+        this.orderArr = [...this.orderArr,...res.ret.data]
       });
     },
     changeActive(index) {

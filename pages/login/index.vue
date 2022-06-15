@@ -11,15 +11,16 @@
 </template>
 
 <script>
+// const isMobile = phonenum => /^1[3456789]\d{9}$/.test(phonenum);
+const isMobile = phonenum => /^1\d{10}$/.test(phonenum);
 export default {
   data: () => ({
-    phonenum: "",
-    password: "",
+    phonenum: "ck",
+    password: "123456",
   }),
   methods: {
-    // 密码登录
     Login() {
-      if (!this.phonenum || !this.isMobile(this.phonenum)) {
+      if (!this.phonenum || !isMobile(this.phonenum)) {
         uni.showToast({
           title: "请输入正确电话号码",
           icon: "none",
@@ -34,7 +35,7 @@ export default {
         return false;
       }
       this.$store
-        .dispatch("user/login", {
+        .dispatch("login", {
           phonenum: this.phonenum,
           password: this.password,
         })
@@ -50,11 +51,6 @@ export default {
             icon: "none",
           });
         });
-    },
-    // 判断是否是正确的手机号码
-    isMobile(str) {
-      let reg = /^1\d{10}$/;
-      return reg.test(str);
     },
   },
 };

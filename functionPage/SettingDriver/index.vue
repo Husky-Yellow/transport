@@ -67,8 +67,6 @@ export default {
 <style scoped lang="scss">
 .repair-list {
   background-color: $uni-bg-color-white;
-  // min-height: 84vh;
-  // height: auto;
   border-radius: 8rpx;
   .repair-list-item {
     @include space-between;

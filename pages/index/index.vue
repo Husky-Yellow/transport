@@ -13,7 +13,7 @@
             <text>操作</text>
             <button
               class="p-t-14 p-b-14 p-l-54 p-r-54 fz-28"
-              @click="showTextmsg = true"
+              @click="OrdeUuserCancel(item.id)"
             >
               撤回
             </button>
@@ -23,8 +23,8 @@
     </view>
     <Model
       :textmsg="textmsg"
-      @cancel="operation(1)"
-      @confirm="operation(2)"
+      @cancel="operation(false)"
+      @confirm="operation(true)"
       v-show="showTextmsg"
     >
       <view slot="content">
@@ -71,7 +71,7 @@
 import Tab from "@/components/Tab";
 import Card from "@/components/Card";
 import Model from "@/components/Model";
-import { orderOrderList } from "@/api";
+import { orderOrderList, ordeUuserCancel } from "@/api";
 export default {
   components: {
     Tab,
@@ -80,54 +80,7 @@ export default {
   },
   data: () => ({
     list: ["待审核", "待接收"],
-    orderArr: [
-      {
-        timestamp:'2022-06-11 16:39:01',
-        time: "11:00-12:00",
-        type: "pending",
-        cardType: "repair",
-        number: 1000,
-        people: "4",
-        peopleArr: [
-          {
-            name: "李天明",
-            phone: "12345678901",
-          },
-          {
-            name: "李天明",
-            phone: "12345678901",
-          },
-          {
-            name: "李天明",
-            phone: "12345678901",
-          },
-          {
-            name: "李天明",
-            phone: "12345678901",
-          },
-        ],
-      },
-      {
-        timestamp:'2022-06-12 16:39:01',
-        time: "11:00-12:00",
-        type: "pending",
-        cardType: "delivery",
-        number: 1000,
-        name: "李天明",
-        phone: "123 4567 8901",
-        card: "浙A123456",
-      },
-      {
-        timestamp:'2022-06-01 16:39:01',
-        time: "11:00-12:00",
-        type: "pending",
-        cardType: "claimGoods",
-        number: 1000,
-        name: "李天明",
-        phone: "123 4567 8901",
-        card: "浙A123456",
-      },
-    ],
+    orderArr: [],
     active: 0,
     page: 1,
     showView: false,
@@ -148,24 +101,9 @@ export default {
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
   onLoad() {
-    // this.login()
     this.getData();
   },
   methods: {
-    login() {
-      this.$store
-        .dispatch("user/login", {
-          phonenum: "ck",
-          password: "123456",
-        })
-        .then(() => {
-          console.log(`登陆成功`);
-          this.loading = false;
-        })
-        .catch(() => {
-          this.loading = false;
-        });
-    },
     getData() {
       orderOrderList({
         type: 1,
@@ -173,8 +111,7 @@ export default {
         num: 10,
         status: this.active === 0 ? 1 : 2,
       }).then((res) => {
-        // console.log(res);
-        this.orderArr = [...this.orderArr,...res.ret.data] ;
+        this.orderArr = [...this.orderArr,...res.ret.data]
       });
     },
     changeActive(index) {
@@ -189,22 +126,25 @@ export default {
       });
     },
     operation(e) {
-      let that = this;
-      let type = e;
-      console.log(type);
-      if (type == 1) {
-        //取消操作
-        that.showTextmsg = false;
-      } else {
-        //确定操作
-        // uni.navigateTo({
-        //     url: "../user/login"
-        // })
-        that.showTextmsg = false;
+      this.showTextmsg = e
+      this.textmsg = {
+        title: "提示",
+        content: "即将撤回2022-01-01 10:00",
+        cancel: "取消",
+        confirm: "确定",
       }
     },
-  },
-};
+    OrdeUuserCancel(id) {
+      ordeUuserCancel({
+        id: id,
+      }).then((res) => {
+        console.log(res);
+        // this.getData();
+        this.showTextmsg = true
+      });
+    },
+  }
+}
 </script>
 
 <style scoped lang="scss">

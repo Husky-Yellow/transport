@@ -32,7 +32,7 @@
             送货员
           </view>
           <view>
-            <input type="text" placeholder="请输入姓名" />
+            <input type="text" v-model="selectDriver.name"  placeholder="请输入姓名" />
             <image
               mode="scaleToFill"
               class="m-l-20"
@@ -50,7 +50,7 @@
             />
             手机号
           </view>
-          <input type="text" placeholder="请输入手机号" />
+          <input type="text" v-model="selectDriver.tel" placeholder="请输入手机号" />
         </view>
         <view v-if="type !== 'repair'" class="form-view-item p-22">
           <view>
@@ -61,7 +61,7 @@
             />
             车牌号
           </view>
-          <input type="text" placeholder="请输入车牌号" />
+          <input type="text" v-model="selectDriver.license_plate" placeholder="请输入车牌号" />
         </view>
         <view v-if="type === 'repair'" class="form-view-item p-22">
           <view>
@@ -90,6 +90,7 @@
 
 <script>
 import DataSelect from "@/components/DataSelect";
+import { mapGetters } from "vuex";
 const TITLEMAP = {
   delivery: "预约送货",
   claimGoods: "预约取货",
@@ -112,7 +113,14 @@ export default {
     return {
       TIMEARR: TIMEARR,
       type: "",
+      date:'',
+      time:'',
+      num:'',
+      personnel:'',
     };
+  },
+  computed: {
+    ...mapGetters(["selectDriver"]),
   },
   onLoad(e) {
     this.type = e.type;

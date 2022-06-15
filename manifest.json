@@ -11,17 +11,6 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
-        "miniprogram": {
-            "list": [
-                {
-                    "name": "预约汇总",
-                    "pathName": "functionPage/OrderList/index",
-                    "query": "",
-                    "launchMode": "default",
-                    "scene": null
-                }
-            ]
-        },
         "lazyCodeLoading": "requiredComponents",
         "optimization":{"subPackages":true}
     },

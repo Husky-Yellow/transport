@@ -45,7 +45,7 @@ const service = async (config = {}) => {
 									title: ERROR_MAP[res.statusCode].title || '身份认证失效,请重新登录',
 									icon: 'none',
 								})
-								// store.dispatch('user/resetToken')
+								store.dispatch('resetToken')
 								return reject('身份认证失效,请重新登录')
 							} else if (res.errMsg === 'request:fail timeout' || res.errMsg === 'request:fail abort statusCode:-1 timeout') {
 								uni.showToast({
