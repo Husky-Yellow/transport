@@ -2,72 +2,107 @@
   <view>
     <NoticeBar>
       <view>
-        <text class="m-l-30">修改时间</text>
-        <text class="m-l-30">2021-03-01</text>
+        <text>修改时间</text>
+        <text class="m-l-10">{{ timeDay }}</text>
       </view>
     </NoticeBar>
     <view class="time-list fz-28 p-b-100">
-        <view v-for="(item,index) in TIMEARR" :key="index" class="m-20 p-t-30 p-b-30 p-l-90 p-r-90">{{item}}</view>
+      <view
+        v-for="(item, index) in timeManagement.son"
+        :key="index"
+        :class="['m-15', item.click === true ? 'active' : 'show']"
+        @click="changeTime(index)"
+        >{{ item.time_str }}</view
+      >
     </view>
     <view class="fix-view p-10 p-l-12 p-r-12">
       <view>
-        <text class="fz-28">已选人数：</text>
-        <text class="fz-36 red-text">1</text>
+        <text class="fz-28">已选时间段：</text>
+        <text class="fz-36 red-text">{{ selectLength }}</text>
       </view>
-      <button class="fz-28 p-t-26 p-b-26 p-l-80 p-r-80">确定</button>
+      <button class="fz-28 p-t-26 p-b-26 p-l-80 p-r-80" @click="submit">
+        确定
+      </button>
     </view>
   </view>
 </template>
 
 <script>
+import { warehouseOrderEditTime } from "@/api";
+import { mapGetters } from "vuex";
 import NoticeBar from "@/components/NoticeBar";
 
-const TIMEARR = [
-  "00:00-01:00",
-  "01:00-02:00",
-  "02:00-03:00",
-  "03:00-04:00",
-  "04:00-05:00",
-  "05:00-06:00",
-  "06:00-07:00",
-  "07:00-08:00",
-  "08:00-09:00",
-  "09:00-10:00",
-  "10:00-11:00",
-  "11:00-12:00",
-  "12:00-13:00",
-  "13:00-14:00",
-  '14:00-15:00',
-  "15:00-16:00",
-  "16:00-17:00",
-  "17:00-18:00",
-];
 export default {
-    components: {
+  components: {
     NoticeBar,
   },
-  data() {
-        return {
-        TIMEARR: TIMEARR,
-        };
+  data: () => ({
+    TIMEARR: [],
+    timeDay: "",
+  }),
+  computed: {
+    ...mapGetters(["timeManagement"]),
+    selectLength() {
+      return this.timeManagement.son.filter((item) => item.click).length;
     },
+  },
+  onLoad(e) {
+    this.timeDay = e.timeDay;
+    this.id = e.id;
+  },
+  methods: {
+    changeTime(index) {
+      this.$set(
+        this.timeManagement.son[index],
+        "click",
+        !this.timeManagement.son[index].click
+      );
+    },
+    submit() {
+      warehouseOrderEditTime({
+        id: this.id,
+        time_str: this.timeManagement
+          .filter((item) => item.click)
+          .map((item) => item.time_str)
+          .toString(),
+      }).then((res) => {
+        uni.showToast({
+          title: "提交成功",
+          icon: "success",
+          duration: 2000,
+        });
+        this.$store.dispatch("changeSetting", {
+          key: "timeManagement",
+          value: {},
+        });
+      });
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .time-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    text-align: center;
-    view {
-      width: 45%;
-      border: 1rpx solid $uni-border-color-time;
-      border-radius: 8rpx;
-    }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  text-align: center;
+  view {
+    border-radius: 8rpx;
+    height: 100rpx;
+    line-height: 100rpx;
   }
+  .show {
+    background-color: $uni-bg-color-white;
+    color: #333333;
+  }
+  .active {
+    background-color: #71d5a1;
+    color: $uni-text-color-inverse;
+  }
+}
 .fix-view {
   background-color: $uni-bg-color-white;
+  border-top: 1rpx solid #d8d8d8;
   position: fixed;
   z-index: 1;
   width: 100vw;

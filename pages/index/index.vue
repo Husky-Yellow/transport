@@ -30,7 +30,7 @@
       <view slot="content">
         <view class="Model-content fz-28 p-20">
           <view>{{ textmsg.content }}</view>
-          <view class="subscribe-type-text">送货预约申请</view>
+          <view class="subscribe-type-text"> {{active === 0 ? '送货预约申请' : '送货'}} </view>
         </view>
       </view>
     </Model>
@@ -138,9 +138,18 @@ export default {
       ordeUuserCancel({
         id: id,
       }).then((res) => {
-        console.log(res);
-        // this.getData();
-        this.showTextmsg = true
+         uni.showToast({
+          title: '撤回成功',
+          icon: 'success',
+          duration: 2000
+        })
+      }).catch(content => {
+          uni.showModal({
+            title: '提示',
+            content,
+            showCancel:false,
+            confirmColor:'#F55547',
+          });
       });
     },
   }

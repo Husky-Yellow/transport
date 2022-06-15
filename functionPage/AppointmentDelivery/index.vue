@@ -1,18 +1,21 @@
 <template>
   <view class="p-t-2">
-    <DataSelect @select="selectData" :scrollDate="scrollDate"/>
+    <DataSelect @select="selectData" :scrollDate="scrollDate" />
     <view class="add-view p-24">
       <view class="add-form p-20 fz-28">
         <view class="add-form-time">
           <view
             v-for="(item, index) in timeArr"
             :key="index"
-             :class="['p-t-24 p-b-24 m-20', time === item.time_str ? 'active':'']"
-             @click="changeTime(item)"
-            >
-            <!--class 不允许选择和已经约满 index === timeArr.length -1 ? 'full' : '',  -->
-            {{ item.time_str }} </view
+            :class="[
+              'p-t-24 p-b-24 m-20',
+              item.num === 2 ? 'full' : '',
+              time === item.time_str ? 'active' : '',
+            ]"
+            @click="item.num !== 2 ? changeTime(item) : ''"
           >
+            {{ item.time_str }}
+          </view>
         </view>
         <view class="form-view-item p-22">
           <view>
@@ -35,7 +38,11 @@
             送货员
           </view>
           <view>
-            <input type="text" v-model="selectDriver.name"  placeholder="请输入姓名" />
+            <input
+              type="text"
+              v-model="selectDriver.name"
+              placeholder="请输入姓名"
+            />
             <image
               mode="scaleToFill"
               class="m-l-20"
@@ -53,7 +60,11 @@
             />
             手机号
           </view>
-          <input type="text" v-model="selectDriver.tel" placeholder="请输入手机号" />
+          <input
+            type="text"
+            v-model="selectDriver.tel"
+            placeholder="请输入手机号"
+          />
         </view>
         <view v-if="type !== 3" class="form-view-item p-22">
           <view>
@@ -64,7 +75,11 @@
             />
             车牌号
           </view>
-          <input type="text" v-model="selectDriver.license_plate" placeholder="请输入车牌号" />
+          <input
+            type="text"
+            v-model="selectDriver.license_plate"
+            placeholder="请输入车牌号"
+          />
         </view>
         <view v-if="type === 3" class="form-view-item p-22">
           <view>
@@ -80,8 +95,13 @@
             <view class="add-button-icon" @click="goList('RepairList')" />
           </view>
         </view>
-        <view v-if="type === 3" class="list-item-body_intro p-t-10 p-b-10 fz-24 p-l-20">
-          <view v-for="(item,index) in selectPeople" :key="index">{{item.name}}：{{item.tel}}</view>
+        <view
+          v-if="type === 3"
+          class="list-item-body_intro p-t-10 p-b-10 fz-24 p-l-20"
+        >
+          <view v-for="(item, index) in selectPeople" :key="index"
+            >{{ item.name }}：{{ item.tel }}</view
+          >
         </view>
       </view>
       <button class="p-28 m-t-30" @click="submitFrom">确定</button>
@@ -96,15 +116,15 @@ import { mapGetters } from "vuex";
 const TITLEMAP = {
   delivery: {
     text: "预约送货",
-    type: 1
+    type: 1,
   },
   claimGoods: {
     text: "预约取货",
-    type: 2
+    type: 2,
   },
   repair: {
     text: "预约返修",
-    type: 3
+    type: 3,
   },
 };
 export default {
@@ -117,16 +137,16 @@ export default {
       timeArr: [],
       scrollDate: [],
       type: "",
-      date:'',
-      time:'',
-      num:'',
-      personnel:'',
+      date: "",
+      time: "",
+      num: "",
+      personnel: "",
     };
   },
   computed: {
-    ...mapGetters(["selectDriver","selectPeopleArr"]),
+    ...mapGetters(["selectDriver", "selectPeopleArr"]),
     selectPeople() {
-      return this.selectPeopleArr.filter(item => item.click);
+      return this.selectPeopleArr.filter((item) => item.click);
     },
   },
   onLoad(e) {
@@ -134,31 +154,33 @@ export default {
     uni.setNavigationBarTitle({
       title: TITLEMAP[e.type].title || "预约",
     });
-    this.getOrderShow()
+    this.getOrderShow();
   },
   methods: {
     getOrderShow() {
-      orderShow().then(res => {
-        this.scrollDate = res.ret.map(item=>{
+      orderShow().then((res) => {
+        this.scrollDate = res.ret.map((item) => {
           return Object.freeze({
-            week: `周${item.date_name.substring(2,3)}`,
-            month: `${item.date_sub.substring(0,2)}`,
-            day: `${item.date_sub.substring(3,5)}`,
-            date:item.date
-          })
-        })
-        this.showArr = res.ret.map(item=>Object.freeze(item))
-        this.selectData(this.scrollDate[0],0)
+            week: `周${item.date_name.substring(2, 3)}`,
+            month: `${item.date_sub.substring(0, 2)}`,
+            day: `${item.date_sub.substring(3, 5)}`,
+            date: item.date,
+          });
+        });
+        this.showArr = res.ret.map((item) => Object.freeze(item));
+        this.selectData(this.scrollDate[0], 0);
       });
     },
-    changeTime(item){
-      this.time = item.time_str
+    changeTime(item) {
+      this.time = item.time_str;
     },
-    selectData(item,index) {
+    selectData(item, index) {
       this.date = item.date;
-      this.timeArr = this.showArr[index].son.map(item=>Object.freeze({time_str:item.time_str,id:item.id}))
+      this.timeArr = this.showArr[index].son.map((item) =>
+        Object.freeze({ time_str: item.time_str, id: item.id })
+      );
     },
-    submitFrom(){
+    submitFrom() {
       if (!this.time) {
         uni.showToast({
           title: "请选择送货时间",
@@ -178,39 +200,44 @@ export default {
         date: this.date,
         time: this.time,
         num: this.num,
-        personnel: this.type !== 3 ? this.selectDriver.id : this.selectPeople.map(item => item.id).toString(),
-      }
-      orderOrderAdd(param).then(res => {
-        uni.showToast({
-          title: '提交成功',
-          icon: 'success',
-          duration: 2000
-        })
-        this.$store.dispatch('changeSetting', {
-          key: 'selectDriver',
-          value: {
-            name: '',
-            tel: '',
-            license_plate: '',
-          }
-        })
-        this.$store.dispatch('changeSetting', {
-          key: 'selectPeopleArr',
-          value: []
-        })
-        setTimeout(() => {
-          uni.navigateBack({
-            delta:1,
-          })
-        }, 1500);
-      }).catch(content => {
-        uni.showModal({
-            title: '提示',
-            content,
-            showCancel:false,
-            confirmColor:'#F55547',
+        personnel:
+          this.type !== 3
+            ? this.selectDriver.id
+            : this.selectPeople.map((item) => item.id).toString(),
+      };
+      orderOrderAdd(param)
+        .then((res) => {
+          uni.showToast({
+            title: "提交成功",
+            icon: "success",
+            duration: 2000,
           });
-      })
+          this.$store.dispatch("changeSetting", {
+            key: "selectDriver",
+            value: {
+              name: "",
+              tel: "",
+              license_plate: "",
+            },
+          });
+          this.$store.dispatch("changeSetting", {
+            key: "selectPeopleArr",
+            value: [],
+          });
+          setTimeout(() => {
+            uni.navigateBack({
+              delta: 1,
+            });
+          }, 1500);
+        })
+        .catch((content) => {
+          uni.showModal({
+            title: "提示",
+            content,
+            showCancel: false,
+            confirmColor: "#F55547",
+          });
+        });
     },
     goList(list) {
       uni.navigateTo({
@@ -234,9 +261,9 @@ export default {
       border: 1rpx solid $uni-border-color-time;
       border-radius: 8rpx;
     }
-    .full{
-      background-color:#D4D4D4;
-      color: #fff
+    .full {
+      background-color: #d4d4d4;
+      color: #fff;
     }
     .active {
       background-color: $uni-color-active;

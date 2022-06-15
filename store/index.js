@@ -9,6 +9,7 @@ const store = new Vuex.Store({
     phonenum: '',
     selectPeopleArr: [],
     selectDriver: {},
+    timeManagement: {},
   },
   mutations:{
     SET_TOKEN: (state, token) => {
@@ -62,6 +63,7 @@ const store = new Vuex.Store({
     phonenum: state => state.phonenum,
     selectPeopleArr: state => state.selectPeopleArr,
     selectDriver: state => state.selectDriver,
+    timeManagement: state => state.timeManagement,
   }
 })
 
