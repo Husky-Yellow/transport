@@ -32,16 +32,16 @@
             class="m-r-20 transport-image--round"
             mode="scaleToFill"
           />
-          {{ obj.name }}</view
+          {{ obj.personnel[0].name || '--' }}</view
         >
       </view>
       <view class="list-item-body_item p-t-10 p-b-10">
         <text class="item-text">手机号</text>
-        <text>{{ obj.tel }}</text>
+        <text>{{ obj.personnel[0].tel || '--' }}</text>
       </view>
       <view class="list-item-body_item p-t-10 p-b-10">
         <text class="item-text">车牌号</text>
-        <text>{{ obj.license_plate }}</text>
+        <text>{{ obj.personnel[0].license_plate || '--' }}</text>
       </view>
     </view>
     <view
@@ -77,13 +77,12 @@ export default {
       type: Object,
       default: () => {
         return {
-          timestamp: '',
           date: '',
           type: "",
           time: "",
-          tel: "",
-          license_plate: "",
-          personnel: [],
+          personnel: [
+            {name:'--',tel:'--',license_plate:'--'}
+          ],
           num: 0,
           s_time: "",
           e_time: "",

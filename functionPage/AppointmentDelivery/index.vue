@@ -1,14 +1,17 @@
 <template>
   <view class="p-t-2">
-    <DataSelect />
+    <DataSelect @select="selectData" :scrollDate="scrollDate"/>
     <view class="add-view p-24">
       <view class="add-form p-20 fz-28">
         <view class="add-form-time">
           <view
-            v-for="(item, index) in TIMEARR"
+            v-for="(item, index) in timeArr"
             :key="index"
-             :class="['p-t-24 p-b-24 m-20', index === TIMEARR.length -1 ? 'full' : '']"
-            >{{ item }} </view
+             :class="['p-t-24 p-b-24 m-20', time === item.time_str ? 'active':'']"
+             @click="changeTime(item)"
+            >
+            <!--class 不允许选择和已经约满 index === timeArr.length -1 ? 'full' : '',  -->
+            {{ item.time_str }} </view
           >
         </view>
         <view class="form-view-item p-22">
@@ -20,9 +23,9 @@
             />
             数量
           </view>
-          <input type="text" placeholder="请输入送货数量" />
+          <input type="text" v-model="num" placeholder="请输入送货数量" />
         </view>
-        <view v-if="type !== 'repair'" class="form-view-item p-22">
+        <view v-if="type !== 3" class="form-view-item p-22">
           <view>
             <image
               mode="scaleToFill"
@@ -37,11 +40,11 @@
               mode="scaleToFill"
               class="m-l-20"
               src="@/static/avatar.png"
-              @click="goDriverList"
+              @click="goList('DriverList')"
             />
           </view>
         </view>
-        <view v-if="type !== 'repair'" class="form-view-item p-22">
+        <view v-if="type !== 3" class="form-view-item p-22">
           <view>
             <image
               mode="scaleToFill"
@@ -52,7 +55,7 @@
           </view>
           <input type="text" v-model="selectDriver.tel" placeholder="请输入手机号" />
         </view>
-        <view v-if="type !== 'repair'" class="form-view-item p-22">
+        <view v-if="type !== 3" class="form-view-item p-22">
           <view>
             <image
               mode="scaleToFill"
@@ -63,7 +66,7 @@
           </view>
           <input type="text" v-model="selectDriver.license_plate" placeholder="请输入车牌号" />
         </view>
-        <view v-if="type === 'repair'" class="form-view-item p-22">
+        <view v-if="type === 3" class="form-view-item p-22">
           <view>
             <image
               mode="scaleToFill"
@@ -74,44 +77,45 @@
           </view>
           <view>
             <text></text>
-            <view class="add-button-icon" @click="goRepairList" />
+            <view class="add-button-icon" @click="goList('RepairList')" />
           </view>
         </view>
-        <view v-if="type === 'repair'" class="list-item-body_intro p-t-10 p-b-10 fz-24">
-          <view>李天明：1595230668</view>
-          <view>李天明：1595230668</view>
-          <view>李天明：1595230668</view>
+        <view v-if="type === 3" class="list-item-body_intro p-t-10 p-b-10 fz-24 p-l-20">
+          <view v-for="(item,index) in selectPeople" :key="index">{{item.name}}：{{item.tel}}</view>
         </view>
       </view>
-      <button class="p-28 m-t-30">确定</button>
+      <button class="p-28 m-t-30" @click="submitFrom">确定</button>
     </view>
   </view>
 </template>
 
 <script>
 import DataSelect from "@/components/DataSelect";
+import { orderOrderAdd, orderShow } from "@/api";
 import { mapGetters } from "vuex";
 const TITLEMAP = {
-  delivery: "预约送货",
-  claimGoods: "预约取货",
-  repair: "预约返修",
+  delivery: {
+    text: "预约送货",
+    type: 1
+  },
+  claimGoods: {
+    text: "预约取货",
+    type: 2
+  },
+  repair: {
+    text: "预约返修",
+    type: 3
+  },
 };
-const TIMEARR = [
-  "09:00-10:00",
-  "10:00-11:00",
-  "11:00-12:00",
-  "13:00-14:00",
-  "14:00-15:00",
-  "15:00-16:00",
-  "17:00-18:00",
-];
 export default {
   components: {
     DataSelect,
   },
   data() {
     return {
-      TIMEARR: TIMEARR,
+      showArr: [],
+      timeArr: [],
+      scrollDate: [],
       type: "",
       date:'',
       time:'',
@@ -120,23 +124,97 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["selectDriver"]),
+    ...mapGetters(["selectDriver","selectPeopleArr"]),
+    selectPeople() {
+      return this.selectPeopleArr.filter(item => item.click);
+    },
   },
   onLoad(e) {
-    this.type = e.type;
+    this.type = TITLEMAP[e.type].type;
     uni.setNavigationBarTitle({
-      title: TITLEMAP[e.type] || "预约",
+      title: TITLEMAP[e.type].title || "预约",
     });
+    this.getOrderShow()
   },
   methods: {
-    goDriverList() {
-      uni.navigateTo({
-        url: `/functionPage/DriverList/index?type=${this.type}`,
+    getOrderShow() {
+      orderShow().then(res => {
+        this.scrollDate = res.ret.map(item=>{
+          return Object.freeze({
+            week: `周${item.date_name.substring(2,3)}`,
+            month: `${item.date_sub.substring(0,2)}`,
+            day: `${item.date_sub.substring(3,5)}`,
+            date:item.date
+          })
+        })
+        this.showArr = res.ret.map(item=>Object.freeze(item))
+        this.selectData(this.scrollDate[0],0)
       });
     },
-    goRepairList() {
+    changeTime(item){
+      this.time = item.time_str
+    },
+    selectData(item,index) {
+      this.date = item.date;
+      this.timeArr = this.showArr[index].son.map(item=>Object.freeze({time_str:item.time_str,id:item.id}))
+    },
+    submitFrom(){
+      if (!this.time) {
+        uni.showToast({
+          title: "请选择送货时间",
+          icon: "none",
+        });
+        return false;
+      }
+      if (!this.num) {
+        uni.showToast({
+          title: "请输入送货数量",
+          icon: "none",
+        });
+        return false;
+      }
+      const param = {
+        type: this.type,
+        date: this.date,
+        time: this.time,
+        num: this.num,
+        personnel: this.type !== 3 ? this.selectDriver.id : this.selectPeople.map(item => item.id).toString(),
+      }
+      orderOrderAdd(param).then(res => {
+        uni.showToast({
+          title: '提交成功',
+          icon: 'success',
+          duration: 2000
+        })
+        this.$store.dispatch('changeSetting', {
+          key: 'selectDriver',
+          value: {
+            name: '',
+            tel: '',
+            license_plate: '',
+          }
+        })
+        this.$store.dispatch('changeSetting', {
+          key: 'selectPeopleArr',
+          value: []
+        })
+        setTimeout(() => {
+          uni.navigateBack({
+            delta:1,
+          })
+        }, 1500);
+      }).catch(content => {
+        uni.showModal({
+            title: '提示',
+            content,
+            showCancel:false,
+            confirmColor:'#F55547',
+          });
+      })
+    },
+    goList(list) {
       uni.navigateTo({
-        url: `/functionPage/RepairList/index?type=${this.type}`,
+        url: `/functionPage/${list}/index?type=${this.type}`,
       });
     },
   },
@@ -159,6 +237,10 @@ export default {
     .full{
       background-color:#D4D4D4;
       color: #fff
+    }
+    .active {
+      background-color: $uni-color-active;
+      color: $uni-text-color-inverse;
     }
   }
   .form-view-item {

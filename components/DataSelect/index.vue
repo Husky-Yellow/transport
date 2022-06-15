@@ -1,7 +1,7 @@
 <template>
   <view class="data-select">
     <view>
-      <view class="arrow left" @click="selectDay = selectDay - 1" />
+      <view class="arrow left" @click="selectDate(selectDay - 1)" />
     </view>
     <view class="data-select-scroll fz-28">
       <scroll-view
@@ -15,10 +15,10 @@
             'scroll-view-item p-9',
             index === selectDay ? 'calendar-weekday-active' : '',
           ]"
-          v-for="(item, index) in monthArray"
+          v-for="(item, index) in scrollDate"
           :key="index"
           :id="'u_' + index"
-          @click="selectDate(item, index)"
+          @click="selectDate(index)"
         >
           <view>
             {{ item.week }}
@@ -27,26 +27,25 @@
         </view>
       </scroll-view>
     </view>
-    <view><view class="arrow right" @click="selectDay = selectDay + 1" /></view>
+    <view><view class="arrow right" @click="selectDate(selectDay + 1)" /></view>
   </view>
 </template>
 
 <script>
-import { getDayObj } from "@/utils";
-const monthArray = Array(14)
-  .fill(0)
-  .map((item, index) => getDayObj(index - 7));
-const selectDay = (monthArray || []).findIndex(
-  (list) => list.day === new Date().getDate()
-);
 export default {
+  props: {
+    scrollDate: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data: () => ({
-    monthArray,
-    selectDay,
+    selectDay: 0,
   }),
   methods: {
-    selectDate(item, index) {
+    selectDate(index) {
       this.selectDay = index;
+      this.$emit('select', this.scrollDate[index],index);
     },
   },
 };
