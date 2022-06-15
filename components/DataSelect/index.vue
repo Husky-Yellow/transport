@@ -67,7 +67,7 @@ export default {
       width: 104rpx;
       border: 1rpx solid $uni-bg-color-border;
       border-radius: 10rpx;
-      margin: 0 14rpx;
+      margin: 0 10rpx;
       flex-direction: column;
       align-items: center;
     }

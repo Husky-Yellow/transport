@@ -13,7 +13,7 @@
             <text>操作</text>
             <button
               class="p-t-14 p-b-14 p-l-54 p-r-54 fz-28"
-              @click="OrdeUuserCancel(item.id)"
+              @click="openModel(item)"
             >
               撤回
             </button>
@@ -30,7 +30,9 @@
       <view slot="content">
         <view class="Model-content fz-28 p-20">
           <view>{{ textmsg.content }}</view>
-          <view class="subscribe-type-text"> {{active === 0 ? '送货预约申请' : '送货'}} </view>
+          <view class="subscribe-type-text">
+            {{ active === 0 ? "送货预约申请" : "送货" }}
+          </view>
         </view>
       </view>
     </Model>
@@ -92,6 +94,7 @@ export default {
       confirm: "确定",
     },
     onReachBottomTimer: null,
+    cancelId: null,
   }),
   onReachBottom() {
     if (this.onReachBottomTimer !== null) {
@@ -111,7 +114,7 @@ export default {
         num: 10,
         status: this.active === 0 ? 1 : 2,
       }).then((res) => {
-        this.orderArr = [...this.orderArr,...res.ret.data]
+        this.orderArr = [...this.orderArr, ...res.ret.data];
       });
     },
     changeActive(index) {
@@ -120,40 +123,47 @@ export default {
       this.getData();
     },
     goToAppointmentDelivery(type) {
-      this.showView = false
+      this.showView = false;
       uni.navigateTo({
         url: `/functionPage/AppointmentDelivery/index?type=${type}`,
       });
     },
+    openModel(item) {
+      this.cancelId = item.id;
+      this.showTextmsg = true;
+      this.textmsg.content = `即将撤回${item.ymdhis}`;
+    },
     operation(e) {
-      this.showTextmsg = e
-      this.textmsg = {
-        title: "提示",
-        content: "即将撤回2022-01-01 10:00",
-        cancel: "取消",
-        confirm: "确定",
+      this.showTextmsg = false;
+      if (!e) {
+        this.textmsg.content = "";
+        return;
+      } else {
+        this.OrdeUuserCancel();
       }
     },
-    OrdeUuserCancel(id) {
+    OrdeUuserCancel() {
       ordeUuserCancel({
-        id: id,
-      }).then((res) => {
-         uni.showToast({
-          title: '撤回成功',
-          icon: 'success',
-          duration: 2000
-        })
-      }).catch(content => {
-          uni.showModal({
-            title: '提示',
-            content,
-            showCancel:false,
-            confirmColor:'#F55547',
+        id: this.cancelId,
+      })
+        .then((res) => {
+          uni.showToast({
+            title: "撤回成功",
+            icon: "success",
+            duration: 2000,
           });
-      });
+        })
+        .catch((content) => {
+          uni.showModal({
+            title: "提示",
+            content,
+            showCancel: false,
+            confirmColor: "#F55547",
+          });
+        });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">
