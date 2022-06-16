@@ -182,11 +182,10 @@ export default {
     },
     submitFrom() {
       if (!this.time) {
-        uni.showToast({
+        return uni.showToast({
           title: "请选择送货时间",
           icon: "none",
         });
-        return false;
       }
       if (!this.num) {
         uni.showToast({
@@ -194,6 +193,24 @@ export default {
           icon: "none",
         });
         return false;
+      }
+      if (!this.selectDriver.name) {
+        return uni.showToast({
+          title: "请输入送货员姓名",
+          icon: "none",
+        });
+      }
+      if (!this.selectDriver.tel) {
+        return uni.showToast({
+          title: "请输入送货员手机号",
+          icon: "none",
+        });
+      }
+      if (!this.selectDriver.license_plate) {
+        return uni.showToast({
+          title: "请输入送货员车牌号",
+          icon: "none",
+        });
       }
       const param = {
         type: this.type,

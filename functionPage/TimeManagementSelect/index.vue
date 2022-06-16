@@ -8,7 +8,7 @@
     </NoticeBar>
     <view class="time-list fz-28 p-b-100">
       <view
-        v-for="(item, index) in timeManagement.son"
+        v-for="(item, index) in TIMEARR"
         :key="index"
         :class="['m-15', item.click === true ? 'active' : 'show']"
         @click="changeTime(index)"
@@ -31,19 +31,28 @@
 import { warehouseOrderEditTime } from "@/api";
 import { mapGetters } from "vuex";
 import NoticeBar from "@/components/NoticeBar";
+import { formatNumber } from "@/utils/index";
 
 export default {
   components: {
     NoticeBar,
   },
   data: () => ({
-    TIMEARR: [],
     timeDay: "",
+    selectLength: 0
   }),
   computed: {
     ...mapGetters(["timeManagement"]),
-    selectLength() {
-      return this.timeManagement.son.filter((item) => item.click).length;
+    TIMEARR() {
+      const time_str_arr = (this.timeManagement.son || []).map((item) => item.time_str);
+      const timeArr =  Array(23).fill(0).map((item, index) => {
+        return {
+          time_str: `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`,
+          click: time_str_arr.findIndex((item2) => item2 === `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`) > -1 ? true : false,
+        };
+      })
+      this.selectLength = timeArr.filter((item) => item.click).length
+      return timeArr
     },
   },
   onLoad(e) {
@@ -53,15 +62,16 @@ export default {
   methods: {
     changeTime(index) {
       this.$set(
-        this.timeManagement.son[index],
+        this.TIMEARR[index],
         "click",
-        !this.timeManagement.son[index].click
+        !this.TIMEARR[index].click
       );
+      this.selectLength = this.TIMEARR.filter((item) => item.click).length;
     },
     submit() {
       warehouseOrderEditTime({
         id: this.id,
-        time_str: this.timeManagement
+        time_str: this.TIMEARR
           .filter((item) => item.click)
           .map((item) => item.time_str)
           .toString(),
