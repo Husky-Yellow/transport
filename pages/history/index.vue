@@ -10,7 +10,7 @@
 <script>
 import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
-import { orderOrderList } from "@/api";
+import { warehouseOrderCommonOrder } from "@/api";
 export default {
   components: {
     Tab,
@@ -71,15 +71,17 @@ export default {
   },
   onLoad() {
     this.orderArr = []
+    this.page = 1
     this.getData();
   },
   methods: {
     getData() {
-      orderOrderList({
-        type: 1,
+      const status = this.active++
+      warehouseOrderCommonOrder({
+        // type: 1,
         page: this.page,
         num: 10,
-        status: this.active === 0 ? 1 : 2,
+        status,
       }).then((res) => {
         this.orderArr = [...this.orderArr,...res.ret.data].map(item => {
           item.type = this.active === 0 ? 'receive' : 'reject';
@@ -89,6 +91,7 @@ export default {
     },
     changeActive(index) {
       this.active = index;
+      this.page = 1
       this.orderArr = []
       this.getData()
     },

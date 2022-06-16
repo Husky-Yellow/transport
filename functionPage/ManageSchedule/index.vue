@@ -55,48 +55,6 @@
               </view>
               <view class="fz-28">1,000</view>
             </view>
-            <view class="fz-24 plate-text p-l-70 p-t-20">
-              <view>
-                <text>李天明</text>
-                <text class="m-l-20">浙A123456</text>
-              </view>
-            </view>
-          </view>
-          <view class="list-item-intro-view p-t-20 p-b-20">
-            <view class="list-item-intro-header">
-              <view>
-                <text class="type-text fz-24 delivery">送</text>
-                <text class="fz-28 m-l-20">杭州逸香服饰有限公司</text>
-              </view>
-              <view class="fz-28">1,000</view>
-            </view>
-            <view class="fz-24 plate-text p-l-70 p-t-20">
-              <view>
-                <text>李天明</text>
-                <text class="m-l-20">浙A123456</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="list-item p-t-20 m-t-20">
-        <view class="list-item-header p-r-20">
-          <view class="list-item-header-intro">
-            <view class="border-left" />
-            <text class="fz-36 m-l-20">9:00-10:00</text>
-            <text class="fz-28 m-l-20 error-text">(2/2)</text>
-          </view>
-          <view class="fz-28">2,000件</view>
-        </view>
-        <view class="list-item-intro m-20 p-l-20 p-r-20">
-          <view class="list-item-intro-view p-t-20 p-b-20">
-            <view class="list-item-intro-header">
-              <view>
-                <text class="type-text fz-24 delivery">送</text>
-                <text class="fz-28 m-l-20">杭州逸香服饰有限公司</text>
-              </view>
-              <view class="fz-28">1,000</view>
-            </view>
             <view class="fz-24 plate-text p-l-50 p-t-20 user-list">
               <view class="m-t-6">
                 <text>李天明：</text>
@@ -174,7 +132,7 @@ export default {
       this.deliver_num = item.deliver_num || 0
       this.claim_num = item.claim_num || 0
       this.maintain_num = item.maintain_num || 0
-      this.timeArr = this.showArr[index].son.map((item) =>
+      this.timeArr = this.showArr[index].son.filter(item => item.time_str && item.num).map((item) =>
         Object.freeze({ ...item })
       );
     },

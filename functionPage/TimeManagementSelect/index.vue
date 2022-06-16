@@ -29,7 +29,6 @@
 
 <script>
 import { warehouseOrderEditTime } from "@/api";
-import { mapGetters } from "vuex";
 import NoticeBar from "@/components/NoticeBar";
 import { formatNumber } from "@/utils/index";
 
@@ -39,21 +38,17 @@ export default {
   },
   data: () => ({
     timeDay: "",
-    selectLength: 0
-  }),
-  computed: {
-    ...mapGetters(["timeManagement"]),
-    TIMEARR() {
-      const time_str_arr = (this.timeManagement.son || []).map((item) => item.time_str);
-      const timeArr =  Array(23).fill(0).map((item, index) => {
+    TIMEARR:Array(23).fill(0).map((item, index) => {
         return {
           time_str: `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`,
           click: time_str_arr.findIndex((item2) => item2 === `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`) > -1 ? true : false,
         };
-      })
-      this.selectLength = timeArr.filter((item) => item.click).length
-      return timeArr
-    },
+      }),
+  }),
+  computed: {
+    selectLength() {
+      return this.TIMEARR.filter((item) => item.click).length;
+    }
   },
   onLoad(e) {
     this.timeDay = e.timeDay;
@@ -66,7 +61,6 @@ export default {
         "click",
         !this.TIMEARR[index].click
       );
-      this.selectLength = this.TIMEARR.filter((item) => item.click).length;
     },
     submit() {
       warehouseOrderEditTime({
@@ -80,10 +74,6 @@ export default {
           title: "提交成功",
           icon: "success",
           duration: 2000,
-        });
-        this.$store.dispatch("changeSetting", {
-          key: "timeManagement",
-          value: {},
         });
       });
     },

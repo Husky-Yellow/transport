@@ -1,10 +1,5 @@
 import { getBaseUrl } from './index'; //默认路径
 import store from '@/store'
-const ERROR_MAP = {
-    405:{
-        title: '身份认证失效,请重新登录',
-    },
-}
 
 /**
  * @param {String} config.url
@@ -15,7 +10,10 @@ const ERROR_MAP = {
 const service = async (config = {}) => {
 	return new Promise(async (resolve, reject) => {
         // console.log('%cconfig拦截, 拦截: ', 'color:blue', '', config);
-        const { url, data = {}, method = 'POST' } = config;
+        const { url, data = {}, method } = config;
+		if(store.getters.token || uni.getStorageSync('token')){
+			data.token = store.getters.token || uni.getStorageSync('token');
+		}
 		await uni.getNetworkType({
 			async complete(res) {
 				if (res.networkType === 'none') {
@@ -27,22 +25,26 @@ const service = async (config = {}) => {
 				} else {
                     await uni.request({
 						url: `${getBaseUrl()}${url}`,
-						data:{
-							...data,
-							token:store.getters.token || uni.getStorageSync('token') || ''
-						},
-						method: method.toUpperCase(),
+						data,
+						method,
 						complete(res) {
                             console.log('%c请求成功: ', 'color:green', res);
                             if (res.statusCode === 200) {
-								if (res.data.code !== 200) {
+								if (res.data.code === 969) {
+									uni.showToast({
+										title: '身份认证失效,请重新登录',
+										icon: 'none',
+									})
+									store.dispatch('resetToken')
+									return reject('身份认证失效,请重新登录')
+								} else if (res.data.code !== 200) {
 									return reject(res.data.message)
-								}else{
+								} else {
 									return resolve(res.data)
 								}
-                            } else if (res.statusCode === 405) {
+                            } else if (res.statusCode === 405 || res.statusCode === 500) {
 								uni.showToast({
-									title: ERROR_MAP[res.statusCode].title || '身份认证失效,请重新登录',
+									title: '身份认证失效,请重新登录',
 									icon: 'none',
 								})
 								store.dispatch('resetToken')
@@ -52,7 +54,7 @@ const service = async (config = {}) => {
 									title: '接口超时',
 									icon: 'none'
 								})
-								return reject({errmsg: '接口超时'})
+								return reject('接口超时')
 							}
 						}
 					})

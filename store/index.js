@@ -47,8 +47,8 @@ const store = new Vuex.Store({
         commit('SET_PHONENUM', '')
         uni.setStorageSync('token', '')
         uni.setStorageSync('phonenum', '')
-        uni.navigateTo({
-          url: `pages/login/index`,
+        uni.redirectTo({
+          url: `/pages/login/index`,
         });
         resolve()
       })

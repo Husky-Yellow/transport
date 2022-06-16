@@ -53,10 +53,6 @@ export default {
       });
     },
     goTimeManagementSelect(item) {
-      this.$store.dispatch("changeSetting", {
-        key: "timeManagement",
-        value: item,
-      });
       uni.navigateTo({
         url: `/functionPage/TimeManagementSelect/index?timeDay=${item.date}&id=${item.id}`,
       });

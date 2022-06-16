@@ -73,7 +73,7 @@
 import Tab from "@/components/Tab";
 import Card from "@/components/Card";
 import Model from "@/components/Model";
-import { orderOrderList, ordeUuserCancel } from "@/api";
+import { warehouseOrderCommonOrder, ordeUuserCancel } from "@/api";
 export default {
   components: {
     Tab,
@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     getData() {
-      orderOrderList({
+      warehouseOrderCommonOrder({
         type: 1,
         page: this.page,
         num: 10,
@@ -119,6 +119,7 @@ export default {
     },
     changeActive(index) {
       this.active = index;
+      this.page = 1
       this.orderArr = [];
       this.getData();
     },

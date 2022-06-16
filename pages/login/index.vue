@@ -15,8 +15,8 @@
 const isMobile = phonenum => /^1\d{10}$/.test(phonenum);
 export default {
   data: () => ({
-    phonenum: "ck",
-    password: "123456",
+    phonenum: "15942306465",
+    password: "15942306465",
   }),
   methods: {
     Login() {
@@ -40,10 +40,9 @@ export default {
           password: this.password,
         })
         .then(() => {
-          uni.switchTab({
-            // 跳转到新闻页面
-            url: "/index/index",
-          });
+          uni.redirectTo({
+            url: `/pages/index/index`,
+          })
         })
         .catch(() => {
           uni.showToast({

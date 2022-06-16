@@ -2,7 +2,7 @@
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
     <view class="list p-20 p-t-80">
-      <ManageCard v-for="(item, index) in arr" :key="index" :obj="item">
+      <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
@@ -20,6 +20,7 @@
 <script>
 import { Tab } from "@/components/Tab";
 import { ManageCard } from "@/components/ManageCard";
+import { gysOrderCommonOrder } from "@/api";
 export default {
   components: {
     Tab,
@@ -29,56 +30,38 @@ export default {
     return {
       list: ["待审核", "已通过", "已拒绝"],
       active: 0,
-      arr: [
-        {
-          time:'11:00-12:00',
-          type:'receive',
-          cardType:'repair',
-          number: 1000,
-          people: '4',
-          peopleArr:[{
-            name:'李天明',
-            phone:'12345678901'
-          },{
-            name:'李天明',
-            phone:'12345678901'
-          },{
-            name:'李天明',
-            phone:'12345678901'
-          },{
-            name:'李天明',
-            phone:'12345678901'
-          }]
-        },
-        {
-          time:'11:00-12:00',
-          type:'receive',
-          cardType: 'delivery',
-          number: 1000,
-          name: '李天明',
-          phone: '123 4567 8901',
-          card: '浙A123456'
-        },
-        {
-          time:'11:00-12:00',
-          type:'receive',
-          cardType: 'claimGoods',
-          number: 1000,
-          name: '李天明',
-          phone: '123 4567 8901',
-          card: '浙A123456'
-        },
-      ],
+      orderArr: [],
+      page:1,
+      onReachBottomTimer: null,
     };
   },
-  onLoad() {},
+  onReachBottom() {
+    if (this.onReachBottomTimer !== null) {
+      clearTimeout(this.onReachBottomTimer);
+    }
+    this.page++;
+    this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
+  },
+  onLoad() {
+    this.getData();
+  },
   methods: {
+     getData() {
+      const status = this.active++
+      gysOrderCommonOrder({
+        type: 1,
+        page: this.page,
+        num: 10,
+        status,
+      }).then((res) => {
+        this.orderArr = [...this.orderArr, ...res.ret.data];
+      });
+    },
     changeActive(index) {
       this.active = index;
-      this.arr = this.arr.map(item => {
-        item.type = index === 0 ? 'receive' : 'reject';
-        return item;
-      });
+      this.page = 1
+      this.orderArr = [];
+      this.getData();
     },
   },
 };

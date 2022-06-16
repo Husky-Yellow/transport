@@ -6,7 +6,7 @@ import request from "@/utils/request";
  */
  export const login = data => request({
     url: '/api/login/cangKuUserLogin',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -18,7 +18,7 @@ import request from "@/utils/request";
  */
  export const gysUserStaffShow = data => request({
     url: "/api/gys/userStaff/show",
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -31,7 +31,7 @@ import request from "@/utils/request";
  */
 export const orderOrderList = data => request({
     url: '/api/gys/order/orderList',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -45,7 +45,7 @@ export const orderOrderList = data => request({
  */
 export const userStaffEditPost = data => request({
     url: '/api/gys/userStaff/editPost',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -55,7 +55,7 @@ export const userStaffEditPost = data => request({
  */
 export const ordeUuserCancel = data => request({
     url: '/api/gys/order/userCancel',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -69,7 +69,7 @@ export const ordeUuserCancel = data => request({
  */
 export const orderOrderAdd = data => request({
     url: '/api/gys/order/orderAdd',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -78,7 +78,7 @@ export const orderOrderAdd = data => request({
  */
 export const orderShow = data => request({
     url: '/api/order/show',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -89,7 +89,7 @@ export const orderShow = data => request({
  */
 export const warehouseOrderEditTime = data => request({
     url: '/api/warehouse/order/editTime',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -98,7 +98,7 @@ export const warehouseOrderEditTime = data => request({
  */
 export const warehouseOrderCount = data => request({
     url: '/api/warehouse/order/count',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -109,7 +109,7 @@ export const warehouseOrderCount = data => request({
  */
 export const orderWarehouse = data => request({
     url: '/api/order/warehouse',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -122,7 +122,7 @@ export const orderWarehouse = data => request({
  */
 export const warehouseOrderCommonOrder = data => request({
     url: '/api/warehouse/order/commonOrder',
-    method: "post",
+    method: "POST",
     data
 })
 
@@ -135,6 +135,6 @@ export const warehouseOrderCommonOrder = data => request({
  */
 export const gysOrderCommonOrder = data => request({
     url: '/api/gys/order/commonOrder',
-    method: "post",
+    method: "POST",
     data
 })
