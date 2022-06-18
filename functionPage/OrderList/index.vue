@@ -4,27 +4,53 @@
     <view class="list p-20 p-t-80">
       <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
-          <view class="list-item-funtion p-t-20 p-b-20 fz-28">
+          <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
             <view>
-              <button class="p-l-54 p-r-54 fz-28 m-r-20 primary-button">通过</button>
-              <button class="p-l-54 p-r-54 fz-28 close-button">拒绝</button>
+              <button class="p-l-54 p-r-54 fz-28 m-r-20 primary-button" @click="openModel(item,true)">通过</button>
+              <button class="p-l-54 p-r-54 fz-28 close-button" @click="openModel(item,false)">拒绝</button>
             </view>
           </view>
         </template>
       </ManageCard>
     </view>
+    <Model
+      :textmsg="textmsg"
+      @cancel="operation(false)"
+      @confirm="operation(true)"
+      v-show="showTextmsg"
+    >
+      <view slot="content">
+        <view v-if="textmsg.showType == 'button'" class="Model-content fz-28 p-20">
+          <view>
+            即将 <text :class="[textmsg.text ? 'receive' : 'reject']">{{ textmsg.text ? "通过" : "拒绝" }}</text>{{textmsg.content}}的
+          </view>
+          <view class="subscribe-type-text">
+            送货预约申请
+          </view>
+        </view>
+        <view v-if="textmsg.showType == 'error'" class="Model-content fz-28 p-20">
+          <view>
+            {{textmsg.content}}
+            <text class="reject">拒绝</text>
+            操作
+          </view>
+        </view>
+      </view>
+    </Model>
   </view>
 </template>
 
 <script>
-import { Tab } from "@/components/Tab";
-import { ManageCard } from "@/components/ManageCard";
-import { gysOrderCommonOrder } from "@/api";
+import Tab from "@/components/Tab";
+import ManageCard from "@/components/ManageCard";
+import Model from "@/components/Model";
+import { gysOrderCommonOrder, ordeUuserCancel } from "@/api";
 export default {
   components: {
     Tab,
     ManageCard,
+    Model
   },
   data: () => ({
       list: ["待审核", "已通过", "已拒绝"],
@@ -32,6 +58,17 @@ export default {
       orderArr: [],
       page:1,
       onReachBottomTimer: null,
+      showTextmsg: false,
+      cancelId: null,
+
+      textmsg: {
+        showType: "",
+        title: "提示",
+        content:'',
+        text: "",
+        cancel: "取消",
+        confirm: "确定",
+      },
   }),
   onReachBottom() {
     if (this.onReachBottomTimer !== null) {
@@ -56,6 +93,12 @@ export default {
         num: 10,
         status: MAP[this.active],
       }).then((res) => {
+        if (res.ret.data.length === 0) {
+          return uni.showToast({
+            title: '没有更多数据了',
+            icon: 'none',
+          })
+        }
         this.orderArr = [...this.orderArr, ...res.ret.data];
       });
     },
@@ -64,6 +107,42 @@ export default {
       this.page = 1
       this.orderArr = [];
       this.getData();
+    },
+    openModel(item, type) {
+      this.cancel = item;
+      this.showTextmsg = true;
+      this.textmsg.text = type
+      this.textmsg.showType = 'button'
+      this.textmsg.content = `${item.company}${item.date} ${item.s_time}-${item.e_time}`;
+    },
+    operation(e) {
+      this.showTextmsg = false;
+      if (!e) {
+        this.textmsg.content = "";
+        this.textmsg.text = ''
+        this.textmsg.showType = ''
+        return;
+      } else {
+        this.OrdeUuserCancel();
+      }
+    },
+    OrdeUuserCancel() {
+      ordeUuserCancel({
+        id: this.cancel.id,
+      })
+        .then((res) => {
+          uni.showToast({
+            title: "操作成功",
+            icon: "success",
+            duration: 2000,
+          });
+        })
+        .catch((content) => {
+            this.showTextmsg = true;
+            this.textmsg.text = type
+            this.textmsg.showType = 'error'
+            this.textmsg.content = `${this.cancel.date} ${this.cancel.s_time}-${this.cancel.e_time}的预约通过已满，无法再次通过，请选择`;
+        });
     },
   },
 };
@@ -103,6 +182,21 @@ export default {
   }
   .close-button{
     border: 1rpx solid $uni-bg-color-border;
+  }
+}
+.Model-content {
+  text-align: center;
+  .subscribe-type-text {
+    color: $uni-text-color-pending;
+  }
+  .pending {
+    color: #f1b350;
+  }
+  .receive {
+    color: #71d5a1;
+  }
+  .reject {
+    color: #f55547;
   }
 }
 </style>

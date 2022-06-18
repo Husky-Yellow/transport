@@ -40,9 +40,15 @@ export default {
           password: this.password,
         })
         .then(() => {
-          uni.redirectTo({
-            url: `/pages/index/index`,
-          })
+          uni.showToast({
+            title: "登录成功",
+            icon: "success",
+          });
+          setTimeout(() => {
+            uni.navigateBack({
+              delta: 1,
+            });
+          }, 1500);
         })
         .catch(() => {
           uni.showToast({

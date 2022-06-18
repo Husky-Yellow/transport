@@ -73,7 +73,8 @@
 import Tab from "@/components/Tab";
 import Card from "@/components/Card";
 import Model from "@/components/Model";
-import { warehouseOrderCommonOrder, ordeUuserCancel } from "@/api";
+import { warehouseOrderCommonOrder, orderWarehouse } from "@/api";
+
 export default {
   components: {
     Tab,
@@ -103,23 +104,41 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onLoad() {
+  onShow() {
     this.getData();
   },
   methods: {
     getData() {
       warehouseOrderCommonOrder({
-        type: 1,
         page: this.page,
         num: 10,
         status: this.active === 0 ? 1 : 2,
       }).then((res) => {
-        this.orderArr = [...this.orderArr, ...res.ret.data];
+        if (res.ret.data.length === 0) {
+          return uni.showToast({
+            title: '没有更多数据了',
+            icon: 'none',
+          })
+        }
+        this.orderArr = [...this.orderArr, ...res.ret.data].map((item) => {
+          return Object.freeze({
+            date: item.date,
+            type: item.type,
+            time: item.time,
+            personnel: item.personnel || [
+              { name: "--", tel: "--", license_plate: "--" },
+            ],
+            num: item.num,
+            s_time: item.s_time,
+            e_time: item.e_time,
+            status: item.status,
+          });
+        });
       });
     },
     changeActive(index) {
       this.active = index;
-      this.page = 1
+      this.page = 1;
       this.orderArr = [];
       this.getData();
     },
@@ -132,7 +151,7 @@ export default {
     openModel(item) {
       this.cancelId = item.id;
       this.showTextmsg = true;
-      this.textmsg.content = `即将撤回${item.ymdhis}`;
+      this.textmsg.content = `即将撤回${item.date} ${item.s_time}-${item.e_time}`;
     },
     operation(e) {
       this.showTextmsg = false;
@@ -144,7 +163,7 @@ export default {
       }
     },
     OrdeUuserCancel() {
-      ordeUuserCancel({
+      orderWarehouse({
         id: this.cancelId,
       })
         .then((res) => {

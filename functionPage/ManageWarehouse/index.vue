@@ -2,13 +2,13 @@
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
     <view class="list p-20 p-t-80">
-      <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item">
+      <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item" :showProress="null">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
             <view>
-              <button class="p-l-54 p-r-54 fz-28 m-r-20 primary-button">通过</button>
-              <button class="p-l-54 p-r-54 fz-28 close-button">拒绝</button>
+              <button class="p-l-54 p-r-54 fz-28 m-r-20 primary-button" @click="openModel(item,true)">接收</button>
+              <button class="p-l-54 p-r-54 fz-28 close-button" @click="openModel(item,false)">拒收</button>
             </view>
           </view>
         </template>
@@ -33,6 +33,17 @@ export default {
       orderArr: [],
       page:1,
       onReachBottomTimer: null,
+      showTextmsg: false,
+      cancelId: null,
+
+      textmsg: {
+        showType: "",
+        title: "提示",
+        content:'',
+        text: "",
+        cancel: "取消",
+        confirm: "确定",
+      },
     };
   },
   onReachBottom() {
@@ -47,14 +58,23 @@ export default {
   },
   methods: {
      getData() {
-      const status = this.active++
+      const statusMap = {
+        0:'2',
+        1:'4',
+        2:'5',
+      }
       gysOrderCommonOrder({
-        type: 1,
         page: this.page,
         num: 10,
-        status,
+        status: statusMap[this.active],
       }).then((res) => {
-        this.orderArr = [...this.orderArr, ...res.ret.data];
+        if (res.ret.data.length === 0) {
+          return uni.showToast({
+            title: '没有更多数据了',
+            icon: 'none',
+          })
+        }
+        this.orderArr = [...this.orderArr, ...res.ret.data]
       });
     },
     changeActive(index) {
@@ -62,6 +82,24 @@ export default {
       this.page = 1
       this.orderArr = [];
       this.getData();
+    },
+    openModel(item, type) {
+      this.cancel = item;
+      this.showTextmsg = true;
+      this.textmsg.text = type
+      this.textmsg.showType = 'button'
+      this.textmsg.content = `${item.company}${item.date} ${item.s_time}-${item.e_time}`;
+    },
+    operation(e) {
+      this.showTextmsg = false;
+      if (!e) {
+        this.textmsg.content = "";
+        this.textmsg.text = ''
+        this.textmsg.showType = ''
+        return;
+      } else {
+        this.OrdeUuserCancel();
+      }
     },
   },
 };
@@ -92,8 +130,8 @@ export default {
   }
   .primary-button,.close-button{
     border-radius: 10rpx;
-    height: 84rpx;
-    line-height: 84rpx;
+    height: 64rpx;
+    line-height: 64rpx;
   }
   .primary-button{
     background-color: $uni-bg-color-primary;

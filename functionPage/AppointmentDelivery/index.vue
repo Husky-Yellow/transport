@@ -40,6 +40,7 @@
           <view>
             <input
               type="text"
+              disabled
               v-model="selectDriver.name"
               placeholder="请输入姓名"
             />
@@ -62,6 +63,7 @@
           </view>
           <input
             type="text"
+            disabled
             v-model="selectDriver.tel"
             placeholder="请输入手机号"
           />
@@ -77,6 +79,7 @@
           </view>
           <input
             type="text"
+            disabled
             v-model="selectDriver.license_plate"
             placeholder="请输入车牌号"
           />
@@ -193,6 +196,12 @@ export default {
           icon: "none",
         });
         return false;
+      }
+      if (!this.selectDriver.id) {
+        return uni.showToast({
+          title: "请选择送货员",
+          icon: "none",
+        });
       }
       if (!this.selectDriver.name) {
         return uni.showToast({

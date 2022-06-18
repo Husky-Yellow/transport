@@ -2,7 +2,7 @@
   <view class="page-body">
     <view class="page-body_header p-t-42 p-b-46">
       <image
-        src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+        src="@/static/people.png"
         class="ransport-image transport-image--round"
         mode="scaleToFill"
         @click="goToLogin"
@@ -16,10 +16,10 @@
       <view class="p-b-30 p-t-30" @click="goFunctionPage('SettingRepair')">设置返修人员
         <view class="arrow right"></view>
       </view>
-      <view @click="goFunctionPage('OrderList')">预约汇总</view>
-      <view @click="goFunctionPage('ManageSchedule')">预约日程表</view>
-      <view @click="goFunctionPage('ManageWarehouse')">仓库接收</view>
-      <view @click="goFunctionPage('TimeManagement')">预约时间管理</view>
+      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('OrderList')">预约汇总</view>
+      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('ManageSchedule')">预约日程表</view>
+      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('ManageWarehouse')">仓库接收</view>
+      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('TimeManagement')">预约时间管理</view>
     </view>
   </view>
 </template>

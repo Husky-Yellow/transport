@@ -14,7 +14,7 @@
           }}</view>
         </view>
       </view>
-      <view :class="['fz-32', statusText(obj.type).class+'_text']">{{ statusText(obj.type).text }}</view>
+      <view :class="['fz-32', statusText(obj.status).class+'_text']">{{ statusText(obj.status).text }}</view>
     </view>
     <view
       v-if="obj.type !== 2"
@@ -64,7 +64,7 @@
     </view>
     <slot name="funtion"> </slot>
     <view
-      :class="['show-line', statusText(obj.type).class]"
+      :class="['show-line', statusText(obj.status).class]"
     ></view>
   </view>
 </template>
@@ -104,7 +104,10 @@ export default {
           class: 'claimGoods',
           text: "取"
         },
-        // delivery: "送",
+        3: {
+          class: 'repair',
+          text: "修"
+        },
       };
       return MAP[value] || {
         class: "",
@@ -113,9 +116,9 @@ export default {
     },
     statusText(value) {
       const MAP = {
-        pending: "待审核",
-        receive: "已接收",
-        reject: "已拒收",
+        // pending: "待审核",
+        // receive: "已接收",
+        // reject: "已拒收",
         1: {
           class: 'pending',
           text: "待审核"

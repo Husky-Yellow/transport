@@ -76,16 +76,30 @@ export default {
   },
   methods: {
     getData() {
-      const status = this.active++
       warehouseOrderCommonOrder({
-        // type: 1,
         page: this.page,
         num: 10,
-        status,
+        status : this.active === 0 ? 2 : 3,
       }).then((res) => {
-        this.orderArr = [...this.orderArr,...res.ret.data].map(item => {
-          item.type = this.active === 0 ? 'receive' : 'reject';
-          return item;
+        if (res.ret.data.length === 0) {
+          return uni.showToast({
+            title: '没有更多数据了',
+            icon: 'none',
+          })
+        }
+        this.orderArr = [...this.orderArr,...res.ret.data].map((item) => {
+          return Object.freeze({
+            date: item.date,
+            type: item.type,
+            time: item.time,
+            personnel: item.personnel || [
+              { name: "--", tel: "--", license_plate: "--" },
+            ],
+            num: item.num,
+            s_time: item.s_time,
+            e_time: item.e_time,
+            status: item.status,
+          });
         });
       });
     },

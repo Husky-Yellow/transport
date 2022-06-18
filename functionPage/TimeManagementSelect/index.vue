@@ -38,10 +38,10 @@ export default {
   },
   data: () => ({
     timeDay: "",
-    TIMEARR:Array(23).fill(0).map((item, index) => {
+    TIMEARR:Array(23).fill(0).map((_, index) => {
         return {
           time_str: `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`,
-          click: time_str_arr.findIndex((item2) => item2 === `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`) > -1 ? true : false,
+          click: false,
         };
       }),
   }),
@@ -75,6 +75,11 @@ export default {
           icon: "success",
           duration: 2000,
         });
+        setTimeout(() => {
+            uni.navigateBack({
+              delta: 1,
+            });
+          }, 1500);
       });
     },
   },

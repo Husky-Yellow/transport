@@ -14,6 +14,9 @@ const service = async (config = {}) => {
 		if(store.getters.token || uni.getStorageSync('token')){
 			data.token = store.getters.token || uni.getStorageSync('token');
 		}
+		uni.showLoading({
+			mask: true
+		  });
 		await uni.getNetworkType({
 			async complete(res) {
 				if (res.networkType === 'none') {
@@ -29,6 +32,7 @@ const service = async (config = {}) => {
 						method,
 						complete(res) {
                             console.log('%c请求成功: ', 'color:green', res);
+							uni.hideLoading()
                             if (res.statusCode === 200) {
 								if (res.data.code === 969) {
 									uni.showToast({
