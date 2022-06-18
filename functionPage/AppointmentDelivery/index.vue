@@ -197,29 +197,38 @@ export default {
         });
         return false;
       }
-      if (!this.selectDriver.id) {
-        return uni.showToast({
-          title: "请选择送货员",
-          icon: "none",
-        });
-      }
-      if (!this.selectDriver.name) {
-        return uni.showToast({
-          title: "请输入送货员姓名",
-          icon: "none",
-        });
-      }
-      if (!this.selectDriver.tel) {
-        return uni.showToast({
-          title: "请输入送货员手机号",
-          icon: "none",
-        });
-      }
-      if (!this.selectDriver.license_plate) {
-        return uni.showToast({
-          title: "请输入送货员车牌号",
-          icon: "none",
-        });
+      if (this.type !== 3) {
+        if (!this.selectDriver.id) {
+          return uni.showToast({
+            title: "请选择送货员",
+            icon: "none",
+          });
+        }
+        if (!this.selectDriver.name) {
+          return uni.showToast({
+            title: "请输入送货员姓名",
+            icon: "none",
+          });
+        }
+        if (!this.selectDriver.tel) {
+          return uni.showToast({
+            title: "请输入送货员手机号",
+            icon: "none",
+          });
+        }
+        if (!this.selectDriver.license_plate) {
+          return uni.showToast({
+            title: "请输入送货员车牌号",
+            icon: "none",
+          });
+        }
+      }else{
+        if(!this.selectPeople.length){
+          return uni.showToast({
+            title: "请选择返修员",
+            icon: "none",
+          });
+        }
       }
       const param = {
         type: this.type,

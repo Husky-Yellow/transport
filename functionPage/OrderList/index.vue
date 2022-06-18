@@ -23,7 +23,7 @@
       <view slot="content">
         <view v-if="textmsg.showType == 'button'" class="Model-content fz-28 p-20">
           <view>
-            即将 <text :class="[textmsg.text ? 'receive' : 'reject']">{{ textmsg.text ? "通过" : "拒绝" }}</text>{{textmsg.content}}的
+            即将<text :class="[textmsg.text ? 'receive' : 'reject']">{{ textmsg.text ? "通过" : "拒绝" }}</text>{{textmsg.content}}的
           </view>
           <view class="subscribe-type-text">
             送货预约申请
@@ -45,7 +45,7 @@
 import Tab from "@/components/Tab";
 import ManageCard from "@/components/ManageCard";
 import Model from "@/components/Model";
-import { gysOrderCommonOrder, ordeUuserCancel } from "@/api";
+import { gysOrderCommonOrder, orderWarehouse } from "@/api";
 export default {
   components: {
     Tab,
@@ -127,7 +127,7 @@ export default {
       }
     },
     OrdeUuserCancel() {
-      ordeUuserCancel({
+      orderWarehouse({
         id: this.cancel.id,
       })
         .then((res) => {

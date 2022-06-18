@@ -14,17 +14,55 @@
         </template>
       </ManageCard>
     </view>
+    <Model
+      :textmsg="textmsg"
+      @cancel="operation(false)"
+      @confirm="operation(true)"
+      v-show="showTextmsg"
+    >
+      <view slot="content">
+        <view v-if="!textmsg.text" class="Model-content fz-28 p-20">
+          <view>
+            即将<text class="reject">拒绝</text>{{cancel.company}} {{cancel.s_time}}-{{cancel.e_time}}的
+          </view>
+          <view class="subscribe-type-text">
+            送货
+          </view>
+        </view>
+        <view v-if="textmsg.text" class="dialog-content fz-28 p-20">
+          <view class="dialog-header p-10">
+            <view>
+              <view class="fz-30">
+                {{cancel.date && cancel.date.length >= 10 ? cancel.date.substring(5,10) : cancel.date }}
+                <text class="m-l-20 fz-36 font-weight-medium">{{cancel.s_time}}-{{cancel.e_time}}</text>
+              </view>
+              <view class="fz-28 m-t-10">{{cancel.company}}</view>
+            </view>
+            <view :class="['fz-32', statusText(cancel.status).class+'_text']">{{ statusText(cancel.status).text }}</view>
+          </view>
+          <view class="dialog-intro p-10 p-b-0">
+            <view class="fz-28 p-b-10">
+              预约类型：<text class="delivery">送货预约</text>
+            </view>
+            <textarea v-model="remark" class="p-6 dialog-intro_textarea" :focus="true" placeholder="请输入备注信息…"></textarea>
+          </view>
+        </view>
+      </view>
+    </Model>
   </view>
 </template>
 
 <script>
-import { Tab } from "@/components/Tab";
-import { ManageCard } from "@/components/ManageCard";
-import { gysOrderCommonOrder } from "@/api";
+import Tab from "@/components/Tab";
+import ManageCard from "@/components/ManageCard";
+import Model from "@/components/Model";
+
+import { gysOrderCommonOrder, orderWarehouse } from "@/api";
 export default {
   components: {
     Tab,
     ManageCard,
+    Model
   },
   data() {
     return {
@@ -34,7 +72,7 @@ export default {
       page:1,
       onReachBottomTimer: null,
       showTextmsg: false,
-      cancelId: null,
+      cancel: null,
 
       textmsg: {
         showType: "",
@@ -53,7 +91,7 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onLoad() {
+  onShow() {
     this.getData();
   },
   methods: {
@@ -87,19 +125,77 @@ export default {
       this.cancel = item;
       this.showTextmsg = true;
       this.textmsg.text = type
-      this.textmsg.showType = 'button'
-      this.textmsg.content = `${item.company}${item.date} ${item.s_time}-${item.e_time}`;
     },
     operation(e) {
       this.showTextmsg = false;
       if (!e) {
-        this.textmsg.content = "";
-        this.textmsg.text = ''
-        this.textmsg.showType = ''
+        this.cancel = null
         return;
       } else {
         this.OrdeUuserCancel();
       }
+    },
+    typeText(value) {
+      const MAP = {
+        repair: "修",
+        1: {
+          class: 'delivery',
+          text: "送"
+        },
+        2: {
+          class: 'claimGoods',
+          text: "取"
+        },
+        3: {
+          class: 'repair',
+          text: "修"
+        },
+      };
+      return MAP[value] || {
+        class: "",
+        text: ""
+      };
+    },
+    statusText(value) {
+      const MAP = {
+        1: {
+          class: 'pending',
+          text: "待审核"
+        },
+        2: {
+          class: 'receive',
+          text: "审核通过"
+        },
+      };
+      return MAP[value] || {
+        class: "",
+        text: ""
+      };
+    },
+    OrdeUuserCancel() {
+      orderWarehouse({
+        id: this.cancel.id,
+        remark: this.remark
+      })
+        .then((res) => {
+          uni.showToast({
+            title: "操作成功",
+            icon: "success",
+            duration: 2000,
+          });
+          this.cancel = null
+          this.orderArr = []
+          this.page = 1
+          this.getData()
+        })
+        .catch((content) => {
+          uni.showModal({
+            title: "提示",
+            content,
+            showCancel: false,
+            confirmColor: "#F55547",
+          });
+        });
     },
   },
 };
@@ -142,4 +238,49 @@ export default {
     border: 1rpx solid $uni-bg-color-border;
   }
 }
+.Model-content {
+  text-align: center;
+  .subscribe-type-text {
+    color: $uni-text-color-pending;
+  }
+  .pending {
+    color: #f1b350;
+  }
+  .receive {
+    color: #71d5a1;
+  }
+  .reject {
+    color: #f55547;
+  }
+}
+.dialog-content{
+  display: flex;
+  flex-direction: column;
+  .dialog-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1rpx solid #EDEEEE;
+  }
+  .dialog-intro_textarea{
+    // all: unset;
+    width: 100%;
+    background-color: #F3F3F3;
+  }
+}
+ .claimGoods {
+    color: #f1b350;
+  }
+  .delivery {
+    color: #358fee;
+  }
+      .pending_text {
+      color: $uni-text-color-pending;
+    }
+    .receive_text {
+      color: #71d5a1;
+    }
+    .reject_text {
+      color: #f55547;
+    }
 </style>

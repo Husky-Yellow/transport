@@ -73,7 +73,7 @@
 import Tab from "@/components/Tab";
 import Card from "@/components/Card";
 import Model from "@/components/Model";
-import { warehouseOrderCommonOrder, orderWarehouse } from "@/api";
+import { warehouseOrderCommonOrder, ordeUuserCancel } from "@/api";
 
 export default {
   components: {
@@ -163,7 +163,7 @@ export default {
       }
     },
     OrdeUuserCancel() {
-      orderWarehouse({
+      ordeUuserCancel({
         id: this.cancelId,
       })
         .then((res) => {

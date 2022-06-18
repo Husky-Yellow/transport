@@ -1,5 +1,5 @@
 <template>
-  <view class="show-box-bg wx-login-box">
+  <view class="show-box-bg wx-login-box" @touchmove="true" catchtouchmove="true" @catchtouchmove="true">
     <view class="conten p-t-32">
       <view class="titl fz-32 p-b-23">
         {{ textmsg.title }}
