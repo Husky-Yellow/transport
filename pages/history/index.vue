@@ -10,7 +10,7 @@
 <script>
 import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
-import { warehouseOrderCommonOrder } from "@/api";
+import { gysOrderCommonOrder } from "@/api";
 export default {
   components: {
     Tab,
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     getData() {
-      warehouseOrderCommonOrder({
+      gysOrderCommonOrder({
         page: this.page,
         num: 10,
         status : this.active === 0 ? 2 : 3,

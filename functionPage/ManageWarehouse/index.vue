@@ -57,7 +57,7 @@ import Tab from "@/components/Tab";
 import ManageCard from "@/components/ManageCard";
 import Model from "@/components/Model";
 
-import { gysOrderCommonOrder, orderWarehouse } from "@/api";
+import { warehouseOrderCommonOrder, warehouseOrderWarehouse } from "@/api";
 export default {
   components: {
     Tab,
@@ -75,7 +75,6 @@ export default {
       cancel: null,
 
       textmsg: {
-        showType: "",
         title: "提示",
         content:'',
         text: "",
@@ -101,7 +100,7 @@ export default {
         1:'4',
         2:'5',
       }
-      gysOrderCommonOrder({
+      warehouseOrderCommonOrder({
         page: this.page,
         num: 10,
         status: statusMap[this.active],
@@ -130,6 +129,7 @@ export default {
       this.showTextmsg = false;
       if (!e) {
         this.cancel = null
+        this.textmsg.text = null
         return;
       } else {
         this.OrdeUuserCancel();
@@ -173,8 +173,9 @@ export default {
       };
     },
     OrdeUuserCancel() {
-      orderWarehouse({
+      warehouseOrderWarehouse({
         id: this.cancel.id,
+        type: this.textmsg.text ? 4 : 5,
         remark: this.remark
       })
         .then((res) => {
@@ -184,6 +185,7 @@ export default {
             duration: 2000,
           });
           this.cancel = null
+          this.textmsg.text = null
           this.orderArr = []
           this.page = 1
           this.getData()

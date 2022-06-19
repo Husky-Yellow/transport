@@ -102,13 +102,24 @@ export const warehouseOrderCount = data => request({
     data
 })
 
-/** 仓库端操作
+/** 管理端操作
  * @param {String} data.type 2仓库审核通过3仓库审核拒绝4仓库接受成功5仓库拒绝接受6撤销(包括自己撤销,和仓库端改预约时间强制的撤销,让供应商线下和仓库联系)
  * @param {String} data.id 订单id
  * @link https://www.showdoc.com.cn/1905271757088925/8942313553915558
  */
 export const orderWarehouse = data => request({
     url: '/api/order/warehouse',
+    method: "POST",
+    data
+})
+
+/** 仓库端操作
+ * @param {String} data.type 2仓库审核通过3仓库审核拒绝4仓库接受成功5仓库拒绝接受6撤销(包括自己撤销,和仓库端改预约时间强制的撤销,让供应商线下和仓库联系)
+ * @param {String} data.id 订单id
+ * @link https://www.showdoc.com.cn/1905271757088925/8942313553915558
+ */
+export const warehouseOrderWarehouse = data => request({
+    url: '/api/warehouse/order/warehouse ',
     method: "POST",
     data
 })

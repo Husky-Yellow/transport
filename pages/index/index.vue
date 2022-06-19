@@ -73,7 +73,7 @@
 import Tab from "@/components/Tab";
 import Card from "@/components/Card";
 import Model from "@/components/Model";
-import { warehouseOrderCommonOrder, ordeUuserCancel } from "@/api";
+import { gysOrderCommonOrder, ordeUuserCancel } from "@/api";
 
 export default {
   components: {
@@ -90,7 +90,7 @@ export default {
     showTextmsg: false,
     textmsg: {
       title: "提示",
-      content: "即将撤回2022-01-01 10:00",
+      content: "即将撤回",
       cancel: "取消",
       confirm: "确定",
     },
@@ -105,11 +105,13 @@ export default {
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
   onShow() {
+    this.orderArr = []
+    this.page = 1
     this.getData();
   },
   methods: {
     getData() {
-      warehouseOrderCommonOrder({
+      gysOrderCommonOrder({
         page: this.page,
         num: 10,
         status: this.active === 0 ? 1 : 2,

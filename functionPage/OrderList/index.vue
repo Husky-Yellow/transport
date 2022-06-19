@@ -45,7 +45,7 @@
 import Tab from "@/components/Tab";
 import ManageCard from "@/components/ManageCard";
 import Model from "@/components/Model";
-import { gysOrderCommonOrder, orderWarehouse } from "@/api";
+import { warehouseOrderCommonOrder, warehouseOrderWarehouse } from "@/api";
 export default {
   components: {
     Tab,
@@ -82,16 +82,10 @@ export default {
   },
   methods: {
     getData() {
-      const MAP = {
-        0:2,
-        1:4,
-        2:5
-      }
-      gysOrderCommonOrder({
-        type: 1,
+      warehouseOrderCommonOrder({
         page: this.page,
         num: 10,
-        status: MAP[this.active],
+        status: this.active + 1,
       }).then((res) => {
         if (res.ret.data.length === 0) {
           return uni.showToast({
@@ -127,7 +121,8 @@ export default {
       }
     },
     OrdeUuserCancel() {
-      orderWarehouse({
+      warehouseOrderWarehouse({
+        type: this.textmsg.text ? 2 : 3,
         id: this.cancel.id,
       })
         .then((res) => {
@@ -136,6 +131,13 @@ export default {
             icon: "success",
             duration: 2000,
           });
+          this.cancel = null
+          this.page = 1
+          this.orderArr = [];
+          this.getData();
+          this.textmsg.content = "";
+          this.textmsg.text = ''
+          this.textmsg.showType = ''
         })
         .catch((content) => {
             this.showTextmsg = true;
