@@ -1,7 +1,7 @@
 <template>
   <view class="show-box-bg wx-login-box" @touchmove="true" catchtouchmove="true" @catchtouchmove="true">
     <view class="conten p-t-32">
-      <view class="titl fz-32 p-b-23">
+      <view class="titl fz-32 p-b-23" v-if="textmsg.title">
         {{ textmsg.title }}
       </view>
       <slot name="content" />
@@ -42,7 +42,7 @@ export default {
   background-color: $uni-bg-color-mask;
   z-index: 98;
   .conten {
-    width: 78%;
+    width: 84%;
     background-color: $uni-bg-color-white;
     z-index: 99;
     position: absolute;

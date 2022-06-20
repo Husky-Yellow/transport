@@ -40,7 +40,6 @@
           <view>
             <input
               type="text"
-              disabled
               v-model="selectDriver.name"
               placeholder="请输入姓名"
             />
@@ -63,7 +62,6 @@
           </view>
           <input
             type="text"
-            disabled
             v-model="selectDriver.tel"
             placeholder="请输入手机号"
           />
@@ -79,7 +77,6 @@
           </view>
           <input
             type="text"
-            disabled
             v-model="selectDriver.license_plate"
             placeholder="请输入车牌号"
           />
@@ -95,7 +92,12 @@
           </view>
           <view>
             <text></text>
-            <view class="add-button-icon" @click="goList('RepairList')" />
+            <image
+              mode="scaleToFill"
+              @click="goList('RepairList')"
+              class="m-r-10"
+              src="@/static/add@2x.png"
+            />
           </view>
         </view>
         <view
@@ -222,8 +224,8 @@ export default {
             icon: "none",
           });
         }
-      }else{
-        if(!this.selectPeople.length){
+      } else {
+        if (!this.selectPeople.length) {
           return uni.showToast({
             title: "请选择返修员",
             icon: "none",
@@ -235,6 +237,9 @@ export default {
         date: this.date,
         time: this.time,
         num: this.num,
+        name: this.type !== 3 && this.selectDriver.name,
+        tel: this.type !== 3 && this.selectDriver.tel,
+        license_plate: this.type !== 3 && this.selectDriver.license_plate,
         personnel:
           this.type !== 3
             ? this.selectDriver.id
@@ -242,28 +247,40 @@ export default {
       };
       orderOrderAdd(param)
         .then((res) => {
-          uni.showToast({
-            title: "提交成功",
-            icon: "success",
-            duration: 2000,
-          });
-          this.$store.dispatch("changeSetting", {
-            key: "selectDriver",
-            value: {
-              name: "",
-              tel: "",
-              license_plate: "",
-            },
-          });
-          this.$store.dispatch("changeSetting", {
-            key: "selectPeopleArr",
-            value: [],
-          });
-          setTimeout(() => {
-            uni.navigateBack({
-              delta: 1,
+          console.log(res);
+          debugger
+          if (res.ret === true) {
+            this.$store.dispatch("changeSetting", {
+              key: "selectDriver",
+              value: {
+                name: "",
+                tel: "",
+                license_plate: "",
+              },
             });
-          }, 1500);
+            this.$store.dispatch("changeSetting", {
+              key: "selectPeopleArr",
+              value: [],
+            });
+            uni.showToast({
+              title: "预约成功",
+              icon: "success",
+            });
+            setTimeout(() => {
+              uni.switchTab({
+                url: "/pages/index/index",
+              });
+            }, 1000);
+          }
+          if (res.ret.original.code === 105 || res.ret.original.code === 104) {
+            return uni.showModal({
+              title: "提示",
+              content: res.ret.original.message,
+              showCancel: false,
+              confirmColor: "#F55547",
+            });
+          }
+
         })
         .catch((content) => {
           uni.showModal({
@@ -348,32 +365,4 @@ button {
   text-align: center;
 }
 
-.add-button-icon {
-  display: inline-block;
-  width: 40rpx;
-  height: 40rpx;
-  color: #ccc;
-  border: 1rpx solid $uni-bg-color-primary;
-  border-radius: 50%;
-  transition: color 0.25s;
-  position: relative;
-  overflow: hidden;
-}
-.add-button-icon::before,
-.add-button-icon::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
-.add-button-icon::before {
-  width: 32rpx;
-  border-top: 2rpx solid $uni-bg-color-primary;
-  margin: -4rpx 0 0 -17rpx;
-}
-.add-button-icon::after {
-  height: 32rpx;
-  border-left: 2rpx solid $uni-bg-color-primary;
-  margin: -17rpx 0 0 -4rpx;
-}
 </style>

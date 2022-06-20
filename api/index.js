@@ -4,8 +4,18 @@ import request from "@/utils/request";
  * @param {String} data.phonenum 手机号
  * @param {String} data.password 密码
  */
- export const login = data => request({
+ export const cangKuUserLogin = data => request({
     url: '/api/login/cangKuUserLogin',
+    method: "POST",
+    data
+})
+
+/** 登陆
+ * @param {String} data.phonenum 手机号
+ * @param {String} data.password 密码
+ */
+ export const login = data => request({
+    url: '/api/login/gongYingShangUserLogin',
     method: "POST",
     data
 })
@@ -18,19 +28,6 @@ import request from "@/utils/request";
  */
  export const gysUserStaffShow = data => request({
     url: "/api/gys/userStaff/show",
-    method: "POST",
-    data
-})
-
-/** 供应商端订单展示
- * @param {String} data.type 1:预约;2:取货;3:维修
- * @param {String} data.status 1:生成订单->仓库端待审核;2:仓库审核通过;3:仓库审核拒绝;4:仓库接受成功;5:仓库拒绝接受6撤销
- * @param {String} data.page 分页
- * @param {String} data.num 分页
- * @link https://www.showdoc.com.cn/1905271757088925/8705259227905710
- */
-export const orderOrderList = data => request({
-    url: '/api/gys/order/orderList',
     method: "POST",
     data
 })
@@ -146,6 +143,19 @@ export const warehouseOrderCommonOrder = data => request({
  */
 export const gysOrderCommonOrder = data => request({
     url: '/api/gys/order/commonOrder',
+    method: "POST",
+    data
+})
+
+/** 供应商端的获取订单
+ * @param {String} data.type 1:预约;2:取货;3:维修
+ * @param {String} data.status 1:生成订单->仓库端待审核;2:仓库审核通过;3:仓库审核拒绝;4:仓库接受成功;5:仓库拒绝接受6撤销
+ * @param {String} data.page 分页
+ * @param {String} data.num 分页
+ * @link
+ */
+export const warehouseOrderCountText = data => request({
+    url: '/api/warehouse/order/count___',
     method: "POST",
     data
 })

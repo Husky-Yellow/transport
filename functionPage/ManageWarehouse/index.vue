@@ -1,24 +1,29 @@
 <template>
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
-    <view class="list p-20 p-t-80">
+    <view v-if="orderArr.length !== 0" class="list p-20 p-t-80">
       <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item" :showProress="null">
         <template #funtion>
-          <view class="list-item-funtion p-t-20 p-b-20 fz-28">
+          <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
             <view>
               <button class="p-l-54 p-r-54 fz-28 m-r-20 primary-button" @click="openModel(item,true)">接收</button>
               <button class="p-l-54 p-r-54 fz-28 close-button" @click="openModel(item,false)">拒收</button>
             </view>
           </view>
+          <view v-if="active === 1" class="list-item-funtion-itron p-t-20 p-b-20 fz-28">
+            <text class="item-lable">备注</text>
+            <text class="text-active">{{item.remark || ''}}</text>
+          </view>
         </template>
       </ManageCard>
     </view>
+    <Empty v-if="orderArr.length === 0"/>
     <Model
       :textmsg="textmsg"
       @cancel="operation(false)"
       @confirm="operation(true)"
-      v-show="showTextmsg"
+      v-if="showTextmsg"
     >
       <view slot="content">
         <view v-if="!textmsg.text" class="Model-content fz-28 p-20">
@@ -26,25 +31,25 @@
             即将<text class="reject">拒绝</text>{{cancel.company}} {{cancel.s_time}}-{{cancel.e_time}}的
           </view>
           <view class="subscribe-type-text">
-            送货
+            {{typeText(cancel.type)}}
           </view>
         </view>
-        <view v-if="textmsg.text" class="dialog-content fz-28 p-20">
-          <view class="dialog-header p-10">
+        <view v-if="textmsg.text" class="dialog-content fz-28 p-l-20 p-r-20">
+          <view class="dialog-header p-10 p-b-18">
             <view>
-              <view class="fz-30">
-                {{cancel.date && cancel.date.length >= 10 ? cancel.date.substring(5,10) : cancel.date }}
-                <text class="m-l-20 fz-36 font-weight-medium">{{cancel.s_time}}-{{cancel.e_time}}</text>
+              <view >
+                <text class="fz-32 font-weight-Regular">{{cancel.date && cancel.date.length >= 10 ? cancel.date.substring(5,10) : cancel.date }}</text>
+                <text class="m-l-20 fz-40 font-weight-medium">{{cancel.s_time}}-{{cancel.e_time}}</text>
               </view>
               <view class="fz-28 m-t-10">{{cancel.company}}</view>
             </view>
-            <view :class="['fz-32', statusText(cancel.status).class+'_text']">{{ statusText(cancel.status).text }}</view>
+            <view class="fz-32 receive_text">待接收</view>
           </view>
-          <view class="dialog-intro p-10 p-b-0">
-            <view class="fz-28 p-b-10">
-              预约类型：<text class="delivery">送货预约</text>
+          <view class="dialog-intro p-10 p-b-0 p-t-30">
+            <view class="fz-28 p-b-15">
+              预约类型：<text class="delivery">{{typeText(cancel.type)}}预约</text>
             </view>
-            <textarea v-model="remark" class="p-6 dialog-intro_textarea" :focus="true" placeholder="请输入备注信息…"></textarea>
+            <textarea v-model="remark" class="p-10 dialog-intro_textarea" :focus="true" placeholder="请输入备注信息…"></textarea>
           </view>
         </view>
       </view>
@@ -56,20 +61,22 @@
 import Tab from "@/components/Tab";
 import ManageCard from "@/components/ManageCard";
 import Model from "@/components/Model";
-
+import Empty from "@/components/Empty";
 import { warehouseOrderCommonOrder, warehouseOrderWarehouse } from "@/api";
 export default {
   components: {
     Tab,
     ManageCard,
-    Model
+    Model,
+    Empty
   },
   data() {
     return {
-      list: ["待审核", "已通过", "已拒绝"],
+      list: ["待接收", "已通过", "已拒绝"],
       active: 0,
       orderArr: [],
       page:1,
+      remark:'',
       onReachBottomTimer: null,
       showTextmsg: false,
       cancel: null,
@@ -91,7 +98,9 @@ export default {
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
   onShow() {
-    this.getData();
+      this.page = 1
+      this.orderArr = [];
+      this.getData();
   },
   methods: {
      getData() {
@@ -120,10 +129,11 @@ export default {
       this.orderArr = [];
       this.getData();
     },
-    openModel(item, type) {
+    openModel(item, showType) {
       this.cancel = item;
+      this.textmsg.title = !showType ? "提示" : '';
       this.showTextmsg = true;
-      this.textmsg.text = type
+      this.textmsg.text = showType
     },
     operation(e) {
       this.showTextmsg = false;
@@ -137,40 +147,11 @@ export default {
     },
     typeText(value) {
       const MAP = {
-        repair: "修",
-        1: {
-          class: 'delivery',
-          text: "送"
-        },
-        2: {
-          class: 'claimGoods',
-          text: "取"
-        },
-        3: {
-          class: 'repair',
-          text: "修"
-        },
+        1:'送货',
+        2:'取货',
+        3:'反修',
       };
-      return MAP[value] || {
-        class: "",
-        text: ""
-      };
-    },
-    statusText(value) {
-      const MAP = {
-        1: {
-          class: 'pending',
-          text: "待审核"
-        },
-        2: {
-          class: 'receive',
-          text: "审核通过"
-        },
-      };
-      return MAP[value] || {
-        class: "",
-        text: ""
-      };
+      return MAP[value] || '';
     },
     OrdeUuserCancel() {
       warehouseOrderWarehouse({
@@ -265,8 +246,9 @@ export default {
     border-bottom: 1rpx solid #EDEEEE;
   }
   .dialog-intro_textarea{
-    // all: unset;
     width: 100%;
+    min-height: 210rpx;
+    height: auto;
     background-color: #F3F3F3;
   }
 }
@@ -285,4 +267,14 @@ export default {
     .reject_text {
       color: #f55547;
     }
+.list-item-funtion-itron {
+  @include space-between;
+  border-top: 1rpx solid $uni-bg-color-border;
+  .item-lable{
+    color: $uni-text-color-grey;
+  }
+  .text-active{
+    color: $uni-text-color-active;
+  }
+}
 </style>

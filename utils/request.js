@@ -1,4 +1,4 @@
-import { getBaseUrl } from './index'; //默认路径
+import { getBaseUrl } from './index';
 import store from '@/store'
 
 /**
@@ -11,12 +11,10 @@ const service = async (config = {}) => {
 	return new Promise(async (resolve, reject) => {
         // console.log('%cconfig拦截, 拦截: ', 'color:blue', '', config);
         const { url, data = {}, method } = config;
-		if(store.getters.token || uni.getStorageSync('token')){
-			data.token = store.getters.token || uni.getStorageSync('token');
-		}
+		data.token = store.getters.token || uni.getStorageSync('token');
 		uni.showLoading({
 			mask: true
-		  });
+		});
 		await uni.getNetworkType({
 			async complete(res) {
 				if (res.networkType === 'none') {
@@ -46,14 +44,20 @@ const service = async (config = {}) => {
 								} else {
 									return resolve(res.data)
 								}
-                            } else if (res.statusCode === 405 || res.statusCode === 500) {
+                            } else if (res.statusCode === 405) {
 								uni.showToast({
 									title: '身份认证失效,请重新登录',
 									icon: 'none',
 								})
 								store.dispatch('resetToken')
 								return reject('身份认证失效,请重新登录')
-							} else if (res.errMsg === 'request:fail timeout' || res.errMsg === 'request:fail abort statusCode:-1 timeout') {
+							} else if (res.statusCode === 500) {
+								uni.showToast({
+									title: '接口报错,请联系管理员',
+									icon: 'none',
+								})
+								return reject(res)
+							}else if (res.errMsg === 'request:fail timeout' || res.errMsg === 'request:fail abort statusCode:-1 timeout') {
 								uni.showToast({
 									title: '接口超时',
 									icon: 'none'

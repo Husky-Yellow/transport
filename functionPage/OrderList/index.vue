@@ -1,8 +1,8 @@
 <template>
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
-    <view class="list p-20 p-t-80">
-      <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item">
+    <view v-if="orderArr.length !== 0" class="list p-20 p-t-80">
+      <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item" :showProress="active === 0 ? true :false">
         <template #funtion>
           <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
@@ -14,6 +14,7 @@
         </template>
       </ManageCard>
     </view>
+    <Empty v-if="orderArr.length === 0"/>
     <Model
       :textmsg="textmsg"
       @cancel="operation(false)"
@@ -26,7 +27,7 @@
             即将<text :class="[textmsg.text ? 'receive' : 'reject']">{{ textmsg.text ? "通过" : "拒绝" }}</text>{{textmsg.content}}的
           </view>
           <view class="subscribe-type-text">
-            送货预约申请
+            {{typeText(textmsg.type)}}预约申请
           </view>
         </view>
         <view v-if="textmsg.showType == 'error'" class="Model-content fz-28 p-20">
@@ -45,12 +46,14 @@
 import Tab from "@/components/Tab";
 import ManageCard from "@/components/ManageCard";
 import Model from "@/components/Model";
+import Empty from "@/components/Empty";
 import { warehouseOrderCommonOrder, warehouseOrderWarehouse } from "@/api";
 export default {
   components: {
     Tab,
     ManageCard,
-    Model
+    Model,
+    Empty
   },
   data: () => ({
       list: ["待审核", "已通过", "已拒绝"],
@@ -66,6 +69,7 @@ export default {
         title: "提示",
         content:'',
         text: "",
+        type: "",
         cancel: "取消",
         confirm: "确定",
       },
@@ -77,8 +81,16 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onLoad() {
+  onPullDownRefresh() {
+    this.page = 1;
+    this.orderArr = []
     this.getData();
+    uni.stopPullDownRefresh()
+  },
+  onLoad() {
+      this.page = 1
+      this.orderArr = [];
+      this.getData();
   },
   methods: {
     getData() {
@@ -102,18 +114,21 @@ export default {
       this.orderArr = [];
       this.getData();
     },
-    openModel(item, type) {
+    openModel(item, showType) {
+      const {company = '' || '', date = '', s_time = '', e_time = '',type} = item
       this.cancel = item;
       this.showTextmsg = true;
-      this.textmsg.text = type
+      this.textmsg.text = showType
+      this.textmsg.type = type
       this.textmsg.showType = 'button'
-      this.textmsg.content = `${item.company}${item.date} ${item.s_time}-${item.e_time}`;
+      this.textmsg.content = `${company || ''}${date} ${s_time}-${e_time}`;
     },
     operation(e) {
       this.showTextmsg = false;
       if (!e) {
-        this.textmsg.content = "";
+        this.textmsg.content = ""
         this.textmsg.text = ''
+        this.textmsg.type = ''
         this.textmsg.showType = ''
         return;
       } else {
@@ -137,6 +152,7 @@ export default {
           this.getData();
           this.textmsg.content = "";
           this.textmsg.text = ''
+          this.textmsg.type = ''
           this.textmsg.showType = ''
         })
         .catch((content) => {
@@ -145,6 +161,14 @@ export default {
             this.textmsg.showType = 'error'
             this.textmsg.content = `${this.cancel.date} ${this.cancel.s_time}-${this.cancel.e_time}的预约通过已满，无法再次通过，请选择`;
         });
+    },
+    typeText(value) {
+      const MAP = {
+        1:'送货',
+        2:'取货',
+        3:'反修',
+      };
+      return MAP[value] || '';
     },
   },
 };

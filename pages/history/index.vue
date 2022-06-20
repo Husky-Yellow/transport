@@ -1,20 +1,23 @@
 <template>
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
-    <view class="list p-20 p-t-80">
+    <view v-if="orderArr.length !== 0" class="list p-20 p-t-80">
       <Card v-for="(item, index) in orderArr" :key="index" :obj="item"/>
     </view>
+    <Empty v-if="orderArr.length === 0"/>
   </view>
 </template>
 
 <script>
 import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
+import { Empty } from "@/components/Empty";
 import { gysOrderCommonOrder } from "@/api";
 export default {
   components: {
     Tab,
     Card,
+    Empty
   },
   data: () => ({
       list: ["已通过", "已拒绝"],
@@ -68,6 +71,12 @@ export default {
     }
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
+  },
+  onPullDownRefresh() {
+    this.page = 1;
+    this.orderArr = []
+    this.getData();
+    uni.stopPullDownRefresh()
   },
   onLoad() {
     this.orderArr = []

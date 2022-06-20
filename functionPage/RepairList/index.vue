@@ -52,7 +52,14 @@ export default {
   },
   onLoad() {
     this.peopleList = []
+    this.page = 1;
     this.getData()
+  },
+  onPullDownRefresh() {
+    this.page = 1;
+    this.peopleList = []
+    this.getData();
+    uni.stopPullDownRefresh()
   },
   methods: {
     getData() {

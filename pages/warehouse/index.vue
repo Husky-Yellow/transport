@@ -1,27 +1,30 @@
 <template>
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
-    <view class="list p-20 p-t-80">
+    <view v-if="orderArr.length !== 0" class="list p-20 p-t-80">
       <Card v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text class="item-lable">备注</text>
-            <text class="text-active">{{item.remark}}</text>
+            <text class="text-active">{{item.remark || ''}}</text>
           </view>
         </template>
       </Card>
     </view>
+    <Empty v-if="orderArr.length === 0"/>
   </view>
 </template>
 
 <script>
 import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
+import { Empty } from "@/components/Empty";
 import { gysOrderCommonOrder } from "@/api";
 export default {
   components: {
     Tab,
     Card,
+    Empty
   },
   data() {
     return{
@@ -43,6 +46,12 @@ export default {
     this.orderArr = []
     this.page = 1
     this.getData();
+  },
+  onPullDownRefresh() {
+    this.page = 1;
+    this.orderArr = []
+    this.getData();
+    uni.stopPullDownRefresh()
   },
   methods: {
     getData() {

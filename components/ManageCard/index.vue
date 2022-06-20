@@ -3,18 +3,18 @@
     <view class="list-item-header p-t-20 p-b-20">
       <view>
         <view class="fz-36"
-          >{{obj.date && obj.date.length >= 10 ? obj.date.substring(5,10) : obj.date }}
+          >{{obj.date && obj.date.length === 10 ? obj.date.substring(5,10) : obj.date }}
           <text class="fz-40 p-l-20 font-weight-medium">{{obj.s_time}}-{{obj.e_time}}</text>
-          <text v-if="showProress" class="fz-28 m-l-20">(2/{{obj.num}})</text>
+          <text v-if="showProress" :class="['fz-28 m-l-20', obj.hint == 2 ? 'receive_text' : 'reject_text']" >({{obj.hint}}/2)</text>
         </view>
         <view class="fz-28 m-t-16 list-item-header_type"
-          >{{obj.company}}
+          >{{obj.company || ''}}
         </view>
       </view>
       <view :class="['fz-32', statusText(obj.status).class+'_text']">{{ statusText(obj.status).text }}</view>
     </view>
     <view
-      v-if="obj.type !== 2"
+      v-if="obj.type !== 3"
       class="list-item-body p-t-10 p-b-10 fz-28"
     >
       <view class="list-item-body_item p-t-10 p-b-10">
@@ -46,7 +46,7 @@
       </view>
     </view>
     <view
-      v-if="obj.type === 2"
+      v-if="obj.type === 3"
       class="list-item-body p-t-10 p-b-10 fz-28"
     >
       <view class="list-item-body_item p-t-10 p-b-10">
@@ -91,14 +91,8 @@ export default {
           personnel: [
             {name:'--',tel:'--',license_plate:'--'}
           ],
-
-          cardType: "",
+          hint:"",
           time: "",
-          phone: "",
-          card: "",
-          peopleArr: [],
-          number: 0,
-          people: 0,
         };
       },
     },
@@ -110,7 +104,6 @@ export default {
   methods: {
     typeText(value) {
       const MAP = {
-        repair: "修",
         1: {
           class: "delivery",
           text: "送",
@@ -143,6 +136,18 @@ export default {
         2: {
           class: "receive",
           text: "审核通过",
+        },
+                3: {
+          class: 'reject',
+          text: "已拒绝"
+        },
+        4: {
+          class: 'receive',
+          text: "已接收"
+        },
+        5: {
+          class: 'reject',
+          text: "已拒绝"
         },
       };
       return (

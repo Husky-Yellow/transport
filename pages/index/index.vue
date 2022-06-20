@@ -6,7 +6,7 @@
       :active="active"
       @changeActive="changeActive"
     />
-    <view class="list p-24 p-t-76">
+    <view v-if="orderArr.length !== 0" class="list p-24 p-t-76">
       <Card v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
@@ -21,6 +21,7 @@
         </template>
       </Card>
     </view>
+    <Empty v-if="orderArr.length === 0"/>
     <Model
       :textmsg="textmsg"
       @cancel="operation(false)"
@@ -73,6 +74,7 @@
 import Tab from "@/components/Tab";
 import Card from "@/components/Card";
 import Model from "@/components/Model";
+import Empty from "@/components/Empty";
 import { gysOrderCommonOrder, ordeUuserCancel } from "@/api";
 
 export default {
@@ -80,6 +82,7 @@ export default {
     Tab,
     Card,
     Model,
+    Empty
   },
   data: () => ({
     list: ["待审核", "待接收"],
@@ -104,10 +107,17 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onShow() {
+  onPullDownRefresh() {
+    this.page = 1;
+    this.orderArr = []
+    this.getData();
+    uni.stopPullDownRefresh()
+  },
+  async onShow() {
+    this.showView = false
     this.orderArr = []
     this.page = 1
-    this.getData();
+    await this.getData();
   },
   methods: {
     getData() {
@@ -123,18 +133,12 @@ export default {
           })
         }
         this.orderArr = [...this.orderArr, ...res.ret.data].map((item) => {
-          return Object.freeze({
-            date: item.date,
-            type: item.type,
-            time: item.time,
+          return {
+            ...item,
             personnel: item.personnel || [
               { name: "--", tel: "--", license_plate: "--" },
             ],
-            num: item.num,
-            s_time: item.s_time,
-            e_time: item.e_time,
-            status: item.status,
-          });
+          }
         });
       });
     },
@@ -151,6 +155,7 @@ export default {
       });
     },
     openModel(item) {
+      console.log(item);
       this.cancelId = item.id;
       this.showTextmsg = true;
       this.textmsg.content = `即将撤回${item.date} ${item.s_time}-${item.e_time}`;
@@ -174,6 +179,9 @@ export default {
             icon: "success",
             duration: 2000,
           });
+              this.orderArr = []
+    this.page = 1
+    this.getData();
         })
         .catch((content) => {
           uni.showModal({
@@ -189,6 +197,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.page{
+  min-height: 100vh;
+  height: auto;
+}
 .tab {
   position: fixed;
   top: 0;
@@ -245,7 +257,7 @@ button {
     @include space-between;
     flex-direction: column;
     image {
-      width: 80rpx;
+      width: 70rpx;
       height: 110rpx;
     }
   }

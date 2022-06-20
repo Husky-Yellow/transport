@@ -33,7 +33,7 @@ const store = new Vuex.Store({
           commit('SET_PHONENUM', userInfo.phonenum)
           await uni.setStorageSync('token', ret)
           await uni.setStorageSync('phonenum', userInfo.phonenum)
-          resolve()
+          resolve(response)
         }).catch(error => {
           reject(error)
         })

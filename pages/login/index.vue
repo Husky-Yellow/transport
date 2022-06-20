@@ -39,7 +39,7 @@ export default {
           phonenum: this.phonenum,
           password: this.password,
         })
-        .then(() => {
+        .then((res) => {
           uni.showToast({
             title: "登录成功",
             icon: "success",

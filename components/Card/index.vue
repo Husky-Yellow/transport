@@ -5,7 +5,7 @@
         <view class="fz-36 list-item-header_day">
           <text v-if="caleDate(obj.date) === 'today'" class="fz-22 today p-t-8 p-b-8 p-l-20 p-r-20">今天</text>
           <text v-else-if="caleDate(obj.date) === 'tomorrow'" class="fz-22 tomorrow p-t-8 p-b-8 p-l-20 p-r-20">明天</text>
-          <text v-else class="fz-36">{{obj.date && obj.date.length >= 11 ? obj.date.substring(5,11) : obj.date}}</text>
+          <text v-else class="fz-36">{{obj.date && obj.date.length === 10 ? obj.date.substring(5,10) : obj.date}}</text>
           <text class="fz-40 p-l-20 list-item-header_time">{{obj.s_time}}-{{obj.e_time}}</text>
         </view>
         <view class="fz-28 m-t-16 list-item-header_type"
@@ -17,7 +17,7 @@
       <view :class="['fz-32', statusText(obj.status).class+'_text']">{{ statusText(obj.status).text }}</view>
     </view>
     <view
-      v-if="obj.type !== 2"
+      v-if="obj.type !== 3"
       class="list-item-body p-t-10 p-b-10 fz-28"
     >
       <view class="list-item-body_item p-t-10 p-b-10">
@@ -45,7 +45,7 @@
       </view>
     </view>
     <view
-      v-if="obj.type === 2"
+      v-if="obj.type === 3"
       class="list-item-body p-t-10 p-b-10 fz-28"
     >
       <view class="list-item-body_item p-t-10 p-b-10">
@@ -75,18 +75,10 @@ export default {
   props: {
     obj: {
       type: Object,
+      required: true,
       default: () => {
         return {
-          date: '',
-          type: "",
-          time: "",
-          personnel: [
-            {name:'--',tel:'--',license_plate:'--'}
-          ],
-          num: 0,
-          s_time: "",
-          e_time: "",
-          status: "", // 1生成订单->仓库端待审核2仓库审核通过3仓库审核拒绝4仓库接受成功5仓库拒绝接受6撤销
+
         };
       },
     },
@@ -95,7 +87,7 @@ export default {
     caleDate,
     typeText(value) {
       const MAP = {
-        repair: "修",
+        // repair: "修",
         1: {
           class: 'delivery',
           text: "送"
@@ -126,6 +118,18 @@ export default {
         2: {
           class: 'receive',
           text: "审核通过"
+        },
+        3: {
+          class: 'reject',
+          text: "已拒绝"
+        },
+        4: {
+          class: 'receive',
+          text: "已接收"
+        },
+        5: {
+          class: 'reject',
+          text: "已拒绝"
         },
       };
       return MAP[value] || {

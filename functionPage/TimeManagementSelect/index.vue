@@ -31,7 +31,7 @@
 import { warehouseOrderEditTime } from "@/api";
 import NoticeBar from "@/components/NoticeBar";
 import { formatNumber } from "@/utils/index";
-
+const selectTimeArr = ['09:00-10:00','10:00-11:00','11:00-12:00','13:00-14:00','14:00-15:00','15:00-16:00']
 export default {
   components: {
     NoticeBar,
@@ -39,9 +39,11 @@ export default {
   data: () => ({
     timeDay: "",
     TIMEARR:Array(23).fill(0).map((_, index) => {
+      const time_str = `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`
+      const click = selectTimeArr.includes(time_str)
         return {
-          time_str: `${formatNumber(index)}:00-${formatNumber(index + 1)}:00`,
-          click: false,
+          time_str,
+          click,
         };
       }),
   }),
@@ -63,6 +65,13 @@ export default {
       );
     },
     submit() {
+      if(!this.selectLength) {
+        uni.showToast({
+          title: "请选择时间段",
+          icon: "none",
+        });
+        return;
+      }
       warehouseOrderEditTime({
         id: this.id,
         time_str: this.TIMEARR

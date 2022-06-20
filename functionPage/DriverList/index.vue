@@ -1,6 +1,6 @@
 <template>
     <view class="p-24">
-        <view class="list">
+        <view class="list" v-if="peopleList.length !== 0">
             <view v-for="(item,index) in peopleList" :key="index" @click="itemClick(item)" class="list-item p-t-26 p-b-24 p-l-30">
                 <view>
                     <text class="fz-32">{{item.name}}</text>
@@ -9,14 +9,19 @@
                 <view class="plate-number fz-28 m-t-10">车牌号：{{item.license_plate}}</view>
             </view>
         </view>
+        <Empty v-if="peopleList.length === 0"/>
     </view>
 </template>
 
 
 <script>
+import { Empty } from "@/components/Empty";
 import { gysUserStaffShow } from "@/api";
 
 export default {
+  components: {
+    Empty
+  },
   data: () => ({
     page:1,
     peopleList:[],
@@ -31,7 +36,14 @@ export default {
   },
   onShow() {
     this.peopleList = []
+    this.page = 1
     this.getData()
+  },
+  onPullDownRefresh() {
+    this.page = 1;
+    this.peopleList = []
+    this.getData();
+    uni.stopPullDownRefresh()
   },
   methods: {
     getData() {
@@ -40,7 +52,6 @@ export default {
         page: this.page,
         num: 10
       }).then(res => {
-        console.log(res)
         this.peopleList = [...this.peopleList,...res.ret.data]
       })
     },

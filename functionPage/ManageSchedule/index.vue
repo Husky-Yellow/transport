@@ -4,112 +4,96 @@
     <NoticeBar>
       <view class="num-view">
         <text>本日预约：</text>
-        <text class="m-l-30">送货 {{deliver_num}}</text>
-        <text class="m-l-30">取货 {{claim_num}}</text>
-        <text class="m-l-30">返修 {{maintain_num}}</text>
+        <text class="m-l-30">送货 {{num.one}}</text>
+        <text class="m-l-30">取货 {{num.two}}</text>
+        <text class="m-l-30">返修 {{num.three}}</text>
       </view>
     </NoticeBar>
-    <view class="list p-l-20 p-r-20 p-b-20">
+    <view v-if="timeArr.length !== 0" class="list p-l-20 p-r-20 p-b-20">
       <view v-for="(item,index) in timeArr" :key="index" class="list-item p-t-20 m-t-20">
         <view class="list-item-header p-r-20">
           <view class="list-item-header-intro">
             <view class="border-left" />
             <text class="fz-36 m-l-20 weight-500">{{item.time_str}}</text>
-            <text class="fz-28 m-l-20 error-text">(2/2)</text>
+            <text :class="['fz-28 m-l-20', item.sonLength === 2 ? 'error-text' : 'reject_text']">({{item.sonLength}}/2)</text>
           </view>
-          <view class="fz-28">2,000件</view>
+          <view class="fz-28">{{item.numValue}}件</view>
         </view>
         <view class="list-item-intro m-20 p-l-20 p-r-20">
-          <view class="list-item-intro-view p-t-20 p-b-20">
-            <view class="list-item-intro-header">
+          <view class="list-item-intro-view p-t-20 p-b-20" v-for="(childItem, childIndex) in item.son" :key="childIndex">
+            <view class="list-item-intro-header" >
               <view>
-                <text class="type-text fz-24 delivery">送</text>
-                <text class="fz-28 m-l-20">杭州逸香服饰有限公司</text>
+                <text :class="['fz-24 type-text', typeText(childItem.type).class]" >{{typeText(childItem.type).text}}</text>
+                <text class="fz-28 m-l-20">{{childItem.company || ''}}</text>
               </view>
-              <view class="fz-28">1,000</view>
+              <view class="fz-28">{{childItem.num}}</view>
             </view>
-            <view class="fz-24 plate-text p-l-70 p-t-20">
-              <view>
-                <text>李天明</text>
-                <text class="m-l-20">浙A123456</text>
+            <view v-if="childItem.type === 3" class="fz-24 plate-text p-l-70 p-t-16">
+              <view v-for="(people, peopleIndex) in childItem.personnel" :key="peopleIndex">
+                <text>{{people.name}}</text>
+                <text class="m-l-20">{{people.tel}}</text>
               </view>
             </view>
-          </view>
-        </view>
-      </view>
-      <view class="list-item p-t-20 m-t-20">
-        <view class="list-item-header p-r-20">
-          <view class="list-item-header-intro">
-            <view class="border-left" />
-            <text class="fz-36 m-l-20">9:00-10:00</text>
-            <text class="fz-28 m-l-20 error-text">(2/2)</text>
-          </view>
-          <view class="fz-28">2,000件</view>
-        </view>
-        <view class="list-item-intro m-20 p-l-20 p-r-20">
-          <view class="list-item-intro-view p-t-20 p-b-20">
-            <view class="list-item-intro-header">
-              <view>
-                <text class="type-text fz-24 delivery">送</text>
-                <text class="fz-28 m-l-20">杭州逸香服饰有限公司</text>
-              </view>
-              <view class="fz-28">1,000</view>
-            </view>
-            <view class="fz-24 plate-text p-l-50 p-t-20 user-list">
-              <view class="m-t-6">
-                <text>李天明：</text>
-                <text class="m-l-4">123 4567 8901</text>
-              </view>
-              <view class="m-t-6">
-                <text>李天明：</text>
-                <text class="m-l-4">123 4567 8901</text>
-              </view>
-              <view class="m-t-6">
-                <text>李天明：</text>
-                <text class="m-l-4">123 4567 8901</text>
-              </view>
-              <view class="m-t-6">
-                <text>李天明：</text>
-                <text class="m-l-4">123 4567 8901</text>
-              </view>
-              <view class="m-t-6">
-                <text>李天明：</text>
-                <text class="m-l-4">123 4567 8901</text>
-              </view>
-              <view class="m-t-6">
-                <text>李天明：</text>
-                <text class="m-l-4">123 4567 8901</text>
+            <view v-if="childItem.type !== 3" class="fz-24 plate-text p-l-70 p-t-16 user-list">
+              <view class="m-t-6" v-for="(people, peopleIndex) in childItem.personnel" :key="peopleIndex">
+                <text>{{people.name}}</text>
+                <text class="m-l-10">{{people.license_plate}}</text>
               </view>
             </view>
           </view>
         </view>
       </view>
     </view>
+    <Empty v-if="timeArr.length === 0"/>
   </view>
 </template>
 
 <script>
 import DataSelect from "@/components/DataSelect";
 import NoticeBar from "@/components/NoticeBar";
-import { warehouseOrderCount } from "@/api";
+import Empty from "@/components/Empty";
+import { warehouseOrderCount, warehouseOrderCountText } from "@/api";
 export default {
   components: {
     DataSelect,
     NoticeBar,
+    Empty
   },
   data: () => ({
+    num:{
+      one:"",
+      two:"",
+      three:"",
+    },
     scrollDate: [],
-    showArr: [],
     timeArr: [],
-    date: "",
-    deliver_num: 0,
-    claim_num: 0,
-    maintain_num: 0,
+    id: "",
   }),
   onLoad() {
     this.getOrderShow();
   },
   methods: {
+    typeText(value) {
+      const MAP = {
+        // repair: "修",
+        1: {
+          class: 'delivery',
+          text: "送"
+        },
+        2: {
+          class: 'claimGoods',
+          text: "取"
+        },
+        3: {
+          class: 'repair',
+          text: "修"
+        },
+      };
+      return MAP[value] || {
+        class: "",
+        text: ""
+      };
+    },
     getOrderShow() {
       warehouseOrderCount().then((res) => {
         this.scrollDate = res.ret.map((item) => {
@@ -117,24 +101,30 @@ export default {
           const dateTs = new Date(item.date).setHours(0, 0, 0, 0);
           const dateValue = new Date(dateTs)
           return Object.freeze({
+            id:item.id,
             week: `周${weekArr[dateValue.getDay()]}`,
             month: `${item.date.substring(5, 7)}`,
             day: `${item.date.substring(8, 10)}`,
             date: item.date,
           })
         });
-        this.showArr = res.ret.map((item) => Object.freeze(item));
-        this.selectData(this.scrollDate[0], 0);
+        this.selectData(this.scrollDate[0]);
       });
     },
-    selectData(item, index) {
-      this.date = item.date;
-      this.deliver_num = item.deliver_num || 0
-      this.claim_num = item.claim_num || 0
-      this.maintain_num = item.maintain_num || 0
-      this.timeArr = this.showArr[index].son.filter(item => item.time_str && item.num).map((item) =>
-        Object.freeze({ ...item })
-      );
+    selectData(item) {
+      this.id = item.id;
+      warehouseOrderCountText({id:this.id}).then((res) => {
+        this.num = res.ret.num
+        this.timeArr = res.ret.info.filter(item => item.son.length > 0).map((item) => {
+          const numValue = item.son.map(item => item.num).reduce((prev, curr) => prev + curr);
+          return {
+            sonLength: item.son.length,
+            numValue,
+            ...item
+          }
+        })
+        console.log(this.timeArr);
+      });
     },
   },
 };
@@ -154,7 +144,6 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    // border-left: 8rpx solid #358fee;
     .list-item-header-intro{
         display: flex;
         align-items: center;
@@ -164,13 +153,17 @@ export default {
             background-color: $uni-bg-color-primary;
             border-radius: 4rpx;
         }
+      .error-text {
+        color: #f55547;
+      }
+      .reject_text{
+        color: #71D5A1;
+      }
     }
   }
-  .error-text {
-    color: #f55547;
-  }
+
   .list-item-intro {
-    border-top: 1rpx solid $uni-bg-color-border;
+    border-top: 1rpx solid #EDEEEE;
     .list-item-intro-header {
       display: flex;
       flex-direction: row;
@@ -194,17 +187,14 @@ export default {
     color: $uni-text-color-grey;
   }
   .list-item-intro-view {
-    border-bottom: 1rpx solid $uni-bg-color-border;
+    border-bottom: 1rpx solid #EDEEEE;
   }
   .list-item-intro-view:last-child {
     border-bottom: none;
   }
   .user-list {
-    // display: flex;
-    // flex-wrap: wrap;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    text-align: center;
     view:nth-of-type(odd) {
       padding-left: 0;
     }
@@ -216,4 +206,13 @@ export default {
 .weight-500{
   font-weight: 500;
 }
+.claimGoods {
+        color: #f1b350;
+      }
+      .repair {
+        color: #f55547;
+      }
+      .delivery {
+        color: #358fee;
+      }
 </style>

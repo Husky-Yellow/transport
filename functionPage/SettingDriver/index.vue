@@ -1,6 +1,6 @@
 <template>
   <view class="p-24 p-b-140">
-    <view class="repair-list p-l-24 p-r-24">
+    <view v-if="peopleList.length !== 0" class="repair-list p-l-24 p-r-24">
       <view
         v-for="(item, index) in peopleList"
         :key="index"
@@ -17,6 +17,7 @@
         </view>
       </view>
     </view>
+    <Empty v-if="peopleList.length === 0"/>
     <button class="add-button p-t-39 p-b-39" @click="goAddDriver">
       + 添加驾驶员
     </button>
@@ -24,9 +25,13 @@
 </template>
 
 <script>
+import { Empty } from "@/components/Empty";
 import { gysUserStaffShow } from "@/api";
 
 export default {
+  components: {
+    Empty
+  },
   data: () => ({
     page:1,
     peopleList:[],
