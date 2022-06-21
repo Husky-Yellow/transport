@@ -7,9 +7,6 @@ const store = new Vuex.Store({
   state:{
     token: '',
     phonenum: '',
-    selectPeopleArr: [],
-    selectDriver: {},
-    timeManagement: {},
   },
   mutations:{
     SET_TOKEN: (state, token) => {
@@ -18,11 +15,6 @@ const store = new Vuex.Store({
     SET_PHONENUM: (state, phonenum) => {
       state.phonenum = phonenum
     },
-    CHANGE_SETTING: (state, { key, value }) => {
-      if (state.hasOwnProperty(key)) {
-        state[key] = value
-      }
-    }
   },
   actions:{
     login({ commit }, userInfo) {
@@ -54,16 +46,10 @@ const store = new Vuex.Store({
       })
     },
 
-    changeSetting({ commit }, data) {
-      commit('CHANGE_SETTING', data)
-    }
   },
   getters: {
     token: state => state.token,
-    phonenum: state => state.phonenum,
-    selectPeopleArr: state => state.selectPeopleArr,
-    selectDriver: state => state.selectDriver,
-    timeManagement: state => state.timeManagement,
+    phonenum: state => state.phonenum
   }
 })
 

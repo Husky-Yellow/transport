@@ -40,6 +40,7 @@
           <view>
             <input
               type="text"
+              disabled
               v-model="selectDriver.name"
               placeholder="请输入姓名"
             />
@@ -62,6 +63,7 @@
           </view>
           <input
             type="text"
+            disabled
             v-model="selectDriver.tel"
             placeholder="请输入手机号"
           />
@@ -77,6 +79,7 @@
           </view>
           <input
             type="text"
+            disabled
             v-model="selectDriver.license_plate"
             placeholder="请输入车牌号"
           />
@@ -117,7 +120,6 @@
 <script>
 import DataSelect from "@/components/DataSelect";
 import { orderOrderAdd, orderShow } from "@/api";
-import { mapGetters } from "vuex";
 const TITLEMAP = {
   delivery: {
     text: "预约送货",
@@ -136,8 +138,7 @@ export default {
   components: {
     DataSelect,
   },
-  data() {
-    return {
+  data: () => ({
       showArr: [],
       timeArr: [],
       scrollDate: [],
@@ -146,20 +147,22 @@ export default {
       time: "",
       num: "",
       personnel: "",
-    };
-  },
-  computed: {
-    ...mapGetters(["selectDriver", "selectPeopleArr"]),
-    selectPeople() {
-      return this.selectPeopleArr.filter((item) => item.click);
-    },
+      selectPeopleArr: [],
+      selectDriver: [],
+      selectPeople: 0
+  }),
+  async onShow(){
+    this.selectPeopleArr = await uni.getStorageSync('selectPeopleArr')
+    this.selectPeople = (this.selectPeopleArr || []).filter((item) => item.click)
+    this.selectDriver = await uni.getStorageSync('selectDriver')
+    this.getOrderShow();
   },
   onLoad(e) {
     this.type = TITLEMAP[e.type].type;
     uni.setNavigationBarTitle({
       title: TITLEMAP[e.type].title || "预约",
     });
-    this.getOrderShow();
+
   },
   methods: {
     getOrderShow() {
@@ -237,9 +240,6 @@ export default {
         date: this.date,
         time: this.time,
         num: this.num,
-        name: this.type !== 3 && this.selectDriver.name,
-        tel: this.type !== 3 && this.selectDriver.tel,
-        license_plate: this.type !== 3 && this.selectDriver.license_plate,
         personnel:
           this.type !== 3
             ? this.selectDriver.id
@@ -247,21 +247,13 @@ export default {
       };
       orderOrderAdd(param)
         .then((res) => {
-          console.log(res);
-          debugger
           if (res.ret === true) {
-            this.$store.dispatch("changeSetting", {
-              key: "selectDriver",
-              value: {
+            uni.setStorageSync('selectDriver',{
                 name: "",
                 tel: "",
                 license_plate: "",
-              },
-            });
-            this.$store.dispatch("changeSetting", {
-              key: "selectPeopleArr",
-              value: [],
-            });
+              })
+            uni.setStorageSync('selectPeopleArr',[])
             uni.showToast({
               title: "预约成功",
               icon: "success",

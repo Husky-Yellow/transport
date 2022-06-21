@@ -118,6 +118,12 @@ export default {
     this.orderArr = []
     this.page = 1
     await this.getData();
+         uni.setStorageSync('selectDriver',{
+                name: "",
+                tel: "",
+                license_plate: "",
+              })
+            uni.setStorageSync('selectPeopleArr',[])
   },
   methods: {
     getData() {
@@ -133,8 +139,10 @@ export default {
           })
         }
         this.orderArr = [...this.orderArr, ...res.ret.data].map((item) => {
+          const type = this.active === 0 ? item.type : '99'
           return {
             ...item,
+            type,
             personnel: item.personnel || [
               { name: "--", tel: "--", license_plate: "--" },
             ],

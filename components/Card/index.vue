@@ -131,6 +131,10 @@ export default {
           class: 'reject',
           text: "已拒绝"
         },
+        99: {
+          class: 'receive',
+          text: "待接收"
+        },
       };
       return MAP[value] || {
         class: "",

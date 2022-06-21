@@ -21,24 +21,25 @@
         <view>
             <text class="fz-28">已选人数：</text> <text class="fz-36 red-text">{{selectLength}}</text>
         </view>
-        <button class="fz-28 p-t-26 p-b-26 p-l-80 p-r-80" @click="submit">确定</button>
+        <view>
+          <button class="add-button fz-28 m-r-26" @click="goAddRepair">新增返修员</button>
+          <button class="confirm-button fz-28 p-t-26 p-b-26 p-l-80 p-r-80" @click="submit">确定</button>
+        </view>
     </view>
   </view>
 </template>
 
-
 <script>
 import { gysUserStaffShow } from "@/api";
-import { mapGetters } from "vuex";
 
 export default {
   data: () => ({
-    page:1,
-    peopleList:[],
+    page: 1,
+    peopleList: [],
+    selectPeopleArr: [],
     onReachBottomTimer: null,
   }),
   computed: {
-    ...mapGetters(["selectPeopleArr"]),
     selectLength() {
       return this.peopleList.filter(item => item.click).length;
     },
@@ -50,7 +51,8 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-  onLoad() {
+  onShow() {
+    this.selectPeopleArr = uni.getStorageSync('selectPeopleArr')
     this.peopleList = []
     this.page = 1;
     this.getData()
@@ -69,18 +71,20 @@ export default {
         num: 10
       }).then(res => {
         const data = res.ret.data.map((item,index)=>{
-          item.click = this.selectPeopleArr.findIndex(i=> i.id === item.id && i.click === true) === index ? true : false
+          item.click = (this.selectPeopleArr || []).findIndex(i=> i.id === item.id && i.click === true) === index ? true : false
           return item
         })
         this.peopleList = [...this.peopleList,...data]
       })
     },
+    goAddRepair() {
+        uni.setStorageSync('selectPeopleArr',this.peopleList)
+      uni.navigateTo({
+        url: `/functionPage/AddRepair/index`,
+      });
+    },
     submit(){
-      console.log(this.peopleList)
-      this.$store.dispatch('changeSetting', {
-          key: 'selectPeopleArr',
-          value: this.peopleList
-        })
+        uni.setStorageSync('selectPeopleArr',this.peopleList)
              setTimeout(() => {
           uni.navigateBack({
             delta:1,
@@ -123,7 +127,10 @@ export default {
           color: #F55547;
       }
   }
-  button{
+  .add-button{
+    color: #358FEE;
+  }
+  .confirm-button{
       background-color: $uni-bg-color-primary;
       color: $uni-text-color-inverse;
       border-radius: 50rpx;
