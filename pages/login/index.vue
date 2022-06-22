@@ -1,7 +1,7 @@
 <template>
   <view class="p-t-40 p-l-20 p-r-20">
     <view class="iphone m-b-30 p-30">
-      <input type="number" placeholder="输入手机号" :value="phonenum" />
+      <input type="number" placeholder="输入账号" v-model="phonenum" />
     </view>
     <view class="password p-30">
       <input type="password" placeholder="请输入密码" v-model="password" />
@@ -11,8 +11,7 @@
 </template>
 
 <script>
-// const isMobile = phonenum => /^1[3456789]\d{9}$/.test(phonenum);
-const isMobile = phonenum => /^1\d{10}$/.test(phonenum);
+
 export default {
   data: () => ({
     phonenum: "15942306465",
@@ -20,9 +19,10 @@ export default {
   }),
   methods: {
     Login() {
-      if (!this.phonenum || !isMobile(this.phonenum)) {
+		//  || !isMobile(this.phonenum)
+      if (!this.phonenum) {
         uni.showToast({
-          title: "请输入正确电话号码",
+          title: "请输入正确账号",
           icon: "none",
         });
         return false;

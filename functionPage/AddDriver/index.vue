@@ -29,7 +29,7 @@
 
 <script>
 import { userStaffEditPost } from "@/api";
-
+import { isVehicleNumber, isMobile } from "@/utils/index";
 export default {
   data: () => ({
     id: '',
@@ -44,6 +44,7 @@ export default {
     this.license_plate = e?.license_plate
   },
   methods: {
+    isVehicleNumber,
     submitUserStaff() {
       if (!this.name) {
           uni.showToast({
@@ -52,14 +53,14 @@ export default {
           })
           return
       }
-      if (!this.tel) {
+      if (!this.tel || !isMobile(this.tel)) {
           uni.showToast({
             title: '请填写手机号',
             icon: 'error'
           })
           return
       }
-      if (!this.license_plate) {
+      if (!this.license_plate || !isVehicleNumber(this.license_plate)) {
           uni.showToast({
             title: '请填写车牌号',
             icon: 'error'

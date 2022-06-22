@@ -1,5 +1,5 @@
 <template>
-  <view class="p-24">
+  <view class="p-24 p-b-120">
     <view class="list" v-if="peopleList.length !== 0">
       <view
         v-for="(item, index) in peopleList"

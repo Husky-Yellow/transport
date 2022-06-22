@@ -45,6 +45,7 @@ export default {
   methods: {
     selectDate(index) {
       this.selectDay = index;
+      console.log(this.scrollDate[index]);
       this.$emit('select', this.scrollDate[index],index);
     },
   },

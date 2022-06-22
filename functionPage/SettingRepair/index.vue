@@ -48,6 +48,7 @@ export default {
   },
   methods: {
     getData() {
+
       gysUserStaffShow({
         type:2,
         page:this.page,

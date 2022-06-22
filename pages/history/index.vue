@@ -74,12 +74,11 @@ export default {
   },
   onPullDownRefresh() {
     this.page = 1;
-    this.orderArr = []
+
     this.getData();
     uni.stopPullDownRefresh()
   },
   onLoad() {
-    this.orderArr = []
     this.page = 1
     this.getData();
   },
@@ -90,6 +89,9 @@ export default {
         num: 10,
         status : this.active === 0 ? 2 : 3,
       }).then((res) => {
+        if (this.page === 1) {
+          this.orderArr = []
+        }
         if (res.ret.data.length === 0) {
           return uni.showToast({
             title: '没有更多数据了',

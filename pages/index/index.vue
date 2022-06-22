@@ -6,8 +6,8 @@
       :active="active"
       @changeActive="changeActive"
     />
-    <view v-if="orderArr.length !== 0" class="list p-24 p-t-76">
-      <Card v-for="(item, index) in orderArr" :key="index" :obj="item">
+    <view class="list p-24 p-t-76">
+      <SeeCard v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>
@@ -19,9 +19,9 @@
             </button>
           </view>
         </template>
-      </Card>
+      </SeeCard>
     </view>
-    <Empty v-if="orderArr.length === 0"/>
+    <Empty v-if="orderArr.length === 0" />
     <Model
       :textmsg="textmsg"
       @cancel="operation(false)"
@@ -71,16 +71,17 @@
 </template>
 
 <script>
-import Tab from "@/components/Tab";
-import Card from "@/components/Card";
-import Model from "@/components/Model";
-import Empty from "@/components/Empty";
+import Vue from 'vue'
+import { Tab } from "@/components/Tab";
+import { SeeCard } from "@/components/Card";
+import { Model } from "@/components/Model";
+import { Empty } from "@/components/Empty";
 import { gysOrderCommonOrder, ordeUuserCancel } from "@/api";
 
 export default {
   components: {
     Tab,
-    Card,
+    SeeCard,
     Model,
     Empty
   },
@@ -107,23 +108,24 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
+
   onPullDownRefresh() {
     this.page = 1;
     this.orderArr = []
     this.getData();
     uni.stopPullDownRefresh()
   },
-  async onShow() {
+  onShow() {
+    uni.setStorageSync('selectDriver',{
+      name: "",
+      tel: "",
+      license_plate: "",
+    })
+    uni.setStorageSync('selectPeopleArr',[])
     this.showView = false
-    this.orderArr = []
+
     this.page = 1
-    await this.getData();
-         uni.setStorageSync('selectDriver',{
-                name: "",
-                tel: "",
-                license_plate: "",
-              })
-            uni.setStorageSync('selectPeopleArr',[])
+    this.getData();
   },
   methods: {
     getData() {
@@ -132,6 +134,10 @@ export default {
         num: 10,
         status: this.active === 0 ? 1 : 2,
       }).then((res) => {
+        if (this.page === 1) {
+          this.orderArr = []
+        }
+        console.log('预约参数', res.ret.data);
         if (res.ret.data.length === 0) {
           return uni.showToast({
             title: '没有更多数据了',
@@ -139,15 +145,16 @@ export default {
           })
         }
         this.orderArr = [...this.orderArr, ...res.ret.data].map((item) => {
-          const type = this.active === 0 ? item.type : '99'
-          return {
-            ...item,
-            type,
+          const status = this.active === 0 ? item.status : '99'
+          return Object.freeze({...item,
+            status,
             personnel: item.personnel || [
               { name: "--", tel: "--", license_plate: "--" },
-            ],
-          }
+            ],})
         });
+        // return arr.map((item,index) => {
+        //   Vue.set(this.orderArr,index,item)
+        // })
       });
     },
     changeActive(index) {

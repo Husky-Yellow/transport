@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      list: ["待接收", "已通过", "已拒绝"],
+      list: ["待接收", "已接收", "已拒绝"],
       active: 0,
       orderArr: [],
       page:1,

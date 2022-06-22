@@ -166,7 +166,7 @@ export default {
       const MAP = {
         1:'送货',
         2:'取货',
-        3:'反修',
+        3:'返修',
       };
       return MAP[value] || '';
     },

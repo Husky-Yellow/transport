@@ -26,7 +26,7 @@
             />
             数量
           </view>
-          <input type="text" v-model="num" placeholder="请输入送货数量" />
+          <input type="number" v-model="num" placeholder="请输入送货数量" />
         </view>
         <view v-if="type !== 3" class="form-view-item p-22">
           <view>
@@ -120,6 +120,7 @@
 <script>
 import DataSelect from "@/components/DataSelect";
 import { orderOrderAdd, orderShow } from "@/api";
+import { isVehicleNumber, isMobile } from "@/utils/index";
 const TITLEMAP = {
   delivery: {
     text: "预约送货",
@@ -155,14 +156,14 @@ export default {
     this.selectPeopleArr = await uni.getStorageSync('selectPeopleArr')
     this.selectPeople = (this.selectPeopleArr || []).filter((item) => item.click)
     this.selectDriver = await uni.getStorageSync('selectDriver')
-    this.getOrderShow();
+
   },
   onLoad(e) {
     this.type = TITLEMAP[e.type].type;
     uni.setNavigationBarTitle({
       title: TITLEMAP[e.type].title || "预约",
     });
-
+    this.getOrderShow();
   },
   methods: {
     getOrderShow() {
@@ -183,6 +184,7 @@ export default {
       this.time = item.time_str;
     },
     selectData(item, index) {
+      console.log(item);
       this.date = item.date;
       this.timeArr = this.showArr[index].son.map((item) =>
         Object.freeze({ time_str: item.time_str, id: item.id })
@@ -215,13 +217,13 @@ export default {
             icon: "none",
           });
         }
-        if (!this.selectDriver.tel) {
+        if (!this.selectDriver.tel || !isMobile(this.selectDriver.tel)) {
           return uni.showToast({
             title: "请输入送货员手机号",
             icon: "none",
           });
         }
-        if (!this.selectDriver.license_plate) {
+        if (!this.selectDriver.license_plate || !isVehicleNumber(this.selectDriver.license_plate)) {
           return uni.showToast({
             title: "请输入送货员车牌号",
             icon: "none",
@@ -245,6 +247,7 @@ export default {
             ? this.selectDriver.id
             : this.selectPeople.map((item) => item.id).toString(),
       };
+      console.log('预约参数', {param});
       orderOrderAdd(param)
         .then((res) => {
           if (res.ret === true) {
