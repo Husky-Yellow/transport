@@ -44,21 +44,21 @@ export default {
       return this.peopleList.filter(item => item.click).length;
     },
   },
-  onReachBottom() {
-    if (this.onReachBottomTimer !== null) {
-      clearTimeout(this.onReachBottomTimer);
-    }
-    this.page++;
-    this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
-  },
+  // onReachBottom() {
+  //   if (this.onReachBottomTimer !== null) {
+  //     clearTimeout(this.onReachBottomTimer);
+  //   }
+  //   this.page++;
+  //   this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
+  // },
   onShow() {
     this.selectPeopleArr = uni.getStorageSync('selectPeopleArr')
     this.peopleList = []
-    this.page = 1;
+    // this.page = 1;
     this.getData()
   },
   onPullDownRefresh() {
-    this.page = 1;
+    // this.page = 1;
     this.peopleList = []
     this.getData();
     uni.stopPullDownRefresh()
@@ -67,8 +67,8 @@ export default {
     getData() {
       gysUserStaffShow({
         type: 2,
-        page: this.page,
-        num: 10
+        page: 1,
+        num: 10000
       }).then(res => {
         const data = res.ret.data.map((item,index)=>{
           item.click = (this.selectPeopleArr || []).findIndex(i=> i.id === item.id && i.click === true) === index ? true : false

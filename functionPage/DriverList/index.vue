@@ -38,13 +38,13 @@ export default {
     peopleList: [],
     onReachBottomTimer: null,
   }),
-  onReachBottom() {
-    if (this.onReachBottomTimer !== null) {
-      clearTimeout(this.onReachBottomTimer);
-    }
-    this.page++;
-    this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
-  },
+  // onReachBottom() {
+  //   if (this.onReachBottomTimer !== null) {
+  //     clearTimeout(this.onReachBottomTimer);
+  //   }
+  //   this.page++;
+  //   this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
+  // },
   onShow() {
     this.peopleList = [];
     this.page = 1;
@@ -60,8 +60,8 @@ export default {
     getData() {
       gysUserStaffShow({
         type: 1,
-        page: this.page,
-        num: 10,
+        page: 1,
+        num: 10000,
       }).then((res) => {
         this.peopleList = [...this.peopleList, ...res.ret.data];
       });

@@ -25,15 +25,16 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   data() {
     return {
+      token: null,
+      phonenum: null
     };
   },
-  computed: {
-    ...mapGetters(["token","phonenum"]),
+  onShow(){
+      this.token = uni.getStorageSync('token'),
+      this.phonenum = uni.getStorageSync('phonenum')
   },
   methods: {
     goToLogin(){

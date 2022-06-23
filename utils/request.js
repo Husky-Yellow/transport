@@ -11,7 +11,9 @@ const service = async (config = {}) => {
 	return new Promise(async (resolve, reject) => {
         // console.log('%cconfig拦截, 拦截: ', 'color:blue', '', config);
         const { url, data = {}, method } = config;
-		data.token = store.getters.token || uni.getStorageSync('token');
+		if (uni.getStorageSync('token')) {
+			data.token = uni.getStorageSync('token');
+		}
 		uni.showLoading({
 			mask: true
 		});
