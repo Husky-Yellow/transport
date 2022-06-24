@@ -9,12 +9,14 @@
             :key="index"
             :class="[
               'p-t-24 p-b-24 m-20',
-              item.num === 2 ? 'full' : '',
-              time === item.time_str ? 'active' : '',
+              item.num == 2 ? 'full' : '',
+              time == item.time_str ? 'active' : '',
             ]"
-            @click="item.num !== 2 ? changeTime(item) : ''"
+            @click="item.num == 2 ? changeTime(item) : ''"
           >
             {{ item.time_str }}
+            <text v-if="item.num == 2" class="p-l-10" style="color:#999">(约满)</text>
+
           </view>
         </view>
         <view class="form-view-item p-22">
@@ -184,7 +186,6 @@ export default {
       this.time = item.time_str;
     },
     selectData(item, index) {
-      console.log(item);
       this.date = item.date;
       this.timeArr = this.showArr[index].son.map((item) =>
         Object.freeze({ time_str: item.time_str, id: item.id })
@@ -197,7 +198,7 @@ export default {
           icon: "none",
         });
       }
-      if (!this.num) {
+      if (!this.num || this.num == 0) {
         uni.showToast({
           title: "请输入送货数量",
           icon: "none",

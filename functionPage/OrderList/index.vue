@@ -2,7 +2,7 @@
   <view>
     <Tab class="tab" :list="list" :active="active" @changeActive="changeActive" />
     <view v-if="orderArr.length !== 0" class="list p-20 p-t-80">
-      <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item" :showProress="active === 0 ? true :false">
+      <ManageCard v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
             <text>操作</text>

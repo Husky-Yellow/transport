@@ -87,7 +87,7 @@ export default {
       gysOrderCommonOrder({
         page: this.page,
         num: 10,
-        status : this.active === 0 ? 2 : 3,
+        status : this.active === 0 ? 24 : 3,
       }).then((res) => {
         if (this.page === 1) {
           this.orderArr = []

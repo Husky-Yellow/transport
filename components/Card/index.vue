@@ -132,7 +132,7 @@ export default {
           text: "已拒绝"
         },
         99: {
-          class: 'receive',
+          class: 'pending',
           text: "待接收"
         },
       };

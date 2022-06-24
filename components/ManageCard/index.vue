@@ -5,7 +5,6 @@
         <view class="fz-36"
           >{{obj.date && obj.date.length === 10 ? obj.date.substring(5,10) : obj.date }}
           <text class="fz-40 p-l-20 font-weight-medium">{{obj.s_time}}-{{obj.e_time}}</text>
-          <text v-if="showProress" :class="['fz-28 m-l-20', obj.hint >= 2 ? 'receive_text' : 'reject_text']" >({{obj.hint >= 2 ? '2' : obj.hint}}/2)</text>
         </view>
         <view class="fz-28 m-t-16 list-item-header_type"
           >{{obj.company || ''}}
@@ -95,10 +94,6 @@ export default {
           time: "",
         };
       },
-    },
-    showProress:{
-      type: Boolean,
-      default: true
     }
   },
   methods: {
