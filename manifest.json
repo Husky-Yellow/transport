@@ -1,12 +1,10 @@
 {
     "name" : "transport",
-    "appid" : "",
-    "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
     "mp-weixin" : {
-        "appid" : "wx34fc6974b376a115",
+        "appid" : "wxc1831a576eb0863e",
         "setting" : {
             "urlCheck" : false
         },

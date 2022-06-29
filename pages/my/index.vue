@@ -16,10 +16,6 @@
       <view class="p-b-30 p-t-30" @click="goFunctionPage('SettingRepair')">设置返修人员
         <view class="arrow right"></view>
       </view>
-      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('OrderList')">预约汇总</view>
-      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('ManageSchedule')">预约日程表</view>
-      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('ManageWarehouse')">仓库接收</view>
-      <view  class="p-b-30 p-t-30"  @click="goFunctionPage('TimeManagement')">预约时间管理</view>
     </view>
   </view>
 </template>

@@ -12,7 +12,7 @@
               item.num == 2 ? 'full' : '',
               time == item.time_str ? 'active' : '',
             ]"
-            @click="item.num == 2 ? changeTime(item) : ''"
+            @click="item.num != 2 ? changeTime(item) : ''"
           >
             {{ item.time_str }}
             <text v-if="item.num == 2" class="p-l-10" style="color:#999">(约满)</text>
@@ -188,7 +188,7 @@ export default {
     selectData(item, index) {
       this.date = item.date;
       this.timeArr = this.showArr[index].son.map((item) =>
-        Object.freeze({ time_str: item.time_str, id: item.id })
+        Object.freeze({ num:item.num, time_str: item.time_str, id: item.id })
       );
     },
     submitFrom() {

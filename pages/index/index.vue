@@ -108,10 +108,8 @@ export default {
     this.page++;
     this.onReachBottomTimer = setTimeout(() => this.getData(), 500);
   },
-
   onPullDownRefresh() {
     this.page = 1;
-    this.orderArr = []
     this.getData();
     uni.stopPullDownRefresh()
   },

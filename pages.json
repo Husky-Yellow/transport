@@ -3,7 +3,8 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh":true
 			}
 		},
 		{
@@ -15,13 +16,15 @@
 		{
 			"path": "pages/history/index",
 			"style": {
-				"navigationBarTitleText": "预约历史"
+				"navigationBarTitleText": "预约历史",
+				"enablePullDownRefresh":true
 			}
 		},
 		{
 			"path": "pages/warehouse/index",
 			"style": {
-				"navigationBarTitleText": "仓库接收"
+				"navigationBarTitleText": "仓库接收",
+				"enablePullDownRefresh":true
 			}
 		},
 		{
@@ -45,36 +48,6 @@
 			  "path": "DriverList/index",
 			  "style": {
 				"navigationBarTitleText": "人员列表"
-			  }
-			},
-			{
-			  "path": "ManageWarehouse/index",
-			  "style": {
-				"navigationBarTitleText": "仓库接收"
-			  }
-			},
-			{
-			  "path": "ManageSchedule/index",
-			  "style": {
-				"navigationBarTitleText": "预约日程表"
-			  }
-			},
-			{
-			  "path": "TimeManagement/index",
-			  "style": {
-				"navigationBarTitleText": "预约时间管理"
-			  }
-			},
-			{
-			  "path": "TimeManagementSelect/index",
-			  "style": {
-				"navigationBarTitleText": "预约时间管理选择"
-			  }
-			},
-			{
-			  "path": "OrderList/index",
-			  "style": {
-				"navigationBarTitleText": "预约汇总"
 			  }
 			},
 			{
@@ -147,35 +120,8 @@
 	  },
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "十三余",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
-	},
-	"condition": {
-		"current": 0,
-		"list": [
-			{
-				"name": "",
-				"path": ""
-			},
-			{
-				"name": "",
-				"path": ""
-			},
-			{
-				"name": "预约汇总",
-				"pathName": "functionPage/OrderList/index",
-				"query": "",
-				"launchMode": "default",
-				"scene": null
-			},
-			{
-				"name": "预约送货",
-				"pathName": "functionPage/AppointmentDelivery/index",
-				"query": "type=delivery",
-				"launchMode": "default",
-				"scene": null
-			}
-		]
 	}
 }

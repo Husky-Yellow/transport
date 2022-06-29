@@ -4,8 +4,8 @@
       <view
         v-for="(item, index) in peopleList"
         :key="index"
-        @click="itemClick(item)"
-        class="list-item p-t-26 p-b-24 p-l-30"
+        @click="itemClick(item, index)"
+        :class="['list-item p-t-26 p-b-24 p-l-30', activeIndex === index && 'active']"
       >
         <view>
           <text class="fz-32">{{ item.name }}</text>
@@ -28,7 +28,7 @@
 <script>
 import { Empty } from "@/components/Empty";
 import { gysUserStaffShow } from "@/api";
-
+import { debounce } from '@/utils/index.js'
 export default {
   components: {
     Empty,
@@ -36,6 +36,7 @@ export default {
   data: () => ({
     page: 1,
     peopleList: [],
+    activeIndex:null,
     onReachBottomTimer: null,
   }),
   // onReachBottom() {
@@ -71,14 +72,16 @@ export default {
         url: `/functionPage/AddDriver/index`,
       });
     },
-    itemClick(value) {
+    itemClick:debounce( function (value, index) {
+      this.activeIndex = index
+      console.log(`1111`);
       uni.setStorageSync('selectDriver',value)
       setTimeout(() => {
         uni.navigateBack({
           delta: 1,
         });
       }, 1500);
-    },
+    }),
   },
 };
 </script>
@@ -93,11 +96,14 @@ export default {
     .plate-number {
       color: $uni-text-color-grey;
     }
+
   }
   .list-item:last-child {
     border-bottom: none;
   }
+
 }
+
 .add-button {
   box-shadow: inset 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
   // background-color: $uni-bg-color-primary;
@@ -114,4 +120,11 @@ export default {
     vertical-align: middle;
   }
 }
+  .active{
+      background-color: #358fee;
+      color: #fff !important;
+      .plate-number {
+      color: #fff !important;
+    }
+    }
 </style>

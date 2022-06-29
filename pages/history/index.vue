@@ -99,6 +99,7 @@ export default {
           })
         }
         this.orderArr = [...this.orderArr,...res.ret.data].map((item) => {
+          const status = this.active === 0 ? 'hitsory-0' : item.status
           return Object.freeze({
             date: item.date,
             type: item.type,
@@ -109,7 +110,7 @@ export default {
             num: item.num,
             s_time: item.s_time,
             e_time: item.e_time,
-            status: item.status,
+            status,
           });
         });
       });

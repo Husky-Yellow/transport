@@ -34,23 +34,20 @@ export const isVehicleNumber = (vehicleNumber) => {
 // const isMobile = phonenum => /^1[3456789]\d{9}$/.test(phonenum);
 export const isMobile = (phonenum) => /^1\d{10}$/.test(phonenum);
 
-// 防止处理多次点击
-export const noMultipleClick = (methods, info) => {
-  // methods是需要点击后需要执行的函数， info是点击需要传的参数
-  let that = this;
-  if (that.noClick) {
-    // 第一次点击
-    that.noClick = false;
-    if (info && info !== "") {
-      // info是执行函数需要传的参数
-      methods(info);
-    } else {
-      methods();
-    }
-    setTimeout(() => {
-      that.noClick = true;
-    }, 2000);
-  } else {
-    // 这里是重复点击的判断
+/**
+ * @desc 函数防抖
+ * @param func 函数
+ * @param wait 延迟执行毫秒数
+ */
+ export const debounce = (fn,wait=1000) => {
+  var timerId = null;
+  var flag = true;
+  return function(){
+    clearTimeout(timerId);
+    if(flag){
+      fn.apply(this,arguments);
+      flag = false
+      }
+    timerId = setTimeout(() => { flag = true},wait)
   }
-};
+}

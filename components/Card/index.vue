@@ -135,6 +135,10 @@ export default {
           class: 'pending',
           text: "待接收"
         },
+        'hitsory-0': {
+          class: 'receive',
+          text: "已通过"
+        },
       };
       return MAP[value] || {
         class: "",
