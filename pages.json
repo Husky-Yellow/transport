@@ -72,12 +72,6 @@
 			  }
 			},
 			{
-			  "path": "Subscribe/index",
-			  "style": {
-				"navigationBarTitleText": "预约日程表"
-			  }
-			},
-			{
 			  "path": "SettingRepair/index",
 			  "style": {
 				"navigationBarTitleText": "添加返修人员"

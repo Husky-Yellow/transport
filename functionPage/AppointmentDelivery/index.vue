@@ -19,6 +19,23 @@
 
           </view>
         </view>
+        <view v-if="type === 1" class="form-view-item p-22">
+          <view>
+            <image
+              mode="scaleToFill"
+              class="m-r-10"
+              src="@/static/people.png"
+            />
+            送货单号
+          </view>
+          <view>
+            <picker @change="pickerChange" :value="pickerIndex" :range="array">
+            <view class="picker">
+              {{array[index]}}
+            </view>
+          </picker>
+          </view>
+        </view>
         <view class="form-view-item p-22">
           <view>
             <image
@@ -152,7 +169,9 @@ export default {
       personnel: "",
       selectPeopleArr: [],
       selectDriver: [],
-      selectPeople: 0
+      selectPeople: 0,
+      array: [],
+      pickerIndex: 0
   }),
   async onShow(){
     this.selectPeopleArr = await uni.getStorageSync('selectPeopleArr')
@@ -190,6 +209,9 @@ export default {
       this.timeArr = this.showArr[index].son.map((item) =>
         Object.freeze({ num:item.num, time_str: item.time_str, id: item.id })
       );
+    },
+    pickerChange(e) {
+      this.pickerIndex = e.detail.value
     },
     submitFrom() {
       if (!this.time) {

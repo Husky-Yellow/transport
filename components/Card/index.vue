@@ -25,6 +25,10 @@
         <text>{{ obj.num }}</text>
       </view>
       <view class="list-item-body_item p-t-10 p-b-10">
+        <text class="item-text">送货单号</text>
+        <text>{{ obj.num }}</text>
+      </view>
+      <view class="list-item-body_item p-t-10 p-b-10">
         <text class="item-text">送货员</text>
         <view>
           <image

@@ -1,5 +1,5 @@
 {
-    "name" : "transport",
+    "name" : "十三余预约送货系统仓库端",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -9,8 +9,10 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
-        "lazyCodeLoading": "requiredComponents",
-        "optimization":{"subPackages":true}
+        "lazyCodeLoading" : "requiredComponents",
+        "optimization" : {
+            "subPackages" : true
+        }
     },
     "uniStatistics" : {
         "enable" : false
