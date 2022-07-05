@@ -26,7 +26,7 @@
       </view>
       <view class="list-item-body_item p-t-10 p-b-10">
         <text class="item-text">送货单号</text>
-        <text>{{ obj.num }}</text>
+        <text>{{ obj.delivery_note  || '--'}}</text>
       </view>
       <view class="list-item-body_item p-t-10 p-b-10">
         <text class="item-text">送货员</text>
@@ -134,6 +134,10 @@ export default {
         5: {
           class: 'reject',
           text: "已拒绝"
+        },
+        9: {
+          class: 'reject',
+          text: "已过期"
         },
         99: {
           class: 'pending',

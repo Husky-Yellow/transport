@@ -24,16 +24,21 @@
             <image
               mode="scaleToFill"
               class="m-r-10"
-              src="@/static/people.png"
+              src="@/static/num_icon@2x.png"
             />
             送货单号
           </view>
           <view>
             <picker @change="pickerChange" :value="pickerIndex" :range="array">
-            <view class="picker">
-              {{array[index]}}
-            </view>
-          </picker>
+              <view
+                :class="[
+                  'picker fz-28',
+                  pickerIndex !== -1 ? '' : 'grey-text',
+                ]">
+                {{pickerIndex !== -1 ? array[pickerIndex] : "请选择"}}
+              </view>
+            </picker>
+            <view class="arrow right"></view>
           </view>
         </view>
         <view class="form-view-item p-22">
@@ -170,8 +175,8 @@ export default {
       selectPeopleArr: [],
       selectDriver: [],
       selectPeople: 0,
-      array: [],
-      pickerIndex: 0
+      array: ['18842886766','18842886766','18842886766','18842886766'],
+      pickerIndex: -1
   }),
   async onShow(){
     this.selectPeopleArr = await uni.getStorageSync('selectPeopleArr')
@@ -227,6 +232,15 @@ export default {
         });
         return false;
       }
+      if (this.type === 1) {
+        if (this.pickerIndex === -1) {
+        uni.showToast({
+          title: "请选择送货单号",
+          icon: "none",
+        });
+        return false;
+        }
+      }
       if (this.type !== 3) {
         if (!this.selectDriver.id) {
           return uni.showToast({
@@ -265,6 +279,8 @@ export default {
         date: this.date,
         time: this.time,
         num: this.num,
+        delivery_note: this.type === 1 ? this.array[this.pickerIndex] : '',
+        username:'--',
         personnel:
           this.type !== 3
             ? this.selectDriver.id
@@ -354,6 +370,10 @@ export default {
     view {
       display: flex;
       align-items: center;
+    }
+    .arrow{
+      border-top:2rpx solid ;
+      border-right:2rpx solid ;
     }
   }
   .form-view-item:last-child {

@@ -7,6 +7,7 @@
           <input
             type="text"
             confirm-type="search"
+            v-model="name"
             placeholder="搜索送货员，取货员，返修员"
             @confirm="searchList"
           />
@@ -17,47 +18,45 @@
         <view
           :class="[
             'header-picker-time',
-            !startTime && !endTime ? 'grey-text' : '',
+            !time_s && !time_e ? 'grey-text' : '',
           ]"
         >
           <picker
             mode="date"
-            :value="startTime"
+            :value="time_s"
             header-text="开始时间"
-            :start="seventDayStartTime"
-            :end="active === 0 ? seventDayEndTime : seventDayEightTime"
+            :end="seventDayStartTime"
             @change="changeStartTime"
-            @cancel="startTime = null"
+            @cancel="time_s = null"
           >
-            <text>{{ startTime || "所有时间" }}</text>
+            <text>{{ time_s || "所有时间" }}</text>
           </picker>
           <text>~</text>
           <picker
             mode="date"
-            :value="endTime"
+            :value="time_e"
             header-text="结束时间"
-            :start="seventDayStartTime"
-            :end="active === 0 ? seventDayEndTime : seventDayEightTime"
+            :end="seventDayStartTime"
             @change="changeEndTime"
-            @cancel="endTime = null"
+            @cancel="time_e = null"
           >
-            <text>{{ endTime || "所有时间" }}</text>
+            <text>{{ time_e || "所有时间" }}</text>
           </picker>
           <view class="arrow"></view>
         </view>
         <picker
-          :class="['header-picker-type', !!typeIndex ? '' : 'grey-text']"
+          :class="['header-picker-type', !!select_type ? '' : 'grey-text']"
           @change="bindPickerChange"
-          @cancel="typeIndex = null"
-          :value="typeIndex"
+          @cancel="select_type = null"
+          :value="select_type"
           :range="typeArr"
         >
-          {{ !!typeIndex ? typeArr[typeIndex] : typeArr[0] }}
+          {{ !!select_type ? typeArr[select_type] : typeArr[0] }}
           <view class="arrow"></view>
         </picker>
       </view>
     </view>
-    <view v-if="orderArr.length !== 0" class="list p-20 p-t-80">
+    <view v-if="orderArr.length !== 0" class="list p-20">
       <Card v-for="(item, index) in orderArr" :key="index" :obj="item">
         <template #funtion>
           <view v-if="active === 0" class="list-item-funtion p-t-20 p-b-20 fz-28">
@@ -76,22 +75,7 @@ import { Tab } from "@/components/Tab";
 import { Card } from "@/components/Card";
 import { Empty } from "@/components/Empty";
 import { gysOrderCommonOrder } from "@/api";
-const selectDayObj = (num = 7) => {
-  const date1 = new Date();
-  //今天时间
-  const startTime =
-    date1.getFullYear() + "-" + (date1.getMonth() + 1) + "-" + date1.getDate();
-  const date2 = new Date(date1);
-  date2.setDate(date1.getDate() + num);
-  //num是正数表示之后的时间，num负数表示之前的时间，0表示今天
-  const endTime =
-    date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate();
-  console.log(endTime);
-  return {
-    startTime,
-    endTime,
-  };
-};
+import { selectDayObj } from "@/utils";
 export default {
   components: {
     Tab,
@@ -106,12 +90,11 @@ export default {
       page: 1,
       onReachBottomTimer: null,
       typeArr: ["全部类型", "送货预约", "取货预约", "返修预约"],
-      typeIndex: 0,
-      startTime: null,
-      endTime: null,
+      select_type: 0, // 0是全部,1预约2取货3维修
+      time_s: null,
+      time_e: null,
+      name: null,
       seventDayStartTime: selectDayObj().startTime,
-      seventDayEndTime: selectDayObj().endTime,
-      seventDayEightTime: selectDayObj(8).endTime,
     }
   },
   onReachBottom() {
@@ -131,20 +114,37 @@ export default {
     uni.stopPullDownRefresh()
   },
   methods: {
+    searchList() {
+      this.page = 1
+      this.getData();
+    },
     bindPickerChange(e) {
-      this.typeIndex = e.detail.value;
+      this.select_type = e.detail.value;
+      this.searchList();
     },
     changeStartTime(e) {
-      this.startTime = e.detail.value;
+      this.time_s = e.detail.value;
+      this.searchList();
     },
     changeEndTime(e) {
-      this.endTime = e.detail.value;
+      this.time_e = e.detail.value;
+      this.searchList();
     },
     getData() {
+      const statusMAP = {
+        0:4,
+        1:5,
+        2:9
+      }
+      const status = statusMAP[this.active]
       gysOrderCommonOrder({
         page: this.page,
         num: 10,
-        status: this.active === 0 ? 4 : 5,
+        status,
+        select_type: this.select_type,
+        time_s: this.time_s,
+        time_e: this.time_e,
+        name: this.name
       }).then((res) => {
         if (this.page === 1) {
           this.orderArr = []
