@@ -30,7 +30,7 @@
             mode="date"
             :value="time_s"
             header-text="开始时间"
-            :start="seventDayStartTime"
+            :start="active === 0 ?seventDayStartTime : null"
             :end="seventDayEndTime"
             @change="changeStartTime"
             @cancel="time_s = null"
@@ -42,7 +42,7 @@
             mode="date"
             :value="time_e"
             header-text="结束时间"
-            :start="seventDayStartTime"
+            :start="active === 0 ?seventDayStartTime : null"
             :end="seventDayEndTime"
             @change="changeEndTime"
             @cancel="time_e = null"
@@ -195,7 +195,7 @@ export default {
       this.getData();
     },
     bindPickerChange(e) {
-      this.typeIndex = e.detail.value;
+      this.select_type = e.detail.value;
       this.searchList();
     },
     changeStartTime(e) {
@@ -240,6 +240,10 @@ export default {
       this.active = index;
       this.page = 1;
       this.orderArr = [];
+      this.select_type = 0,
+      this.time_s = null,
+      this.time_e = null,
+      this.name = null,
       this.getData();
     },
     goToAppointmentDelivery(type) {

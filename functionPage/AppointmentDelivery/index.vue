@@ -185,9 +185,9 @@ export default {
 
   },
   onLoad(e) {
-    this.type = TITLEMAP[e.type].type;
+    this.type = TITLEMAP[`${e.type}`].type;
     uni.setNavigationBarTitle({
-      title: TITLEMAP[e.type].title || "预约",
+      title: TITLEMAP[`${e.type}`].text || "预约",
     });
     this.getOrderShow();
   },
@@ -279,13 +279,16 @@ export default {
         date: this.date,
         time: this.time,
         num: this.num,
-        delivery_note: this.type === 1 ? this.array[this.pickerIndex] : '',
-        username:'--',
+        factory_name: uni.getStorageSync('referrerInfo') ? uni.getStorageSync('referrerInfo').factory_name : '',
+        username:uni.getStorageSync('referrerInfo') ? uni.getStorageSync('referrerInfo').name : '--',
         personnel:
           this.type !== 3
             ? this.selectDriver.id
             : this.selectPeople.map((item) => item.id).toString(),
       };
+      if (this.type === 1) {
+        param['delivery_note'] = this.array[this.pickerIndex]
+      }
       console.log('预约参数', {param});
       orderOrderAdd(param)
         .then((res) => {

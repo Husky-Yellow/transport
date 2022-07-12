@@ -176,6 +176,10 @@ export default {
       this.active = index;
       this.page = 1
       this.orderArr = []
+      this.select_type = 0,
+      this.time_s = null,
+      this.time_e = null,
+      this.name = null,
       this.getData()
     },
   },

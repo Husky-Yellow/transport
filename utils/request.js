@@ -1,5 +1,4 @@
 import { getBaseUrl } from './index';
-import store from '@/store'
 
 /**
  * @param {String} config.url
@@ -10,10 +9,17 @@ import store from '@/store'
 const service = async (config = {}) => {
 	return new Promise(async (resolve, reject) => {
         // console.log('%cconfig拦截, 拦截: ', 'color:blue', '', config);
+		const referrerInfo = uni.getStorageSync('referrerInfo') || null
         const { url, data = {}, method } = config;
-		if (uni.getStorageSync('token')) {
-			data.token = uni.getStorageSync('token');
+		if (!referrerInfo || !referrerInfo.id) {
+			uni.showToast({
+				title: '身份认证失效,请重新跳转至本小程序',
+				icon: 'none',
+			})
+			return reject('身份认证失效,请重新跳转至本小程序')
 		}
+		data['token_isset'] = '7788521a'
+		data['user_id'] = referrerInfo.id
 		uni.showLoading({
 			mask: true
 		});
@@ -39,8 +45,7 @@ const service = async (config = {}) => {
 										title: '身份认证失效,请重新登录',
 										icon: 'none',
 									})
-									store.dispatch('resetToken')
-									return reject('身份认证失效,请重新登录')
+									return reject('身份认证失效,请重新跳转至本小程序')
 								} else if (res.data.code !== 200) {
 									return reject(res.data.message)
 								} else {
@@ -48,10 +53,9 @@ const service = async (config = {}) => {
 								}
                             } else if (res.statusCode === 405) {
 								uni.showToast({
-									title: '身份认证失效,请重新登录',
+									title: '身份认证失效,请重新跳转至本小程序',
 									icon: 'none',
 								})
-								store.dispatch('resetToken')
 								return reject('身份认证失效,请重新登录')
 							} else if (res.statusCode === 500) {
 								uni.showToast({
