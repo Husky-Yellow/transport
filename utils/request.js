@@ -1,9 +1,27 @@
-import { getBaseUrl } from './index';
+import store from '@/store'
+const getUrl = () => {
+	const { miniProgram: { envVersion } } = wx.getAccountInfoSync();
+	let url = '';
+	switch (envVersion) {
+	  	case 'develop':
+		case 'trial':
+			url = `http://180.76.185.112`;
+			break;
+		case 'release':
+			url = `${defaultConfig.prodUrl}${params.url}`;
+			break;
+		default:
+			url = `https://rfid.13yu.com`;
+			break;
+	}
+	return url
+}
 
 /**
  * @param {String} config.url
  * @param {Object} config.data
  * @param {String} config.method
+ * @param {String} config.hotUrl
  * @returns
  */
 const service = async (config = {}) => {
@@ -11,12 +29,15 @@ const service = async (config = {}) => {
         // console.log('%cconfig拦截, 拦截: ', 'color:blue', '', config);
 		const referrerInfo = uni.getStorageSync('referrerInfo') || null
         const { url, data = {}, method } = config;
-		if (!referrerInfo || !referrerInfo.id) {
-			uni.showToast({
-				title: '身份认证失效,请重新跳转至本小程序',
-				icon: 'none',
-			})
-			return reject('身份认证失效,请重新跳转至本小程序')
+		if (url !== '/home/Warehouse/login') {
+			if (!referrerInfo || !referrerInfo.id) {
+				uni.showToast({
+					title: '身份认证失效,请重新跳转至本小程序',
+					icon: 'none',
+				})
+				store.dispatch('resetToken')
+				return reject('身份认证失效,请重新跳转至本小程序')
+			}
 		}
 		data['token_isset'] = '7788521a'
 		data['user_id'] = referrerInfo.id
@@ -33,7 +54,7 @@ const service = async (config = {}) => {
 					return reject({errMsg: '网络较差，请检查网络'})
 				} else {
                     await uni.request({
-						url: `${getBaseUrl()}${url}`,
+						url: `${config.hotUrl || getUrl()}${url}`,
 						data,
 						method,
 						complete(res) {
@@ -45,8 +66,9 @@ const service = async (config = {}) => {
 										title: '身份认证失效,请重新登录',
 										icon: 'none',
 									})
+									store.dispatch('resetToken')
 									return reject('身份认证失效,请重新跳转至本小程序')
-								} else if (res.data.code !== 200) {
+								} else if (res.data.code !== 200 && res.data.code !== '0') {
 									return reject(res.data.message)
 								} else {
 									return resolve(res.data)
@@ -56,6 +78,7 @@ const service = async (config = {}) => {
 									title: '身份认证失效,请重新跳转至本小程序',
 									icon: 'none',
 								})
+								store.dispatch('resetToken')
 								return reject('身份认证失效,请重新登录')
 							} else if (res.statusCode === 500) {
 								uni.showToast({

@@ -1,7 +1,7 @@
 <template>
   <view class="p-t-40 p-l-20 p-r-20">
     <view class="iphone m-b-30 p-30">
-      <input type="number" placeholder="输入账号" v-model="phonenum" />
+      <input type="number" placeholder="输入账号" v-model="name" />
     </view>
     <view class="password p-30">
       <input type="password" placeholder="请输入密码" v-model="password" />
@@ -14,13 +14,12 @@
 
 export default {
   data: () => ({
-    phonenum: "15942306465",
-    password: "15942306465",
+    name: "测试",
+    password: "123456",
   }),
   methods: {
     Login() {
-		//  || !isMobile(this.phonenum)
-      if (!this.phonenum) {
+      if (!this.name) {
         uni.showToast({
           title: "请输入正确账号",
           icon: "none",
@@ -36,10 +35,11 @@ export default {
       }
       this.$store
         .dispatch("login", {
-          phonenum: this.phonenum,
+          name: this.name,
           password: this.password,
         })
         .then((res) => {
+          console.log(res);
           uni.showToast({
             title: "登录成功",
             icon: "success",

@@ -4,27 +4,11 @@ import { login } from '@/api'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
-  state:{
-    token: '',
-    phonenum: '',
-  },
-  mutations:{
-    SET_TOKEN: (state, token) => {
-      state.token = token
-    },
-    SET_PHONENUM: (state, phonenum) => {
-      state.phonenum = phonenum
-    },
-  },
   actions:{
-    login({ commit }, userInfo) {
+    login({}, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(async response => {
-          const { ret } = response
-          commit('SET_TOKEN', ret)
-          commit('SET_PHONENUM', userInfo.phonenum)
-          await uni.setStorageSync('token', ret)
-          await uni.setStorageSync('phonenum', userInfo.phonenum)
+          await uni.setStorageSync('referrerInfo', response.data)
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -35,10 +19,7 @@ const store = new Vuex.Store({
     // remove token
     resetToken({ commit }) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '')
-        commit('SET_PHONENUM', '')
-        uni.setStorageSync('token', '')
-        uni.setStorageSync('phonenum', '')
+        uni.setStorageSync('referrerInfo', {})
         uni.navigateTo({
           url: `/pages/login/index`,
         });

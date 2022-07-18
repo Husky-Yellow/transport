@@ -1,22 +1,13 @@
 import request from "@/utils/request";
 
 /** 登陆
- * @param {String} data.phonenum 手机号
- * @param {String} data.password 密码
- */
- export const cangKuUserLogin = data => request({
-    url: '/api/login/cangKuUserLogin',
-    method: "POST",
-    data
-})
-
-/** 登陆
- * @param {String} data.phonenum 手机号
+ * @param {String} data.name 账户
  * @param {String} data.password 密码
  */
  export const login = data => request({
-    url: '/api/login/gongYingShangUserLogin',
+    url: '/home/Warehouse/login',
     method: "POST",
+    hotUrl: 'https://rfid.13yu.com/newssy/index.php',
     data
 })
 
