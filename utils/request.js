@@ -5,13 +5,13 @@ const getUrl = () => {
 	switch (envVersion) {
 	  	case 'develop':
 		case 'trial':
-			url = `http://180.76.185.112`;
-			break;
+			// url = `http://180.76.185.112`;
+			// break;
 		case 'release':
-			url = `${defaultConfig.prodUrl}${params.url}`;
+			url = `https://yysh.13yu.com`;
 			break;
 		default:
-			url = `https://rfid.13yu.com`;
+			url = `https://yysh.13yu.com`;
 			break;
 	}
 	return url

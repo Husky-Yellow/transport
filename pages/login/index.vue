@@ -1,7 +1,7 @@
 <template>
   <view class="p-t-40 p-l-20 p-r-20">
     <view class="iphone m-b-30 p-30">
-      <input type="number" placeholder="输入账号" v-model="name" />
+      <input type="text" placeholder="输入账号" v-model="name" />
     </view>
     <view class="password p-30">
       <input type="password" placeholder="请输入密码" v-model="password" />
@@ -14,8 +14,8 @@
 
 export default {
   data: () => ({
-    name: "测试",
-    password: "123456",
+    name: "",
+    password: "",
   }),
   methods: {
     Login() {
