@@ -114,7 +114,7 @@
         @click="goToAppointmentDelivery('claimGoods')"
       >
         <image src="@/static/claimGoods.png" mode="scaleToFill" />
-        <text class="fz-24">取货</text>
+        <text class="fz-24">领料</text>
       </view>
       <view
         class="subscribe-view-item p-20 m-l-10"

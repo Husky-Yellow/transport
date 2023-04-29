@@ -151,7 +151,7 @@ const TITLEMAP = {
     type: 1,
   },
   claimGoods: {
-    text: "预约取货",
+    text: "预约领料",
     type: 2,
   },
   repair: {
