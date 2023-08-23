@@ -143,7 +143,7 @@
 
 <script>
 import DataSelect from "@/components/DataSelect";
-import { orderOrderAdd, orderShow } from "@/api";
+import { orderOrderAdd, orderShow, orderGetList } from "@/api";
 import { isVehicleNumber, isMobile } from "@/utils/index";
 const TITLEMAP = {
   delivery: {
@@ -175,14 +175,13 @@ export default {
       selectPeopleArr: [],
       selectDriver: [],
       selectPeople: 0,
-      array: ['18842886766','18842886766','18842886766','18842886766'],
+      array: [],
       pickerIndex: -1
   }),
   async onShow(){
     this.selectPeopleArr = await uni.getStorageSync('selectPeopleArr')
     this.selectPeople = (this.selectPeopleArr || []).filter((item) => item.click)
     this.selectDriver = await uni.getStorageSync('selectDriver')
-
   },
   onLoad(e) {
     this.type = TITLEMAP[`${e.type}`].type;
@@ -190,6 +189,7 @@ export default {
       title: TITLEMAP[`${e.type}`].text || "预约",
     });
     this.getOrderShow();
+    this.getdeliveryNoteArr()
   },
   methods: {
     getOrderShow() {
@@ -205,6 +205,11 @@ export default {
         this.showArr = res.ret.map((item) => Object.freeze(item));
         this.selectData(this.scrollDate[0], 0);
       });
+    },
+    getdeliveryNoteArr() {
+      orderGetList().then(res=> {
+        this.array = res.ret.map(item => item.invoice_number)
+      })
     },
     changeTime(item) {
       this.time = item.time_str;

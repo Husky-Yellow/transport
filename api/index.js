@@ -150,3 +150,11 @@ export const warehouseOrderCountText = data => request({
     method: "POST",
     data
 })
+
+/**
+ * 获取发货单号
+ */
+export const orderGetList = () => request({
+    url: '/api/order/getList',
+    method: "GET",
+})

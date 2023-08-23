@@ -17,6 +17,8 @@ const getUrl = () => {
 	return url
 }
 
+const urlWhiteList = ['/home/Warehouse/login','/api/order/getList']
+
 /**
  * @param {String} config.url
  * @param {Object} config.data
@@ -29,7 +31,7 @@ const service = async (config = {}) => {
         // console.log('%cconfig拦截, 拦截: ', 'color:blue', '', config);
 		const referrerInfo = uni.getStorageSync('referrerInfo') || null
         const { url, data = {}, method } = config;
-		if (url !== '/home/Warehouse/login') {
+		if (!urlWhiteList.includes(url)) {
 			if (!referrerInfo || !referrerInfo.id) {
 				uni.showToast({
 					title: '身份认证失效,请重新跳转至本小程序',
@@ -39,8 +41,10 @@ const service = async (config = {}) => {
 				return reject('身份认证失效,请重新跳转至本小程序')
 			}
 		}
-		data['token_isset'] = '7788521a'
-		data['user_id'] = referrerInfo.id
+		if (url !== urlWhiteList[1]) {
+			data['token_isset'] = '7788521a'
+			data['user_id'] = referrerInfo.id
+		}
 		uni.showLoading({
 			mask: true
 		});
