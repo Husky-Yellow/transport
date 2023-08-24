@@ -207,8 +207,15 @@ export default {
       });
     },
     getdeliveryNoteArr() {
-      orderGetList().then(res=> {
-        this.array = res.ret.map(item => item.invoice_number)
+      // debugger
+      orderGetList({
+        "page":"1",
+        "size":"5"
+    }).then(res=> {
+      debugger
+        console.log(res.ret);
+        // debugger
+        // this.array = res.ret.map(item => item.invoice_number)
       })
     },
     changeTime(item) {

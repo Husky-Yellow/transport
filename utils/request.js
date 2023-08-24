@@ -17,7 +17,7 @@ const getUrl = () => {
 	return url
 }
 
-const urlWhiteList = ['/home/Warehouse/login','/api/order/getList']
+const urlWhiteList = ['/home/Warehouse/login']
 
 /**
  * @param {String} config.url
@@ -41,10 +41,8 @@ const service = async (config = {}) => {
 				return reject('身份认证失效,请重新跳转至本小程序')
 			}
 		}
-		if (url !== urlWhiteList[1]) {
-			data['token_isset'] = '7788521a'
-			data['user_id'] = referrerInfo.id
-		}
+		data['token_isset'] = '7788521a'
+		data['user_id'] = referrerInfo.id
 		uni.showLoading({
 			mask: true
 		});
