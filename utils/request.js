@@ -43,6 +43,7 @@ const service = async (config = {}) => {
 		}
 		data['token_isset'] = '7788521a'
 		data['user_id'] = referrerInfo.id
+		// data['user_id'] = '36'
 		uni.showLoading({
 			mask: true
 		});
@@ -70,7 +71,7 @@ const service = async (config = {}) => {
 									})
 									store.dispatch('resetToken')
 									return reject('身份认证失效,请重新跳转至本小程序')
-								} else if (res.data.code !== 200 && res.data.code !== '0') {
+								} else if (res.data.code !== 200 && res.data.code !== '0'&& res.data.code !== 'code') {
 									return reject(res.data.message)
 								} else {
 									return resolve(res.data)

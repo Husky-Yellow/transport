@@ -29,15 +29,13 @@
             送货单号
           </view>
           <view>
-            <picker @change="pickerChange" :value="pickerIndex" :range="array">
-              <view
+            <view
                 :class="[
                   'picker fz-28',
-                  pickerIndex !== -1 ? '' : 'grey-text',
-                ]">
-                {{pickerIndex !== -1 ? array[pickerIndex] : "请选择"}}
+                  pickerValue ? '' : 'palcehode',
+                ]" @tap="showBottomComponent">
+                {{pickerValue ? pickerValue : "请选择"}}
               </view>
-            </picker>
             <view class="arrow right"></view>
           </view>
         </view>
@@ -138,10 +136,12 @@
       </view>
       <button class="p-28 m-t-30" @click="submitFrom">确定</button>
     </view>
+    <ListSelect :array="array" @bindscrolltolower="getdeliveryNoteArr" @selectValue="selectValue" ref="bottomComponent"/>
   </view>
 </template>
 
 <script>
+import ListSelect from '@/components/ListSelect';
 import DataSelect from "@/components/DataSelect";
 import { orderOrderAdd, orderShow, orderGetList } from "@/api";
 import { isVehicleNumber, isMobile } from "@/utils/index";
@@ -162,6 +162,7 @@ const TITLEMAP = {
 export default {
   components: {
     DataSelect,
+    ListSelect
   },
   data: () => ({
       showArr: [],
@@ -176,7 +177,9 @@ export default {
       selectDriver: [],
       selectPeople: 0,
       array: [],
-      pickerIndex: -1
+      pickerValue: "",
+      page: 0,
+      pageFalg: true,
   }),
   async onShow(){
     this.selectPeopleArr = await uni.getStorageSync('selectPeopleArr')
@@ -192,6 +195,13 @@ export default {
     this.getdeliveryNoteArr()
   },
   methods: {
+    selectValue(val) {
+      console.log(val);
+      this.pickerValue = val
+    },
+    showBottomComponent() {
+      this.$refs.bottomComponent.showBottomComponent();
+    },
     getOrderShow() {
       orderShow().then((res) => {
         this.scrollDate = res.ret.map((item) => {
@@ -207,15 +217,17 @@ export default {
       });
     },
     getdeliveryNoteArr() {
-      // debugger
+      if (!this.pageFalg) return
+      this.page = this.page+1
       orderGetList({
-        "page":"1",
-        "size":"5"
-    }).then(res=> {
-      debugger
-        console.log(res.ret);
-        // debugger
-        // this.array = res.ret.map(item => item.invoice_number)
+        page: this.page,
+        size: 5
+      }).then((res) => {
+        if (res.ret.length === 0) {
+          this.pageFalg = false
+          return
+        }
+        this.array = [...this.array, ...res.ret.map((item) => item.invoice_number)]
       })
     },
     changeTime(item) {
@@ -226,9 +238,6 @@ export default {
       this.timeArr = this.showArr[index].son.map((item) =>
         Object.freeze({ num:item.num, time_str: item.time_str, id: item.id })
       );
-    },
-    pickerChange(e) {
-      this.pickerIndex = e.detail.value
     },
     submitFrom() {
       if (!this.time) {
@@ -245,7 +254,7 @@ export default {
         return false;
       }
       if (this.type === 1) {
-        if (this.pickerIndex === -1) {
+        if (!this.pickerValue) {
         uni.showToast({
           title: "请选择送货单号",
           icon: "none",
@@ -299,7 +308,7 @@ export default {
             : this.selectPeople.map((item) => item.id).toString(),
       };
       if (this.type === 1) {
-        param['delivery_note'] = this.array[this.pickerIndex]
+        param['delivery_note'] = this.pickerValue
       }
       console.log('预约参数', {param});
       orderOrderAdd(param)
@@ -416,6 +425,9 @@ button {
   color: $uni-text-color-inverse;
   width: 100%;
   text-align: center;
+}
+.palcehode {
+  color: #808080;
 }
 
 </style>
