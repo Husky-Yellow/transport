@@ -39,7 +39,25 @@
             <view class="arrow right"></view>
           </view>
         </view>
-        <view class="form-view-item p-22">
+        <view v-if="type === 1" class="form-view-item p-22">
+          <view>
+            <image
+              mode="scaleToFill"
+              class="m-r-10"
+              src="@/static/number.png"
+            />
+            数量
+          </view>
+          <view
+            :class="[
+              'picker fz-28',
+              num ? '' : 'palcehode',
+            ]">
+            {{num ? num : "请选择送货单号"}}
+          </view>
+          <!-- <input type="number" v-model="num" placeholder="请输入送货数量" /> -->
+        </view>
+        <view v-if="type !== 1" class="form-view-item p-22">
           <view>
             <image
               mode="scaleToFill"
@@ -192,12 +210,14 @@ export default {
       title: TITLEMAP[`${e.type}`].text || "预约",
     });
     this.getOrderShow();
-    this.getdeliveryNoteArr()
+    if (this.type === 1) {
+      this.getdeliveryNoteArr()
+    }
   },
   methods: {
     selectValue(val) {
-      console.log(val);
-      this.pickerValue = val
+      this.pickerValue = val.invoice_number
+      this.num = val.num
     },
     showBottomComponent() {
       this.$refs.bottomComponent.showBottomComponent();
@@ -227,7 +247,7 @@ export default {
           this.pageFalg = false
           return
         }
-        this.array = [...this.array, ...res.ret.map((item) => item.invoice_number)]
+        this.array = [...this.array, ...res.ret]
       })
     },
     changeTime(item) {
@@ -248,7 +268,7 @@ export default {
       }
       if (!this.num || this.num == 0) {
         uni.showToast({
-          title: "请输入送货数量",
+          title: `${this.type === 1 ? '请选择有效的送货单号' : '请输入送货数量'}`,
           icon: "none",
         });
         return false;

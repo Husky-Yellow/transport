@@ -10,7 +10,7 @@
                 </view>
                 <view class="fix-select-list-content-list">
                     <scroll-view style="height:474rpx" type="list" scroll-y @scrolltolower="bindscrolltolower">
-                        <view v-for="(item, index) in array" :key="index" @click.stop="selectValue(item)">{{ item }}</view>
+                        <view v-for="(item, index) in array" :key="index" @click.stop="selectValue(item)">{{ item.invoice_number }}</view>
                     </scroll-view>
                 </view>
             </view>
