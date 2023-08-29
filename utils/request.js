@@ -71,7 +71,7 @@ const service = async (config = {}) => {
 									})
 									store.dispatch('resetToken')
 									return reject('身份认证失效,请重新跳转至本小程序')
-								} else if (res.data.code !== 200 && res.data.code !== '0'&& res.data.code !== 'code') {
+								} else if (res.data.code !== 200 && res.data.code !== '0' && res.data.code !== 'code' && res.data.code !== '200') {
 									return reject(res.data.message)
 								} else {
 									return resolve(res.data)

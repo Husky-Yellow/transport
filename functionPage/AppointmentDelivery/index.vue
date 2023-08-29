@@ -205,14 +205,15 @@ export default {
     this.selectDriver = await uni.getStorageSync('selectDriver')
   },
   onLoad(e) {
-    this.type = TITLEMAP[`${e.type}`].type;
+    const {type, text} = TITLEMAP[`${e.type}`];
     uni.setNavigationBarTitle({
-      title: TITLEMAP[`${e.type}`].text || "预约",
+      title: text || "预约",
     });
     this.getOrderShow();
-    if (this.type === 1) {
+    if (type === 1) {
       this.getdeliveryNoteArr()
     }
+    this.type = type
   },
   methods: {
     selectValue(val) {
