@@ -248,7 +248,8 @@ export default {
           this.pageFalg = false
           return
         }
-        this.array = [...this.array, ...res.ret]
+	console.log('本次请求',res)
+        this.array = [...this.array, ...res.ret].filter(i => i.invoice_tag == 1)
       })
     },
     changeTime(item) {
